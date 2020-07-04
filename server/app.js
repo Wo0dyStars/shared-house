@@ -1,8 +1,14 @@
+// ******************************************
+// IMPORTS
+// ******************************************
 const express = require('express');
 const mongoose = require('mongoose');
 
 const app = express();
 
+// ******************************************
+// CONNECTING TO MONGO DB DATABASE
+// ******************************************
 mongoose
 	.connect(
 		'mongodb+srv://Wo0dyStars:' +
@@ -24,4 +30,7 @@ app.get('/', (req, res, next) => {
 	res.send('here');
 });
 
+// ******************************************
+// EXPORT APP TO THE SERVER FILE
+// ******************************************
 module.exports = app;
