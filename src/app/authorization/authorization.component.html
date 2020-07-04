@@ -45,10 +45,14 @@
                         ngModel
                         name="password"
                         #password="ngModel"
+                        maxlength="20"
                         required
                         appPasswordValidation>
+                      <div class="input-group-append">
+                        <span class="input-group-text">{{password.value ? password.value.length : 0}} / 20</span>
+                      </div>
                      </div>
-
+                     
                   <span class="alert alert-danger" *ngIf="password.touched && password.errors?.required">Password must be provided.</span>
                   
                   <div class="progress" style="height: 15px;"  *ngIf="password.errors?.strength || password.valid">
@@ -57,7 +61,7 @@
                         [class]="password.errors?.strength === null ? 'bg-success' : password.errors?.strength.currentColor"
                         role="progressbar" 
                         [style.width.%]="password.errors?.strength === null ? 100 : password.errors?.strength.currentValue" 
-                        aria-valuenow="0" 
+                        aria-valuenow="password.errors?.strength === null ? 100 : password.errors?.strength.currentValue" 
                         aria-valuemin="0" 
                         aria-valuemax="100"> {{ password.errors?.strength === null ? 100 : password.errors?.strength.currentValue }}% </div>
                   </div>
