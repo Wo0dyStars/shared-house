@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -18,7 +18,6 @@ export class AuthorizationComponent implements OnInit {
 
 		const email = form.value.email;
 		const password = form.value.password;
-
 		console.log(email, password);
 
 		form.reset();

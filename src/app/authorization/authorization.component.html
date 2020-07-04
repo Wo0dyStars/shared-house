@@ -1,7 +1,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3">
+        <div class="col-xs-12 col-md-12">
             <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)">
                 <div class="form-group">
                   <label for="email">Email address</label>
@@ -23,8 +23,8 @@
                         required
                         email>
                       </div>
-                  <span class="alert error-alert" *ngIf="email.invalid && email.touched">Email address must be provided.</span>
-                  <span class="" *ngIf="email.valid">Email address is correct.</span>
+                  <span class="alert alert-danger" *ngIf="email.invalid && email.touched">Email address must be provided.</span>
+                  <span class="alert alert-success" *ngIf="email.valid">Email address is correct.</span>
                 </div>
     
                 <div class="form-group">
@@ -49,21 +49,48 @@
                         appPasswordValidation>
                      </div>
 
-                  <span *ngIf="password.touched && password.errors?.required">Password must be provided.</span>
-                  <span *ngIf="password.errors?.strength">
-                      <div>Contains at least one lowercase character {{password.errors?.strength.lowercase}} </div>
-                      <div>Contains at least one uppercase character {{password.errors?.strength.uppercase}} </div>
-                      <div>Contains at least one digit character {{password.errors?.strength.digit}} </div>
-                      <div>Contains at least one special character {{password.errors?.strength.special}} </div>
-                      <div>Contains at least eight characters {{password.errors?.strength.minlength}} </div>
+                  <span class="alert alert-danger" *ngIf="password.touched && password.errors?.required">Password must be provided.</span>
+                  
+                  <div class="progress" style="height: 15px;"  *ngIf="password.errors?.strength || password.valid">
+                    <div 
+                        class="progress-bar progress-bar-striped" 
+                        [class]="password.errors?.strength === null ? 'bg-success' : password.errors?.strength.currentColor"
+                        role="progressbar" 
+                        [style.width.%]="password.errors?.strength === null ? 100 : password.errors?.strength.currentValue" 
+                        aria-valuenow="0" 
+                        aria-valuemin="0" 
+                        aria-valuemax="100"> {{ password.errors?.strength === null ? 100 : password.errors?.strength.currentValue }}% </div>
+                  </div>
+                  
+                  <span class="password-errors" *ngIf="password.errors?.strength || password.valid">
+                      <div class="password-errors__password-error">Password must contain at least one lowercase character
+                          <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.lowercase || password.errors?.strength === null">&#10003;</span>
+                          <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.lowercase && password.errors?.strength !== null">!</span>
+                      </div>
+                      <div class="password-errors__password-error">Password must contain at least one uppercase character
+                          <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.uppercase || password.errors?.strength === null">&#10003;</span>
+                          <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.uppercase && password.errors?.strength !== null">!</span>
+                      </div>
+                      <div class="password-errors__password-error">Password must contain at least one digit character
+                          <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.digit || password.errors?.strength === null">&#10003;</span>
+                          <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.digit && password.errors?.strength !== null">!</span>
+                      </div>
+                      <div class="password-errors__password-error">Password must contain at least one special character
+                          <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.special || password.errors?.strength === null">&#10003;</span>
+                          <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.special && password.errors?.strength !== null">!</span>
+                      </div>
+                      <div class="password-errors__password-error">Password must contain at least eight characters
+                          <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.minlength || password.errors?.strength === null">&#10003;</span>
+                          <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.minlength && password.errors?.strength !== null">!</span>
+                      </div>
                   </span>
     
-                  <span *ngIf="password.valid">
+                  <span class="alert alert-success" *ngIf="password.valid">
                     You entered a strong password.
                   </span>
                 </div>
     
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Submit</button>
             </form>
         </div>
     </div>

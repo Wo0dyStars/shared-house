@@ -20,8 +20,40 @@ export class ValidationService {
 				uppercase: oneUppercaseChar.test(control.value),
 				digit: oneDigitChar.test(control.value),
 				special: oneSpecialChar.test(control.value),
-				minlength: minEightChars.test(control.value)
+				minlength: minEightChars.test(control.value),
+				currentValue: 0,
+				currentColor: ''
 			};
+
+			const value = () => {
+				let level = 0;
+				for (let element in strengthLevel) {
+					if (element !== 'currentValue' && element !== 'currentColor') {
+						level += strengthLevel[element] ? 20 : 0;
+					}
+				}
+
+				return level;
+			};
+
+			strengthLevel.currentValue = value();
+
+			switch (strengthLevel.currentValue) {
+				case 20:
+					strengthLevel.currentColor = 'bg-danger';
+					break;
+				case 40:
+					strengthLevel.currentColor = 'bg-info';
+					break;
+				case 60:
+					strengthLevel.currentColor = 'bg-default';
+					break;
+				case 80:
+					strengthLevel.currentColor = 'bg-warning';
+					break;
+				case 100:
+					strengthLevel.currentColor = 'bg-success';
+			}
 
 			const strong = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/);
 			const isStrong = strong.test(control.value);
