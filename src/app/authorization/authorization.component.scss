@@ -2,6 +2,17 @@ input.ng-invalid.ng-touched {
 	border: 1px solid red;
 }
 
-span {
-	color: red;
+input.ng-valid.ng-touched {
+	border: 1px solid green;
+}
+
+.container {
+	margin-top: 3rem;
+	border: 1px solid black;
+
+	.row {
+		padding: 1rem;
+		border-left: 3rem solid black;
+		background-color: #fff;
+	}
 }

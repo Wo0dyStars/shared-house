@@ -1,37 +1,71 @@
 
-<div class="row">
-    <div class="col-xs-12 col-md-6 col-md-offset-3">
-        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-            <div class="form-group">
-              <label for="email">Email address</label>
-              <input 
-                type="email" 
-                id="email" 
-                class="form-control"
-                ngModel
-                #email="ngModel"
-                name="email"
-                required
-                email>
-              <span class="alert alert-danger" *ngIf="email.invalid && email.touched">Please enter a valid email!</span>
-              <span class="" *ngIf="email.valid">Email address is correct.</span>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)">
+                <div class="form-group">
+                  <label for="email">Email address</label>
+                  <div class="input-group mb-2">
+                      <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+                            </svg>
+                          </div>
+                      </div>
+                      <input 
+                        type="email" 
+                        id="email" 
+                        class="form-control"
+                        ngModel
+                        #email="ngModel"
+                        name="email"
+                        required
+                        email>
+                      </div>
+                  <span class="alert error-alert" *ngIf="email.invalid && email.touched">Email address must be provided.</span>
+                  <span class="" *ngIf="email.valid">Email address is correct.</span>
+                </div>
+    
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <div class="input-group mb-2">
+                      <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-lock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"/>
+                                <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"/>
+                              </svg>
+                          </div>
+                      </div>
+                      <input 
+                        type="password" 
+                        id="password"
+                        class="form-control"
+                        ngModel
+                        name="password"
+                        #password="ngModel"
+                        required
+                        appPasswordValidation>
+                     </div>
 
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input 
-                type="password" 
-                id="password"
-                class="form-control"
-                ngModel
-                name="password"
-                #password="ngModel"
-                required
-                minlength="8">
-              <span class="help-block" *ngIf="password.invalid && password.touched">Password must be at least 8 characters.</span>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+                  <span *ngIf="password.touched && password.errors?.required">Password must be provided.</span>
+                  <span *ngIf="password.errors?.strength">
+                      <div>Contains at least one lowercase character {{password.errors?.strength.lowercase}} </div>
+                      <div>Contains at least one uppercase character {{password.errors?.strength.uppercase}} </div>
+                      <div>Contains at least one digit character {{password.errors?.strength.digit}} </div>
+                      <div>Contains at least one special character {{password.errors?.strength.special}} </div>
+                      <div>Contains at least eight characters {{password.errors?.strength.minlength}} </div>
+                  </span>
+    
+                  <span *ngIf="password.valid">
+                    You entered a strong password.
+                  </span>
+                </div>
+    
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
     </div>
 </div>
+
