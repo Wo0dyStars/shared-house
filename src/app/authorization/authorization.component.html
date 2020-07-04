@@ -1,10 +1,10 @@
 
-<div class="container">
+<div class="container col-xl-5 col-lg-6 col-md-8">
     <div class="row">
-        <div class="col-xs-12 col-md-12">
+        <div class="col-xs-12 col-md-12 col-sm-12">
             <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)">
                 <div class="form-group">
-                  <label for="email">Email address</label>
+                  
                   <div class="input-group mb-2">
                       <div class="input-group-prepend">
                           <div class="input-group-text">
@@ -20,15 +20,18 @@
                         ngModel
                         #email="ngModel"
                         name="email"
+                        placeholder="Email address"
                         required
                         email>
-                      </div>
+                      <label for="email" class="email-label">Email address</label>
+                  </div>
+                  
                   <span class="alert alert-danger" *ngIf="email.invalid && email.touched">Email address must be provided.</span>
                   <span class="alert alert-success" *ngIf="email.valid">Email address is correct.</span>
                 </div>
     
                 <div class="form-group">
-                  <label for="password">Password</label>
+                  
                   <div class="input-group mb-2">
                       <div class="input-group-prepend">
                           <div class="input-group-text">
@@ -39,7 +42,7 @@
                           </div>
                       </div>
                       <input 
-                        type="password" 
+                        [type]="display ? 'text' : 'password'" 
                         id="password"
                         class="form-control"
                         ngModel
@@ -47,12 +50,19 @@
                         #password="ngModel"
                         maxlength="20"
                         required
+                        placeholder="Password"
                         appPasswordValidation>
+                      <label for="password" class="password-label">Password</label>
                       <div class="input-group-append">
                         <span class="input-group-text">{{password.value ? password.value.length : 0}} / 20</span>
                       </div>
-                     </div>
-                     
+                  </div>
+
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="switch" (click)="ToggleDisplayPassword()">
+                    <label class="custom-control-label" for="switch" >Show password</label>
+                  </div>
+
                   <span class="alert alert-danger" *ngIf="password.touched && password.errors?.required">Password must be provided.</span>
                   
                   <div class="progress" style="height: 15px;"  *ngIf="password.errors?.strength || password.valid">

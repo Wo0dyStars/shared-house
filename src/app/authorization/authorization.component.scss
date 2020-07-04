@@ -1,25 +1,62 @@
 input.ng-invalid.ng-touched {
-	border: 1px solid red;
+	border-top: 1px solid rgba(255, 0, 0, .5);
+	border-bottom: 1px solid rgba(255, 0, 0, .5);
 }
 
 input.ng-valid.ng-touched {
-	border: 1px solid green;
+	border-top: 1px solid rgba(0, 255, 0, .5);
+	border-bottom: 1px solid rgba(0, 255, 0, .5);
+}
+
+input[type=email],
+input[type=text],
+input[type=password] {
+	position: relative;
+	&:focus {
+		outline: none;
+		box-shadow: none;
+	}
+
+	&:placeholder-shown ~ label {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	&:not(:placeholder-shown) ~ label {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.form-group {
+	.email-label,
+	.password-label {
+		position: absolute;
+		top: -30%;
+		left: 10%;
+		font-size: .9rem;
+		z-index: 10;
+		background-color: #fff;
+		padding: 0 .3rem;
+		transition: all .2s ease;
+	}
 }
 
 .container {
-	width: 50%;
 	margin-top: 3rem;
-	border: 1px solid black;
+	padding: 1.6rem;
+	background-color: lightgray;
+	border-radius: 1rem;
 
 	.row {
 		padding: 1rem;
-		border-left: 3rem solid black;
 		background-color: #fff;
 	}
 }
 
 .alert {
 	padding: .2rem;
+	font-size: .9rem;
 
 	&-danger {
 		&__wrong {
@@ -41,4 +78,8 @@ input.ng-valid.ng-touched {
 		font-size: 0.9rem;
 		margin-bottom: .5rem;
 	}
+}
+
+.custom-switch {
+	margin-bottom: 1rem;
 }

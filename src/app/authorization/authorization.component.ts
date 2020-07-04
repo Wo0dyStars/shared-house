@@ -7,6 +7,8 @@ import { NgForm } from '@angular/forms';
 	styleUrls: [ './authorization.component.scss' ]
 })
 export class AuthorizationComponent implements OnInit {
+	display: boolean = false;
+
 	constructor() {}
 
 	ngOnInit(): void {}
@@ -21,5 +23,9 @@ export class AuthorizationComponent implements OnInit {
 		console.log(email, password);
 
 		form.reset();
+	}
+
+	ToggleDisplayPassword() {
+		this.display = !this.display;
 	}
 }
