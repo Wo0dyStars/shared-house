@@ -5,6 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 
@@ -36,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+	res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
 
 	next();
@@ -88,7 +89,13 @@ app.post('/login', (req, res, next) => {
 				});
 			}
 
+			const token = jwt.sign({ email: fetchedUser.email, userId: fetchedUser._id }, 'secret', {
+				expiresIn: '1h'
+			});
+
 			res.status(200).json({
+				token: token,
+				expiresIn: 3600,
 				userID: fetchedUser._id
 			});
 		})

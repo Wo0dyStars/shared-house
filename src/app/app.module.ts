@@ -8,7 +8,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { PasswordValidationDirective } from './authorization/password-validation.directive';
 import { PasswordMatchDirective } from './authorization/password-match.directive';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthorizationInterceptor } from './authorization/authorization.interceptor';
 
 @NgModule({
 	declarations: [
@@ -19,7 +20,13 @@ import { HttpClientModule } from '@angular/common/http';
 		PasswordMatchDirective
 	],
 	imports: [ BrowserModule, FormsModule, AppRoutingModule, HttpClientModule ],
-	providers: [],
+	providers: [
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: AuthorizationInterceptor,
+			multi: true
+		}
+	],
 	bootstrap: [ AppComponent ]
 })
 export class AppModule {}
