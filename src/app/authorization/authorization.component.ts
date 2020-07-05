@@ -9,6 +9,7 @@ import { AuthorizationService } from './authorizarion.service';
 })
 export class AuthorizationComponent implements OnInit {
 	display: boolean = false;
+	isLoginMode: boolean = true;
 
 	constructor(public authorizationService: AuthorizationService) {}
 
@@ -21,14 +22,21 @@ export class AuthorizationComponent implements OnInit {
 
 		const email = form.value.email;
 		const password = form.value.password;
-		console.log(email, password);
 
-		this.authorizationService.createUser(email, password);
+		if (this.isLoginMode) {
+			this.authorizationService.login(email, password);
+		} else {
+			this.authorizationService.createUser(email, password);
+		}
 
 		form.reset();
 	}
 
 	ToggleDisplayPassword() {
 		this.display = !this.display;
+	}
+
+	onSwitchMode() {
+		this.isLoginMode = !this.isLoginMode;
 	}
 }

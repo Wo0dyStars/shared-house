@@ -66,46 +66,49 @@
 
                   <span class="alert alert-danger" *ngIf="password.touched && password.errors?.required">Password must be provided.</span>
                   
-                  <div class="progress" style="height: 15px;"  *ngIf="password.errors?.strength || password.valid">
-                    <div 
-                        class="progress-bar progress-bar-striped" 
-                        [class]="password.errors?.strength === null ? 'bg-success' : password.errors?.strength.currentColor"
-                        role="progressbar" 
-                        [style.width.%]="password.errors?.strength === null ? 100 : password.errors?.strength.currentValue" 
-                        aria-valuenow="password.errors?.strength === null ? 100 : password.errors?.strength.currentValue" 
-                        aria-valuemin="0" 
-                        aria-valuemax="100"> {{ password.errors?.strength === null ? 100 : password.errors?.strength.currentValue }}% </div>
+                  <div *ngIf="!this.isLoginMode">
+                    <div class="progress" style="height: 15px;"  *ngIf="password.errors?.strength || password.valid">
+                      <div 
+                          class="progress-bar progress-bar-striped" 
+                          [class]="password.errors?.strength === null ? 'bg-success' : password.errors?.strength.currentColor"
+                          role="progressbar" 
+                          [style.width.%]="password.errors?.strength === null ? 100 : password.errors?.strength.currentValue" 
+                          aria-valuenow="password.errors?.strength === null ? 100 : password.errors?.strength.currentValue" 
+                          aria-valuemin="0" 
+                          aria-valuemax="100"> {{ password.errors?.strength === null ? 100 : password.errors?.strength.currentValue }}% </div>
+                    </div>
+                    
+                    <span class="password-errors" *ngIf="password.errors?.strength || password.valid">
+                        <div class="password-errors__password-error">Password must contain at least one lowercase character
+                            <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.lowercase || password.errors?.strength === null">&#10003;</span>
+                            <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.lowercase && password.errors?.strength !== null">!</span>
+                        </div>
+                        <div class="password-errors__password-error">Password must contain at least one uppercase character
+                            <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.uppercase || password.errors?.strength === null">&#10003;</span>
+                            <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.uppercase && password.errors?.strength !== null">!</span>
+                        </div>
+                        <div class="password-errors__password-error">Password must contain at least one digit character
+                            <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.digit || password.errors?.strength === null">&#10003;</span>
+                            <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.digit && password.errors?.strength !== null">!</span>
+                        </div>
+                        <div class="password-errors__password-error">Password must contain at least one special character
+                            <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.special || password.errors?.strength === null">&#10003;</span>
+                            <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.special && password.errors?.strength !== null">!</span>
+                        </div>
+                        <div class="password-errors__password-error">Password must contain at least eight characters
+                            <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.minlength || password.errors?.strength === null">&#10003;</span>
+                            <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.minlength && password.errors?.strength !== null">!</span>
+                        </div>
+                    </span>
+      
+                    <span class="alert alert-success" *ngIf="password.valid && !this.isLoginMode">
+                      You entered a strong password.
+                    </span>
                   </div>
                   
-                  <span class="password-errors" *ngIf="password.errors?.strength || password.valid">
-                      <div class="password-errors__password-error">Password must contain at least one lowercase character
-                          <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.lowercase || password.errors?.strength === null">&#10003;</span>
-                          <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.lowercase && password.errors?.strength !== null">!</span>
-                      </div>
-                      <div class="password-errors__password-error">Password must contain at least one uppercase character
-                          <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.uppercase || password.errors?.strength === null">&#10003;</span>
-                          <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.uppercase && password.errors?.strength !== null">!</span>
-                      </div>
-                      <div class="password-errors__password-error">Password must contain at least one digit character
-                          <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.digit || password.errors?.strength === null">&#10003;</span>
-                          <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.digit && password.errors?.strength !== null">!</span>
-                      </div>
-                      <div class="password-errors__password-error">Password must contain at least one special character
-                          <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.special || password.errors?.strength === null">&#10003;</span>
-                          <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.special && password.errors?.strength !== null">!</span>
-                      </div>
-                      <div class="password-errors__password-error">Password must contain at least eight characters
-                          <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.minlength || password.errors?.strength === null">&#10003;</span>
-                          <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.minlength && password.errors?.strength !== null">!</span>
-                      </div>
-                  </span>
-    
-                  <span class="alert alert-success" *ngIf="password.valid">
-                    You entered a strong password.
-                  </span>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" *ngIf="!this.isLoginMode">
                   
                   <div class="input-group mb-2">
                       <div class="input-group-prepend">
@@ -137,7 +140,13 @@
 
                 </div>
     
-                <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Submit</button>
+                <div>
+                  <button type="submit" class="btn btn-primary" [disabled]="form.invalid">{{ isLoginMode ? "Login" : "Register" }}</button>
+                  <button class="btn btn-primary" (click)="onSwitchMode()" type="button">
+                    Switch to {{ isLoginMode ? "Register" : "Login" }}
+                  </button>
+                </div>
+                
             </form>
         </div>
     </div>

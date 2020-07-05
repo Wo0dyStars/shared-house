@@ -68,6 +68,37 @@ app.post('/register', (req, res, next) => {
 	});
 });
 
+app.post('/login', (req, res, next) => {
+	let fetchedUser = '';
+	User.findOne({ email: req.body.email })
+		.then((user) => {
+			if (!user) {
+				return res.status(401).json({
+					message: 'The provided email does not exist in the database.'
+				});
+			}
+
+			fetchedUser = user;
+			return bcrypt.compare(req.body.password, user.password);
+		})
+		.then((result) => {
+			if (!result) {
+				return res.status(401).json({
+					message: 'Authentication has been failed at password comparison.'
+				});
+			}
+
+			res.status(200).json({
+				userID: fetchedUser._id
+			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: `The system has found the following error: ${error}`
+			});
+		});
+});
+
 // ******************************************
 // EXPORT APP TO THE SERVER FILE
 // ******************************************

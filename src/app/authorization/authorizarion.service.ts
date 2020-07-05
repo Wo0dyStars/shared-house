@@ -19,4 +19,17 @@ export class AuthorizationService {
 			}
 		);
 	}
+
+	login(email: string, password: string) {
+		const Data: AuthorizationData = { email: email, password: password };
+		this.http.post<{ userID: string }>('http://localhost:3000/login', Data).subscribe(
+			(response) => {
+				console.log(response);
+				this.router.navigate([ '/' ]);
+			},
+			(error) => {
+				console.log('An error occurred ', error);
+			}
+		);
+	}
 }
