@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { PasswordValidationDirective } from './authorization/password-validation.directive';
 import { PasswordMatchDirective } from './authorization/password-match.directive';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
 	declarations: [
@@ -17,7 +18,7 @@ import { PasswordMatchDirective } from './authorization/password-match.directive
 		PasswordValidationDirective,
 		PasswordMatchDirective
 	],
-	imports: [ BrowserModule, FormsModule, AppRoutingModule ],
+	imports: [ BrowserModule, FormsModule, AppRoutingModule, HttpClientModule ],
 	providers: [],
 	bootstrap: [ AppComponent ]
 })
