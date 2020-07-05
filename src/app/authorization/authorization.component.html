@@ -23,12 +23,16 @@
                         name="email"
                         placeholder="Email address"
                         required
-                        email>
+                        email
+                        appEmailValidation>
                       <label for="email" class="email-label">Email address</label>
                   </div>
                   
-                  <span class="alert alert-danger" *ngIf="email.invalid && email.touched">Email address must be provided.</span>
+                  <span class="alert alert-danger" *ngIf="email.errors?.required && email.touched">Email address must be provided.</span>
+                  <span class="alert alert-danger" *ngIf="!email.errors?.required && email.invalid && email.touched && !email.errors?.emailNotAvailable">Email address is incorrect.</span>
+                  <span class="alert alert-danger" *ngIf="!this.isLoginMode && email.errors?.emailNotAvailable && email.touched">This email already exists in the database.</span>
                   <span class="alert alert-success" *ngIf="email.valid">Email address is correct.</span>
+                  
                 </div>
     
                 <div class="form-group">

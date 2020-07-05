@@ -18,6 +18,10 @@ export class AuthorizationService {
 		return this.token;
 	}
 
+	getDatabaseEmails() {
+		return this.http.get<{ emails: string[] }>('http://localhost:3000/users');
+	}
+
 	getIsAuthenticated() {
 		return this.isAuthenticated;
 	}
@@ -59,8 +63,8 @@ export class AuthorizationService {
 						this.router.navigate([ '/' ]);
 					}
 				},
-				(error) => {
-					console.log('An error occurred ', error);
+				(HttpError) => {
+					console.log('An error occurred ', HttpError.error.message);
 					this.authorizationStatus.next(false);
 				}
 			);

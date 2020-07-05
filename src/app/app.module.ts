@@ -10,6 +10,7 @@ import { PasswordValidationDirective } from './authorization/password-validation
 import { PasswordMatchDirective } from './authorization/password-match.directive';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizationInterceptor } from './authorization/authorization.interceptor';
+import { EmailValidationDirective } from './authorization/email-validation.directive';
 
 @NgModule({
 	declarations: [
@@ -17,7 +18,8 @@ import { AuthorizationInterceptor } from './authorization/authorization.intercep
 		HeaderComponent,
 		AuthorizationComponent,
 		PasswordValidationDirective,
-		PasswordMatchDirective
+		PasswordMatchDirective,
+		EmailValidationDirective
 	],
 	imports: [ BrowserModule, FormsModule, AppRoutingModule, HttpClientModule ],
 	providers: [

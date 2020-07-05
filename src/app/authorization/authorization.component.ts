@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthorizationService } from './authorizarion.service';
+import { AuthorizationService } from './authorization.service';
 
 @Component({
 	selector: 'app-authorization',

@@ -87,23 +87,36 @@ app.post('/login', (req, res, next) => {
 				return res.status(401).json({
 					message: 'Authentication has been failed at password comparison.'
 				});
+			} else {
+				const token = jwt.sign({ email: fetchedUser.email, userId: fetchedUser._id }, 'secret', {
+					expiresIn: '1h'
+				});
+
+				res.status(200).json({
+					token: token,
+					expiresIn: 3600,
+					userID: fetchedUser._id
+				});
 			}
-
-			const token = jwt.sign({ email: fetchedUser.email, userId: fetchedUser._id }, 'secret', {
-				expiresIn: '1h'
-			});
-
-			res.status(200).json({
-				token: token,
-				expiresIn: 3600,
-				userID: fetchedUser._id
-			});
 		})
 		.catch((error) => {
 			return res.status(500).json({
 				message: `The system has found the following error: ${error}`
 			});
 		});
+});
+
+app.get('/users', (req, res, next) => {
+	User.find({}, 'email -_id').lean().then((emails) => {
+		const userEmails = [];
+		for (email of emails) {
+			userEmails.push(email.email);
+		}
+
+		return res.status(200).json({
+			emails: userEmails
+		});
+	});
 });
 
 // ******************************************

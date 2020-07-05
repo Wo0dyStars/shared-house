@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ValidatorFn, AbstractControl, FormGroup } from '@angular/forms';
+import { AuthorizationService } from './authorization.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ValidationService {
+	constructor(private authorizationService: AuthorizationService) {}
+
 	// *************************************************
 	// VALIDATE PASSWORD STRENGTH
 	// *************************************************
@@ -96,5 +100,19 @@ export class ValidationService {
 				confirmPasswordControl.setErrors(null);
 			}
 		};
+	}
+
+	emailValidator(emailControl: AbstractControl) {
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				this.authorizationService.getDatabaseEmails().subscribe((response) => {
+					if (response.emails.indexOf(emailControl.value) > -1) {
+						resolve({ emailNotAvailable: true });
+					} else {
+						resolve(null);
+					}
+				});
+			}, 300);
+		});
 	}
 }
