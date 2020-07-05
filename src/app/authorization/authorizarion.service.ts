@@ -9,8 +9,9 @@ export class AuthorizationService {
 
 	createUser(email: string, password: string) {
 		const Data: AuthorizationData = { email: email, password: password };
-		return this.http.post('http://localhost:3000/register', Data).subscribe(
-			() => {
+		return this.http.post<{ message: string }>('http://localhost:3000/register', Data).subscribe(
+			(response) => {
+				console.log(response.message);
 				this.router.navigate([ '/' ]);
 			},
 			(error) => {

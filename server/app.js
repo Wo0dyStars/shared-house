@@ -4,8 +4,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
 
 const app = express();
+
+const User = require('./models/User');
 
 // ******************************************
 // CONNECTING TO MONGO DB DATABASE
@@ -17,7 +20,8 @@ mongoose
 			'@cluster0.blrzn.mongodb.net/<dbname>?retryWrites=true&w=majority',
 		{
 			useUnifiedTopology: true,
-			useNewUrlParser: true
+			useNewUrlParser: true,
+			useCreateIndex: true
 		}
 	)
 	.then(() => {
@@ -43,7 +47,25 @@ app.get('/', (req, res, next) => {
 });
 
 app.post('/register', (req, res, next) => {
-	console.log(req.body);
+	bcrypt.hash(req.body.password, 10).then((hashedPassword) => {
+		const user = new User({
+			email: req.body.email,
+			password: hashedPassword
+		});
+
+		user
+			.save()
+			.then((result) => {
+				res.status(201).json({
+					message: `You have successfully created your account, ${result.email}`
+				});
+			})
+			.catch((error) => {
+				res.status(500).json({
+					message: 'Invalid email or password!'
+				});
+			});
+	});
 });
 
 // ******************************************
