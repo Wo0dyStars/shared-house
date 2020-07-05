@@ -45,7 +45,7 @@ input[type=password] {
 .container {
 	margin-top: 3rem;
 	padding: 1.6rem;
-	background-color: lightgray;
+	background-color: rgba(0, 150, 0, .151);
 	border-radius: 1rem;
 
 	.row {
@@ -65,6 +65,12 @@ input[type=password] {
 
 		&__right {
 			padding: .2rem 0;
+		}
+
+		&__avatar {
+			width: 50%;
+			margin: 0 auto;
+			text-align: center;
 		}
 	}
 }

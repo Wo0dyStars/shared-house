@@ -17,6 +17,10 @@ export class EmailValidationDirective implements Validator {
 	constructor(private validationService: ValidationService) {}
 
 	validate(control: AbstractControl): Promise<{ [key: string]: any }> | Observable<{ [key: string]: any }> {
-		return this.validationService.emailValidator(control);
+		if (!(control.parent.value.confirmPassword === undefined)) {
+			return this.validationService.emailValidator(control);
+		}
+
+		return new Promise((resolve) => resolve(null));
 	}
 }
