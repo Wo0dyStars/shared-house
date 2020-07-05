@@ -22,6 +22,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 		console.log('After getting info', this.isAuthenticated);
 	}
 
+	onLogout() {
+		this.authorizationService.logout();
+	}
+
 	ngOnDestroy() {
 		this.authorizationListener.unsubscribe();
 	}

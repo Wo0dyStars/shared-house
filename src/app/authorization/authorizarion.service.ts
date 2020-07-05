@@ -77,6 +77,15 @@ export class AuthorizationService {
 		this.authorizationStatus.next(true);
 	}
 
+	logout() {
+		this.token = null;
+		this.userID = null;
+		this.isAuthenticated = false;
+		this.authorizationStatus.next(false);
+		this.clearAuthorizedData();
+		this.router.navigate([ '/' ]);
+	}
+
 	private saveAuthorizedData(token: string, expirationDate: Date, userID: string) {
 		localStorage.setItem('token', token);
 		localStorage.setItem('expiration', expirationDate.toISOString());
