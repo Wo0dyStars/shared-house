@@ -89,3 +89,16 @@ input[type=password] {
 .custom-switch {
 	margin-bottom: 1rem;
 }
+
+button[type=submit],
+button[type=button] {
+	outline: none;
+	box-shadow: none;
+	border: 0;
+	transition: all .5s ease;
+	margin-right: .5rem;
+}
+
+.login {
+	background-color: limegreen;
+}

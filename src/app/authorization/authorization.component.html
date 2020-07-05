@@ -146,8 +146,8 @@
                 </div>
     
                 <div>
-                  <button type="submit" class="btn btn-primary" [disabled]="form.invalid">{{ isLoginMode ? "Login" : "Register" }}</button>
-                  <button class="btn btn-primary" (click)="onSwitchMode()" type="button">
+                  <button type="submit" class="btn btn-primary" [class]="isLoginMode ? 'login' : 'register'" [disabled]="form.invalid">{{ isLoginMode ? "Login" : "Register" }}</button>
+                  <button class="btn btn-primary" [class]="isLoginMode ? 'register' : 'login'" (click)="onSwitchMode()" type="button">
                     Switch to {{ isLoginMode ? "Register" : "Login" }}
                   </button>
                 </div>
