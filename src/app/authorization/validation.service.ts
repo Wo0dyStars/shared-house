@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
-import { ValidatorFn, AbstractControl } from '@angular/forms';
+import { ValidatorFn, AbstractControl, FormGroup } from '@angular/forms';
 
 @Injectable({ providedIn: 'root' })
 export class ValidationService {
+	// *************************************************
+	// VALIDATE PASSWORD STRENGTH
+	// *************************************************
 	patternValidator(): ValidatorFn {
 		return (control: AbstractControl): { [strength: string]: any } => {
 			if (!control.value) {
 				return null;
 			}
 
+			// *************************************************
+			// Calculate the strength of the provided password
+			// *************************************************
 			const oneLowercaseChar = new RegExp(/^(?=.*?[a-z])/);
 			const oneUppercaseChar = new RegExp(/^(?=.*?[A-Z])/);
 			const oneDigitChar = new RegExp(/^(?=.*?[0-9])/);
@@ -25,6 +31,9 @@ export class ValidationService {
 				currentColor: ''
 			};
 
+			// *************************************************
+			// Calculate strength level
+			// *************************************************
 			const value = () => {
 				let level = 0;
 				for (let element in strengthLevel) {
@@ -38,6 +47,9 @@ export class ValidationService {
 
 			strengthLevel.currentValue = value();
 
+			// *************************************************
+			// Select appropriate color for strength level
+			// *************************************************
 			switch (strengthLevel.currentValue) {
 				case 20:
 					strengthLevel.currentColor = 'bg-danger';
@@ -59,6 +71,30 @@ export class ValidationService {
 			const isStrong = strong.test(control.value);
 
 			return isStrong ? null : { strength: strengthLevel };
+		};
+	}
+
+	// *************************************************
+	// Calculate the strength of the provided password
+	// *************************************************
+	MatchPassword(password: string, confirmPassword: string) {
+		return (formGroup: FormGroup) => {
+			const passwordControl = formGroup.controls[password];
+			const confirmPasswordControl = formGroup.controls[confirmPassword];
+
+			if (!passwordControl || !confirmPasswordControl) {
+				return null;
+			}
+
+			if (confirmPasswordControl.errors && !confirmPasswordControl.errors.passwordMismatch) {
+				return null;
+			}
+
+			if (passwordControl.value !== confirmPasswordControl.value) {
+				confirmPasswordControl.setErrors({ passwordMismatch: true });
+			} else {
+				confirmPasswordControl.setErrors(null);
+			}
 		};
 	}
 }
