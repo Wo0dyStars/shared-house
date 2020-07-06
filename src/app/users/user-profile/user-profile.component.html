@@ -1,0 +1,96 @@
+
+Complete your profile. Currently 20%
+        <div *ngIf="!userData?.isVerified"> Your email must be verified before proceeding.</div>
+        <div *ngIf="userData?.isVerified"> Your account has been verified.</div>
+        <div class="progress" style="height: 15px;">
+            <div 
+                class="progress-bar progress-bar-striped" 
+                role="progressbar" 
+                [style.width.%]="20" 
+                aria-valuenow="20" 
+                aria-valuemin="0" 
+                aria-valuemax="100"> 20% </div>
+          </div>
+<div class="container">
+        <h1>Complete your profile</h1>
+        <form>
+            <div class="form-row">
+                <div class="col">
+                    <label for="email">Email address</label>
+                    <input type="email" [value]=userData?.email class="form-control">
+                </div>
+
+                <button class="btn btn-success">Save</button>
+            </div>
+            
+            <h2>Personal details</h2>
+            <div class="form-row">
+                <div class="col">
+                    <label for="forename">Forename</label>
+                    <input type="text" [value]=userData?.forename class="form-control">
+                </div>
+        
+                <div class="col">
+                    <label for="surname">Surname</label>
+                    <input type="surname" [value]=userData?.surname class="form-control">
+                </div>
+            </div>
+            
+            <h2>Additional information</h2>
+            <div class="form-row">
+                <div class="col">
+                    <label for="age">Age</label>
+                    <input type="age" [value]=userData?.age class="form-control">
+                </div>
+        
+                <div class="col">
+                    <label for="occupation">Occupation</label>
+                    <input type="occupation" [value]=userData?.occupation class="form-control">
+                </div>
+        
+                <div class="col">
+                    <label for="phone">phone</label>
+                    <input type="phone" [value]=userData?.phone class="form-control">
+                </div>
+            </div>
+            
+            <h2>Your avatar</h2>
+            <div class="col">
+                <label for="avatar">avatar</label>
+                <input type="avatar" [value]=userData?.avatar class="form-control">
+            </div>
+            
+            <h2>Your dates</h2>
+            <div class="form-row">
+                <div class="col">
+                    <label for="movedIn">movedIn</label>
+                    <input type="movedIn" [value]=userData?.movedIn class="form-control">
+                </div>
+        
+                <div class="col">
+                    <label for="lastUpdated">lastUpdated</label>
+                    <input type="lastUpdated" [value]=userData?.lastUpdated class="form-control">
+                </div>
+            </div>
+
+            <h2>Where do you live?</h2>
+            <div class="form-row">
+                <div class="col">
+                    <label for="postcode">postcode</label>
+                    <input type="postcode" value=postcode class="form-control">
+                </div>
+        
+                <div class="col">
+                    <label for="town">town</label>
+                    <input type="town" value=town class="form-control">
+                </div>
+
+                <div class="col">
+                    <label for="country">country</label>
+                    <input type="country" value=country class="form-control">
+                </div>
+            </div>
+
+        </form>
+        
+</div>

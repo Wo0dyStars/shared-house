@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthorizationData } from './authorization.model';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+import { User } from '../users/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthorizationService {
@@ -35,6 +36,10 @@ export class AuthorizationService {
 		return this.authorizationStatus.asObservable();
 	}
 
+	getUsers(userID: string): Observable<User> {
+		return this.http.get<User>('http://localhost:3000/users/' + userID);
+	}
+
 	createUser(email: string, password: string) {
 		const Data: AuthorizationData = { email: email, password: password };
 		return this.http.post<{ message: string }>('http://localhost:3000/register', Data).subscribe(
@@ -65,7 +70,7 @@ export class AuthorizationService {
 						const currentTime = new Date().getTime();
 						const expiresInDate = new Date(currentTime + expiresIn * 1000);
 						this.saveAuthorizedData(this.token, expiresInDate, this.userID);
-						this.router.navigate([ '/' ]);
+						this.router.navigate([ '/users/' + this.userID ]);
 					}
 				},
 				(HttpError) => {

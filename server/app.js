@@ -190,6 +190,36 @@ app.get('/confirmation/:token', (req, res, next) => {
 	});
 });
 
+app.get('/users/:id', (req, res, next) => {
+	User.findById(req.params.id)
+		.then((user) => {
+			if (!user) {
+				return res.status(400).json({
+					message: 'The system was unable to find the user with this user ID.'
+				});
+			}
+			return res.status(200).json({
+				forename: user.forename,
+				surname: user.surname,
+				age: user.age,
+				occupation: user.occupation,
+				phone: user.phone,
+				avatar: user.avatar,
+				_id: user._id,
+				email: user.email,
+				password: user.password,
+				movedIn: user.movedIn,
+				lastUpdated: user.lastUpdated,
+				isVerified: user.isVerified
+			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: error.message
+			});
+		});
+});
+
 // ******************************************
 // EXPORT APP TO THE SERVER FILE
 // ******************************************
