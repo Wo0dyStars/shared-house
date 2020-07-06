@@ -11,11 +11,16 @@ export class AuthorizationService {
 	private isAuthenticated = false;
 	private tokenTimer: NodeJS.Timer;
 	private authorizationStatus = new Subject<boolean>();
+	private isVerified = new Subject<boolean>();
 
 	constructor(private http: HttpClient, private router: Router) {}
 
 	getToken() {
 		return this.token;
+	}
+
+	getIsVerified() {
+		return this.isVerified;
 	}
 
 	getDatabaseEmails() {
@@ -130,5 +135,16 @@ export class AuthorizationService {
 			expirationDate: new Date(expirationDate),
 			userID: userID
 		};
+	}
+
+	confirmEmail(url: string) {
+		this.http.get<{ message: string }>('http://localhost:3000' + url).subscribe((response) => {
+			this.isVerified.next(true);
+			console.log(response.message);
+		}),
+			(HttpError: any) => {
+				console.log(HttpError.error.message);
+				this.isVerified.next(false);
+			};
 	}
 }

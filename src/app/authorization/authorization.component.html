@@ -6,6 +6,7 @@
             <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)" [appPasswordMatch]="['password', 'confirmPassword']">
                 
                 <div class="form-group">
+                  <div class="alert alert-success" *ngIf="this.isVerified">You have now verified your email address. Please log in!</div>
                   
                   <div class="input-group mb-2">
                       <div class="input-group-prepend">

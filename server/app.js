@@ -7,10 +7,14 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+
+const emailSending = require('./middleware/email-verification');
 
 const app = express();
 
 const User = require('./models/User');
+const Token = require('./models/Token');
 
 // ******************************************
 // CONNECTING TO MONGO DB DATABASE
@@ -59,13 +63,26 @@ app.post('/register', (req, res, next) => {
 		user
 			.save()
 			.then((result) => {
-				res.status(201).json({
+				let token = new Token({
+					userID: result._id,
+					token: crypto.randomBytes(16).toString('hex')
+				});
+
+				token.save((error) => {
+					if (error) {
+						return res.status(500).json({ message: error.message });
+					} else {
+						emailSending.sendEmail(result.email, token.token);
+					}
+				});
+
+				return res.status(201).json({
 					message: `You have successfully created your account, ${result.email}`
 				});
 			})
 			.catch((error) => {
 				res.status(500).json({
-					message: 'Invalid email or password!'
+					message: `An error occurred ${error}`
 				});
 			});
 	});
@@ -85,6 +102,12 @@ app.post('/login', (req, res, next) => {
 			return bcrypt.compare(req.body.password, user.password);
 		})
 		.then((result) => {
+			if (fetchedUser.isVerified === false) {
+				return res.status(401).json({
+					message: 'Your account has not been verified yet.'
+				});
+			}
+
 			if (!result) {
 				return res.status(401).json({
 					message: 'Authentication has been failed at password comparison.'
@@ -94,7 +117,7 @@ app.post('/login', (req, res, next) => {
 					expiresIn: '1h'
 				});
 
-				res.status(200).json({
+				return res.status(200).json({
 					token: token,
 					expiresIn: 3600,
 					userID: fetchedUser._id
@@ -117,6 +140,44 @@ app.get('/users', (req, res, next) => {
 
 		return res.status(200).json({
 			emails: userEmails
+		});
+	});
+});
+
+app.get('/confirmation/:token', (req, res, next) => {
+	Token.findOne({ token: req.params.token }).then((foundToken) => {
+		if (!foundToken) {
+			return res.status(400).json({
+				message: 'The system was unable to find a valid token. Your token might have expired.'
+			});
+		}
+
+		User.findOne({ _id: foundToken.userID }).then((user) => {
+			if (!user) {
+				return res.status(400).json({
+					message: 'The system was unable to find the user for this token.'
+				});
+			}
+
+			if (user.isVerified) {
+				return res.status(400).json({
+					message: 'This user has already been verified.'
+				});
+			}
+
+			user.isVerified = true;
+			user
+				.save()
+				.then((result) => {
+					return res.status(200).json({
+						message: 'The account has been verified. Please log in.'
+					});
+				})
+				.catch((error) => {
+					return res.status(500).json({
+						message: error.message
+					});
+				});
 		});
 	});
 });

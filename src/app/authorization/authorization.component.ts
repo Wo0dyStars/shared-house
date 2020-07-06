@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthorizationService } from './authorization.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-authorization',
@@ -10,10 +12,20 @@ import { AuthorizationService } from './authorization.service';
 export class AuthorizationComponent implements OnInit {
 	display: boolean = false;
 	isLoginMode: boolean = true;
+	isVerified: boolean = false;
+	verificationListener: Subscription;
 
-	constructor(public authorizationService: AuthorizationService) {}
+	constructor(public authorizationService: AuthorizationService, private router: Router) {}
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		this.verificationListener = this.authorizationService.getIsVerified().subscribe((isVerified) => {
+			this.isVerified = isVerified;
+		});
+
+		if (this.router.url !== '/authorization') {
+			this.authorizationService.confirmEmail(this.router.url);
+		}
+	}
 
 	onSubmit(form: NgForm) {
 		if (!form.valid) {
