@@ -31,7 +31,22 @@ exports.sendEmail = (receiver, token) => {
 		from: 'kerteszpetr@gmail.com',
 		to: receiver,
 		subject: 'Confirmation',
-		html: `http://localhost:4200/confirmation/${token}`
+		html: `
+			<!DOCTYPE html>
+			<html lang="en">
+			<body>
+				Dear User,<br><br>
+
+				<strong>Thank you for your registration in my Shared house application!</strong><br><br>
+
+				I am really excited to see you on board, so please go ahead and verify your email address by clicking the following link<br><br>
+				<a href='http://localhost:4200/confirmation/${token}' style='color: blue; text-decoration: none; font-size: 1.2rem;'>Verification link</a><br><br>
+
+				Thank you again and see you later. :)
+			</body>
+			</html>
+			
+			`
 	};
 
 	transporter.sendMail(mailOptions, (error, response) => {
