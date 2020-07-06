@@ -166,6 +166,14 @@ app.get('/confirmation/:token', (req, res, next) => {
 			}
 
 			user.isVerified = true;
+
+			// REMOVE TOKEN AS IT IS UNNECESSARY
+			Token.deleteOne({ token: req.params.token }).then((deletedToken) => {
+				if (deletedToken) {
+					console.log('Token has been deleted for verified user');
+				}
+			});
+
 			user
 				.save()
 				.then((result) => {
