@@ -1,93 +1,215 @@
 
-Complete your profile. Currently 20%
-        <div *ngIf="!userData?.isVerified"> Your email must be verified before proceeding.</div>
-        <div *ngIf="userData?.isVerified"> Your account has been verified.</div>
-        <div class="progress" style="height: 15px;">
-            <div 
-                class="progress-bar progress-bar-striped" 
-                role="progressbar" 
-                [style.width.%]="20" 
-                aria-valuenow="20" 
-                aria-valuemin="0" 
-                aria-valuemax="100"> 20% </div>
-          </div>
+
+        
+        
+        
 <div class="container">
         <h1>Complete your profile</h1>
-        <form>
-            <div class="form-row">
-                <div class="col">
-                    <label for="email">Email address</label>
-                    <input type="email" [value]=userData?.email class="form-control">
-                </div>
+        <div *ngIf="userData?.isVerified" class="badge badge-success"> Your account has been verified.</div>
+        <div *ngIf="!userData?.isVerified" class="badge badge-danger"> Your email must be verified before proceeding.</div>
+        
+        <form #form="ngForm" class="well form-horizontal"> 
+            <hr>
 
-                <button class="btn btn-success">Save</button>
+            <div *ngFor="let element of userData | keyvalue; let i = index">
+                <div *ngIf="element.value !== undefined && element.value !== ''">
+                    <div >
+
+                    </div>
+                    Level is {{i-3}} {{element.key}} {{element.value}}
+                </div>
+            </div>
+            
+            <div class="progress" style="height: 30px;">
+                <div 
+                    class="progress-bar" 
+                    role="progressbar" 
+                    [style.width.%]="20" 
+                    aria-valuenow="20" 
+                    aria-valuemin="0" 
+                    aria-valuemax="100"> 20% 
+                </div>
+            </div>
+            <hr>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="email">Email address</label>
+                <div class="col-md-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+                              </svg>
+                            </div>
+                        </div>
+                        <input type="email" readonly [value]=userData?.email class="form-control">
+                    </div>
+                </div>
             </div>
             
             <h2>Personal details</h2>
-            <div class="form-row">
-                <div class="col">
-                    <label for="forename">Forename</label>
-                    <input type="text" [value]=userData?.forename class="form-control">
-                </div>
-        
-                <div class="col">
-                    <label for="surname">Surname</label>
-                    <input type="surname" [value]=userData?.surname class="form-control">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="forename">Forename</label>
+                <div class="col-md-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <input type="text" [value]=userData?.forename class="form-control ">
+                        <div class="input-group-append">
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="surname">Surname</label>
+                <div class="col-md-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <input type="text" [value]=userData?.surname class="form-control ">
+                        <div class="input-group-append">
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             
             <h2>Additional information</h2>
-            <div class="form-row">
-                <div class="col">
-                    <label for="age">Age</label>
-                    <input type="age" [value]=userData?.age class="form-control">
-                </div>
-        
-                <div class="col">
-                    <label for="occupation">Occupation</label>
-                    <input type="occupation" [value]=userData?.occupation class="form-control">
-                </div>
-        
-                <div class="col">
-                    <label for="phone">phone</label>
-                    <input type="phone" [value]=userData?.phone class="form-control">
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="phone">Phone</label>
+                <div class="col-md-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-telephone-plus-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M2.267.98a1.636 1.636 0 0 1 2.448.152l1.681 2.162c.309.396.418.913.296 1.4l-.513 2.053a.636.636 0 0 0 .167.604L8.65 9.654a.636.636 0 0 0 .604.167l2.052-.513a1.636 1.636 0 0 1 1.401.296l2.162 1.681c.777.604.849 1.753.153 2.448l-.97.97c-.693.693-1.73.998-2.697.658a17.471 17.471 0 0 1-6.571-4.144A17.47 17.47 0 0 1 .639 4.646c-.34-.967-.035-2.004.658-2.698l.97-.969zM12.5 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H12V.5a.5.5 0 0 1 .5-.5z"/>
+                                    <path fill-rule="evenodd" d="M12 3.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H13v2.5a.5.5 0 0 1-1 0v-3z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <input type="text" [value]=userData?.phone class="form-control ">
+                        <div class="input-group-append">
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="birthday">Birthday</label>
+                <div class="col-md-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-date" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"/>
+                                    <path fill-rule="evenodd" d="M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1zm1-3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z"/>
+                                    <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <input type="date" [value]=userData?.birthday class="form-control ">
+                        <div class="input-group-append">
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="occupation">Occupation</label>
+                <div class="col-md-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-briefcase-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85v5.65z"/>
+                                    <path fill-rule="evenodd" d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5v1.384l-7.614 2.03a1.5 1.5 0 0 1-.772 0L0 5.884V4.5zm5-2A1.5 1.5 0 0 1 6.5 1h3A1.5 1.5 0 0 1 11 2.5V3h-1v-.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5V3H5v-.5z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <input type="text" [value]=userData?.occupation class="form-control ">
+                        <div class="input-group-append">
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             
-            <h2>Your avatar</h2>
-            <div class="col">
-                <label for="avatar">avatar</label>
-                <input type="avatar" [value]=userData?.avatar class="form-control">
-            </div>
-            
-            <h2>Your dates</h2>
-            <div class="form-row">
-                <div class="col">
-                    <label for="movedIn">movedIn</label>
-                    <input type="movedIn" [value]=userData?.movedIn class="form-control">
-                </div>
-        
-                <div class="col">
-                    <label for="lastUpdated">lastUpdated</label>
-                    <input type="lastUpdated" [value]=userData?.lastUpdated class="form-control">
-                </div>
-            </div>
 
             <h2>Where do you live?</h2>
-            <div class="form-row">
-                <div class="col">
-                    <label for="postcode">postcode</label>
-                    <input type="postcode" value=postcode class="form-control">
+           
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="postcode">Postcode</label>
+                <div class="col-md-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+                              </svg>
+                            </div>
+                        </div>
+                        <input type="text" [value]=userData?.postcode class="form-control ">
+                        <div class="input-group-append">
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                    </div>
                 </div>
-        
-                <div class="col">
-                    <label for="town">town</label>
-                    <input type="town" value=town class="form-control">
-                </div>
+            </div>
 
-                <div class="col">
-                    <label for="country">country</label>
-                    <input type="country" value=country class="form-control">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="town">Town</label>
+                <div class="col-md-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+                              </svg>
+                            </div>
+                        </div>
+                        <input type="text" [value]=userData?.town class="form-control ">
+                        <div class="input-group-append">
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="country">Country</label>
+                <div class="col-sm-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+                              </svg>
+                            </div>
+                        </div>
+                        <input type="text" [value]=userData?.country class="form-control ">
+                        <div class="input-group-append">
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 

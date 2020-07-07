@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
 	userData: any;
+	userLevel: number = 0;
 	subscription: Subscription;
 
 	constructor(private authorizationService: AuthorizationService, private router: Router) {}
@@ -23,6 +24,18 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 	getUserData() {
 		const userID = this.router.url.slice(7);
 		return this.authorizationService.getUsers(userID);
+	}
+
+	getUserLevel() {
+		let level = this.userData ? this.userData.length : 0;
+
+		for (let element in this.userData) {
+			if (element === undefined || element === '') {
+				level--;
+			}
+		}
+		console.log(level);
+		return level;
 	}
 
 	ngOnDestroy() {

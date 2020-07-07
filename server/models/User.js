@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
 	isVerified: { type: Boolean, default: false },
 	forename: { type: String, default: '' },
 	surname: { type: String, default: '' },
-	age: { type: Number, default: 0 },
+	birthday: { type: Date, default: Date.now },
 	occupation: { type: String, default: '' },
 	phone: { type: String, default: '' },
 	avatar: { type: String, default: '' },
