@@ -10,24 +10,15 @@
         
         <form #form="ngForm" class="well form-horizontal"> 
             <hr>
-
-            <div *ngFor="let element of userData | keyvalue; let i = index">
-                <div *ngIf="element.value !== undefined && element.value !== ''">
-                    <div >
-
-                    </div>
-                    Level is {{i-3}} {{element.key}} {{element.value}}
-                </div>
-            </div>
             
             <div class="progress" style="height: 30px;">
                 <div 
                     class="progress-bar" 
                     role="progressbar" 
-                    [style.width.%]="20" 
-                    aria-valuenow="20" 
+                    [style.width.%]="userLevel" 
+                    [attr.aria-valuenow]="userLevel" 
                     aria-valuemin="0" 
-                    aria-valuemax="100"> 20% 
+                    aria-valuemax="100"> {{ userLevel }}% 
                 </div>
             </div>
             <hr>
@@ -59,9 +50,14 @@
                                 </svg>
                             </div>
                         </div>
-                        <input type="text" [value]=userData?.forename class="form-control ">
+                        <input 
+                            type="text" 
+                            [value]=userData?.forename 
+                            class="form-control" 
+                            #forename
+                            name="forename">
                         <div class="input-group-append">
-                            <button class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-success" (click)="onSave(forename)">Save</button>
                         </div>
                         
                     </div>
@@ -79,9 +75,14 @@
                                 </svg>
                             </div>
                         </div>
-                        <input type="text" [value]=userData?.surname class="form-control ">
+                        <input 
+                            type="text" 
+                            [value]=userData?.surname 
+                            class="form-control "
+                            #surname
+                            name="surname">
                         <div class="input-group-append">
-                            <button class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-success" (click)="onSave(surname)">Save</button>
                         </div>
                     </div>
                 </div>
@@ -102,9 +103,14 @@
                                 </svg>
                             </div>
                         </div>
-                        <input type="text" [value]=userData?.phone class="form-control ">
+                        <input 
+                            type="text" 
+                            [value]=userData?.phone 
+                            class="form-control "
+                            #phone
+                            name="phone">
                         <div class="input-group-append">
-                            <button class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-success" (click)="onSave(phone)">Save</button>
                         </div>
                     </div>
                 </div>
@@ -123,9 +129,14 @@
                                 </svg>
                             </div>
                         </div>
-                        <input type="date" [value]=userData?.birthday class="form-control ">
+                        <input 
+                            type="date" 
+                            [value]=userData?.birthday 
+                            class="form-control "
+                            #birthday
+                            name="birthday">
                         <div class="input-group-append">
-                            <button class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-success" (click)="onSave(birthday)">Save</button>
                         </div>
                     </div>
                 </div>
@@ -143,9 +154,14 @@
                                 </svg>
                             </div>
                         </div>
-                        <input type="text" [value]=userData?.occupation class="form-control ">
+                        <input 
+                            type="text" 
+                            [value]=userData?.occupation 
+                            class="form-control "
+                            #occupation
+                            name="occupation">
                         <div class="input-group-append">
-                            <button class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-success" (click)="onSave(occupation)">Save</button>
                         </div>
                     </div>
                 </div>
@@ -153,8 +169,8 @@
 
 
             
-
             <h2>Where do you live?</h2>
+            
            
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="postcode">Postcode</label>
@@ -167,9 +183,14 @@
                               </svg>
                             </div>
                         </div>
-                        <input type="text" [value]=userData?.postcode class="form-control ">
+                        <input 
+                            type="text" 
+                            [value]=userData?.postcode 
+                            class="form-control "
+                            #postcode
+                            name="postcode">
                         <div class="input-group-append">
-                            <button class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-success" (click)="onSave(postcode)">Save</button>
                         </div>
                     </div>
                 </div>
@@ -186,9 +207,14 @@
                               </svg>
                             </div>
                         </div>
-                        <input type="text" [value]=userData?.town class="form-control ">
+                        <input 
+                            type="text" 
+                            [value]=userData?.town 
+                            class="form-control "
+                            #town
+                            name="town">
                         <div class="input-group-append">
-                            <button class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-success" (click)="onSave(town)">Save</button>
                         </div>
                     </div>
                 </div>
@@ -205,9 +231,64 @@
                               </svg>
                             </div>
                         </div>
-                        <input type="text" [value]=userData?.country class="form-control ">
+                        <input 
+                            type="text" 
+                            [value]=userData?.country 
+                            class="form-control "
+                            #country
+                            name="country">
                         <div class="input-group-append">
-                            <button class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-success" (click)="onSave(country)">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Interesting dates</h2>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="movedIn">movedIn</label>
+                <div class="col-sm-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+                              </svg>
+                            </div>
+                        </div>
+                        <input 
+                            type="date" 
+                            [value]=userData?.movedIn 
+                            class="form-control "
+                            #movedIn
+                            name="movedIn">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-success" (click)="onSave(movedIn)">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="lastUpdated">lastUpdated</label>
+                <div class="col-sm-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+                              </svg>
+                            </div>
+                        </div>
+                        <input 
+                            type="date" 
+                            [value]=userData?.lastUpdated 
+                            class="form-control "
+                            #lastUpdated
+                            name="lastUpdated">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-success" (click)="onSave(lastUpdated)">Save</button>
                         </div>
                     </div>
                 </div>

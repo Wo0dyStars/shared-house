@@ -15,6 +15,7 @@ const app = express();
 
 const User = require('./models/User');
 const Token = require('./models/Token');
+const { updateTaggedTemplate } = require('typescript');
 
 // ******************************************
 // CONNECTING TO MONGO DB DATABASE
@@ -142,6 +143,28 @@ app.get('/users', (req, res, next) => {
 			emails: userEmails
 		});
 	});
+});
+
+app.post('/users/edit/:id', (req, res, next) => {
+	const updateData = {};
+	updateData[req.body.element] = req.body.value;
+	User.findByIdAndUpdate(req.params.id, updateData)
+		.then((user) => {
+			if (!user) {
+				return res.status(401).json({
+					message: 'The provided user ID does not exist in the database.'
+				});
+			}
+
+			return res.status(200).json({
+				message: 'You have successfully updated the value.'
+			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: error.message
+			});
+		});
 });
 
 app.get('/confirmation/:token', (req, res, next) => {
