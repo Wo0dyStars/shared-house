@@ -276,12 +276,16 @@
             </div>
 
             <button type="button" class="btn btn-primary" (click)="onSearchAddress(address, postcode)">Find my mates</button>
+            <input type="text" placeholder="Type your team name" name="housename" #housename>
+            <button type="button" class="btn btn-success" (click)="onCreateHouse(housename)">Create my house</button>
             <div *ngIf="searchedAddress.length">
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                       <h5 class="card-title">{{ searchedAddress[0]?.forename }} {{ searchedAddress[0]?.surname }}</h5>
                       <h6 class="card-subtitle mb-2 text-muted">{{ searchedAddress[0]?.email }}</h6>
-                      <p class="card-text">This person lives at the same address that you provided. Would you like to join them?</p>
+                      <p class="card-text">This person lives at the same address that you provided. 
+                          <span *ngIf="searchedAddress[0]?.house !== 'No house'">The team name is <strong>{{ searchedAddress[0]?.house }}</strong></span>
+                      </p>
                       <a href="#" class="card-link">JOIN</a>
                     </div>
                 </div>

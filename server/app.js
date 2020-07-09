@@ -15,7 +15,7 @@ const app = express();
 
 const User = require('./models/User');
 const Token = require('./models/Token');
-const { updateTaggedTemplate } = require('typescript');
+const House = require('./models/House');
 
 // ******************************************
 // CONNECTING TO MONGO DB DATABASE
@@ -252,12 +252,12 @@ app.get('/users/:id', (req, res, next) => {
 		});
 });
 
-app.post('/users/address', (req, res, next) => {
+app.post('/users/address', async (req, res, next) => {
 	const postcode = req.body.postcodeValue.trim().replace(/\s/g, '').toLowerCase();
 	const houseNumber = req.body.addressValue.replace(/\D/g, '');
 
-	User.find({})
-		.then((users) => {
+	await User.find({})
+		.then(async (users) => {
 			if (!users) {
 				return res.status(400).json({
 					message: 'The system was unable to find any user with your address.'
@@ -265,28 +265,69 @@ app.post('/users/address', (req, res, next) => {
 			}
 
 			let matchedUsers = [];
-			users.forEach((user) => {
+			users.forEach(async (user) => {
 				if (
 					user.postcode.trim().replace(/\s/g, '').toLowerCase() === postcode &&
 					user.address.replace(/\D/g, '') === houseNumber
 				) {
-					matchedUsers.push({
-						forename: user.forename,
-						surname: user.surname,
-						email: user.email
+					await House.find({ userIDs: user._id }).then((house) => {
+						let match = {
+							forename: user.forename,
+							surname: user.surname,
+							email: user.email,
+							house: 'No house'
+						};
+						if (house.length) {
+							match.house = house[0].name;
+						}
+						matchedUsers.push(match);
 					});
+
+					if (matchedUsers.length) {
+						return res.status(200).json({
+							message: 'You have successfully matched another user.',
+							users: matchedUsers
+						});
+					} else {
+						return res.status(400).json({
+							message: 'The system was unable to find any user with your address.'
+						});
+					}
 				}
 			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: error.message
+			});
+		});
+});
 
-			if (matchedUsers.length) {
-				return res.status(200).json({
-					message: 'You have successfully matched another user.',
-					users: matchedUsers
+app.post('/users/house/create/:id', (req, res, next) => {
+	House.find({ userIDs: req.params.id })
+		.then((houseExist) => {
+			if (houseExist.length) {
+				return res.status(400).json({
+					message: 'You are already a member of one house.'
 				});
 			} else {
-				return res.status(400).json({
-					message: 'The system was unable to find any user with your address.'
+				const house = new House({
+					name: req.body.housename,
+					userIDs: [ req.params.id ]
 				});
+
+				house
+					.save()
+					.then((result) => {
+						return res.status(200).json({
+							message: `You have successfully created your house with name ${result.name}.`
+						});
+					})
+					.catch((error) => {
+						return res.status(500).json({
+							message: error.message
+						});
+					});
 			}
 		})
 		.catch((error) => {

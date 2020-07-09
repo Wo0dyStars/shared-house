@@ -88,10 +88,20 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 					let matchedUsers: any = {
 						forename: user.forename,
 						surname: user.surname,
-						email: user.email
+						email: user.email,
+						house: user.house
 					};
+
 					this.searchedAddress.push(matchedUsers);
 				});
+			});
+	}
+
+	onCreateHouse(housename: HTMLFormElement) {
+		this.http
+			.post('http://localhost:3000/users/house/create/' + this.userID, { housename: housename.value })
+			.subscribe((response) => {
+				console.log(response);
 			});
 	}
 
