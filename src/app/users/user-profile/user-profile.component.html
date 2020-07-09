@@ -167,13 +167,20 @@
                 </div>
             </div>
 
+            <div class="form-group row avatars">
+                <label class="avatar-label" *ngFor="let avatar_ of userAvatars" (click)="onSave(avatar)">
+                    <input type="radio" name="avatar" #avatar [value]="avatar_" [checked]="avatar_ === userData?.avatar">
+                    <img class="avatar-image" [src]="avatar_" alt="Avatar">
+                </label>
+            </div>
+
 
             
             <h2>Where do you live?</h2>
             
            
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="postcode">Postcode</label>
+                <label class="col-sm-2 col-form-label" for="address">Address line</label>
                 <div class="col-md-10 inputGroupContainer">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -185,12 +192,12 @@
                         </div>
                         <input 
                             type="text" 
-                            [value]=userData?.postcode 
+                            [value]=userData?.address 
                             class="form-control "
-                            #postcode
-                            name="postcode">
+                            #address
+                            name="address">
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-success" (click)="onSave(postcode)">Save</button>
+                            <button type="button" class="btn btn-success" (click)="onSave(address)">Save</button>
                         </div>
                     </div>
                 </div>
@@ -244,6 +251,30 @@
                 </div>
             </div>
 
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="postcode">Postcode</label>
+                <div class="col-md-10 inputGroupContainer">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+                              </svg>
+                            </div>
+                        </div>
+                        <input 
+                            type="text" 
+                            [value]=userData?.postcode 
+                            class="form-control "
+                            #postcode
+                            name="postcode">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-success" (click)="onSave(postcode)">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <h2>Interesting dates</h2>
 
             <div class="form-group row">
@@ -262,7 +293,8 @@
                             [value]=userData?.movedIn 
                             class="form-control "
                             #movedIn
-                            name="movedIn">
+                            name="movedIn"
+                            readonly>
                         <div class="input-group-append">
                             <button type="button" class="btn btn-success" (click)="onSave(movedIn)">Save</button>
                         </div>
@@ -286,7 +318,8 @@
                             [value]=userData?.lastUpdated 
                             class="form-control "
                             #lastUpdated
-                            name="lastUpdated">
+                            name="lastUpdated"
+                            readonly>
                         <div class="input-group-append">
                             <button type="button" class="btn btn-success" (click)="onSave(lastUpdated)">Save</button>
                         </div>

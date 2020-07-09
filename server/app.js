@@ -28,7 +28,8 @@ mongoose
 		{
 			useUnifiedTopology: true,
 			useNewUrlParser: true,
-			useCreateIndex: true
+			useCreateIndex: true,
+			useFindAndModify: false
 		}
 	)
 	.then(() => {
@@ -58,7 +59,8 @@ app.post('/register', (req, res, next) => {
 	bcrypt.hash(req.body.password, 10).then((hashedPassword) => {
 		const user = new User({
 			email: req.body.email,
-			password: hashedPassword
+			password: hashedPassword,
+			avatar: 'http://localhost:3000/images/avatar1.webp'
 		});
 
 		user
@@ -148,6 +150,7 @@ app.get('/users', (req, res, next) => {
 app.post('/users/edit/:id', (req, res, next) => {
 	const updateData = {};
 	updateData[req.body.element] = req.body.value;
+	updateData['lastUpdated'] = new Date();
 	User.findByIdAndUpdate(req.params.id, updateData)
 		.then((user) => {
 			if (!user) {
@@ -157,7 +160,8 @@ app.post('/users/edit/:id', (req, res, next) => {
 			}
 
 			return res.status(200).json({
-				message: 'You have successfully updated the value.'
+				message: 'You have successfully updated the value.',
+				modifiedDate: updateData.lastUpdated
 			});
 		})
 		.catch((error) => {
@@ -233,7 +237,12 @@ app.get('/users/:id', (req, res, next) => {
 				password: user.password,
 				movedIn: user.movedIn,
 				lastUpdated: user.lastUpdated,
-				isVerified: user.isVerified
+				isVerified: user.isVerified,
+				birthday: user.birthday,
+				address: user.address,
+				town: user.town,
+				country: user.country,
+				postcode: user.postcode
 			});
 		})
 		.catch((error) => {

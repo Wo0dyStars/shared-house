@@ -7,3 +7,27 @@ h2 {
 	text-align: center;
 	margin: 2.5rem;
 }
+
+input[type=radio] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+
+	&:checked + .avatar-image {
+		outline: 3px solid rgb(3, 89, 117);
+		background-color: lightblue;
+	}
+}
+
+.avatars {
+	display: flex;
+	justify-content: space-evenly;
+	margin: 2.5rem 0;
+}
+
+.avatar-image {
+	cursor: pointer;
+	width: 10rem;
+	padding: 1rem;
+}

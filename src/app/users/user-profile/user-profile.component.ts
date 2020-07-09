@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 export class UserProfileComponent implements OnInit, OnDestroy {
 	userData: any;
 	userLevel: number = 0;
+	userAvatars: string[] = [];
 	subscription: Subscription;
 	userID = this.router.url.slice(7);
 
@@ -22,6 +23,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 			this.userData = res;
 			this.userData.movedIn = this.userData.movedIn.slice(0, 10);
 			this.userData.lastUpdated = this.userData.lastUpdated.slice(0, 10);
+			this.userData.birthday = this.userData.birthday.slice(0, 10);
+			this.userAvatars.push('http://localhost:3000/images/avatar1.webp');
+			this.userAvatars.push('http://localhost:3000/images/avatar2.png');
+			this.userAvatars.push('http://localhost:3000/images/avatar3.webp');
+			this.userAvatars.push('http://localhost:3000/images/avatar4.png');
 			this.getUserLevel();
 		});
 	}
@@ -43,7 +49,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 			}
 		}
 
-		this.userLevel = level / length * 100;
+		this.userLevel = parseFloat((level / length * 100).toFixed(2));
 	}
 
 	onSave(element: HTMLFormElement) {
@@ -51,10 +57,18 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 		if (element.name === 'movedIn' || element.name === 'lastUpdated' || element.name === 'birthday') {
 			saveData.value = new Date(element.value);
 		}
-		this.http.post('http://localhost:3000/users/edit/' + this.userID, saveData).subscribe((response) => {
-			this.userData[element.name] = element.value;
-			this.getUserLevel();
-		});
+		this.http
+			.post<{ message: string; modifiedDate: Date }>('http://localhost:3000/users/edit/' + this.userID, saveData)
+			.subscribe((response) => {
+				this.userData[element.name] = element.value;
+				this.userData.lastUpdated = response.modifiedDate;
+				this.userData.lastUpdated = this.userData.lastUpdated.slice(0, 10);
+				if (element.name === 'birthday') {
+					this.userData.birthday = this.userData.birthday.slice(0, 10);
+				}
+				console.log(response.message);
+				this.getUserLevel();
+			});
 	}
 
 	ngOnDestroy() {

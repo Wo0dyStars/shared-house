@@ -16,6 +16,10 @@ const userSchema = mongoose.Schema({
 	occupation: { type: String, default: '' },
 	phone: { type: String, default: '' },
 	avatar: { type: String, default: '' },
+	address: { type: String, default: '' },
+	town: { type: String, default: '' },
+	country: { type: String, default: '' },
+	postcode: { type: String, default: '' },
 	movedIn: { type: Date, default: Date.now },
 	lastUpdated: { type: Date, default: Date.now }
 });
