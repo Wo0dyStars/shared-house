@@ -252,6 +252,50 @@ app.get('/users/:id', (req, res, next) => {
 		});
 });
 
+app.post('/users/address', (req, res, next) => {
+	const postcode = req.body.postcodeValue.trim().replace(/\s/g, '').toLowerCase();
+	const houseNumber = req.body.addressValue.replace(/\D/g, '');
+
+	User.find({})
+		.then((users) => {
+			if (!users) {
+				return res.status(400).json({
+					message: 'The system was unable to find any user with your address.'
+				});
+			}
+
+			let matchedUsers = [];
+			users.forEach((user) => {
+				if (
+					user.postcode.trim().replace(/\s/g, '').toLowerCase() === postcode &&
+					user.address.replace(/\D/g, '') === houseNumber
+				) {
+					matchedUsers.push({
+						forename: user.forename,
+						surname: user.surname,
+						email: user.email
+					});
+				}
+			});
+
+			if (matchedUsers.length) {
+				return res.status(200).json({
+					message: 'You have successfully matched another user.',
+					users: matchedUsers
+				});
+			} else {
+				return res.status(400).json({
+					message: 'The system was unable to find any user with your address.'
+				});
+			}
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: error.message
+			});
+		});
+});
+
 // ******************************************
 // EXPORT APP TO THE SERVER FILE
 // ******************************************

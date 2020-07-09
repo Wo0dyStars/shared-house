@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthorizationService } from 'src/app/authorization/authorization.service';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { element } from 'protractor';
 
 @Component({
 	selector: 'app-user-profile',
@@ -13,6 +14,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 	userData: any;
 	userLevel: number = 0;
 	userAvatars: string[] = [];
+	searchedAddress: any[] = [];
 	subscription: Subscription;
 	userID = this.router.url.slice(7);
 
@@ -68,6 +70,28 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 				}
 				console.log(response.message);
 				this.getUserLevel();
+			});
+	}
+
+	onSearchAddress(address: HTMLFormElement, postcode: HTMLFormElement) {
+		let searchData = {
+			addressName: address.name,
+			addressValue: address.value,
+			postcodeName: postcode.name,
+			postcodeValue: postcode.value
+		};
+
+		this.http
+			.post<{ message: string; users: any }>('http://localhost:3000/users/address', searchData)
+			.subscribe((response) => {
+				response.users.forEach((user: any) => {
+					let matchedUsers: any = {
+						forename: user.forename,
+						surname: user.surname,
+						email: user.email
+					};
+					this.searchedAddress.push(matchedUsers);
+				});
 			});
 	}
 

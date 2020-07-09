@@ -275,6 +275,18 @@
                 </div>
             </div>
 
+            <button type="button" class="btn btn-primary" (click)="onSearchAddress(address, postcode)">Find my mates</button>
+            <div *ngIf="searchedAddress.length">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ searchedAddress[0]?.forename }} {{ searchedAddress[0]?.surname }}</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">{{ searchedAddress[0]?.email }}</h6>
+                      <p class="card-text">This person lives at the same address that you provided. Would you like to join them?</p>
+                      <a href="#" class="card-link">JOIN</a>
+                    </div>
+                </div>
+            </div>
+
             <h2>Interesting dates</h2>
 
             <div class="form-group row">
@@ -295,9 +307,6 @@
                             #movedIn
                             name="movedIn"
                             readonly>
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-success" (click)="onSave(movedIn)">Save</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -320,9 +329,6 @@
                             #lastUpdated
                             name="lastUpdated"
                             readonly>
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-success" (click)="onSave(lastUpdated)">Save</button>
-                        </div>
                     </div>
                 </div>
             </div>
