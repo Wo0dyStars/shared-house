@@ -274,11 +274,11 @@ app.post('/users/address', async (req, res, next) => {
 						let match = {
 							forename: user.forename,
 							surname: user.surname,
-							email: user.email,
-							house: 'No house'
+							email: user.email
 						};
 						if (house.length) {
 							match.house = house[0].name;
+							match.houseID = house[0]._id;
 						}
 						matchedUsers.push(match);
 					});
@@ -332,6 +332,56 @@ app.post('/users/house/create/:id', (req, res, next) => {
 		})
 		.catch((error) => {
 			return res.status(500).json({
+				message: error.message
+			});
+		});
+});
+
+app.get('/users/house/join/:userID/:houseID', (req, res, next) => {
+	User.findById(req.params.userID)
+		.then((user) => {
+			if (!user) {
+				return res.status(400).json({
+					message: 'The system was unable to find any user with the provided user ID.'
+				});
+			}
+
+			House.findById(req.params.houseID)
+				.then((house) => {
+					if (!house) {
+						return res.status(400).json({
+							message: 'There is no house with the provided house ID in the database.'
+						});
+					}
+
+					if (house.userIDs.includes(req.params.userID)) {
+						return res.status(400).json({
+							message: 'You have already joined this house.'
+						});
+					} else {
+						house.userIDs.push(req.params.userID);
+						house
+							.save()
+							.then(() => {
+								return res.status(200).json({
+									message: `You have successfully joined ${house.name}`
+								});
+							})
+							.catch((error) => {
+								return res.status(400).json({
+									message: error.message
+								});
+							});
+					}
+				})
+				.catch((error) => {
+					return res.status(400).json({
+						message: error.message
+					});
+				});
+		})
+		.catch((error) => {
+			return res.status(400).json({
 				message: error.message
 			});
 		});

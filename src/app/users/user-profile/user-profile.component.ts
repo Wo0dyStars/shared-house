@@ -88,9 +88,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 					let matchedUsers: any = {
 						forename: user.forename,
 						surname: user.surname,
-						email: user.email,
-						house: user.house
+						email: user.email
 					};
+
+					if (user.house) {
+						matchedUsers.house = user.house;
+						matchedUsers.houseID = user.houseID;
+					}
 
 					this.searchedAddress.push(matchedUsers);
 				});
@@ -103,6 +107,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 			.subscribe((response) => {
 				console.log(response);
 			});
+	}
+
+	onJoinHouse(houseID: string) {
+		this.http.get('http://localhost:3000/users/house/join/' + this.userID + '/' + houseID).subscribe((response) => {
+			console.log(response);
+		});
 	}
 
 	ngOnDestroy() {

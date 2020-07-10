@@ -286,7 +286,7 @@
                       <p class="card-text">This person lives at the same address that you provided. 
                           <span *ngIf="searchedAddress[0]?.house !== 'No house'">The team name is <strong>{{ searchedAddress[0]?.house }}</strong></span>
                       </p>
-                      <a href="#" class="card-link">JOIN</a>
+                      <a class="card-link" (click)="onJoinHouse(searchedAddress[0]?.houseID)">JOIN</a>
                     </div>
                 </div>
             </div>
