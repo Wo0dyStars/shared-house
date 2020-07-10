@@ -15,6 +15,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 	userLevel: number = 0;
 	userAvatars: string[] = [];
 	searchedAddress: any[] = [];
+	messageSuccess: string = null;
+	messageError: string = null;
+	updateSuccess: string = null;
+	updateError: string = null;
 	subscription: Subscription;
 	userID = this.router.url.slice(7);
 
@@ -61,16 +65,21 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 		}
 		this.http
 			.post<{ message: string; modifiedDate: Date }>('http://localhost:3000/users/edit/' + this.userID, saveData)
-			.subscribe((response) => {
-				this.userData[element.name] = element.value;
-				this.userData.lastUpdated = response.modifiedDate;
-				this.userData.lastUpdated = this.userData.lastUpdated.slice(0, 10);
-				if (element.name === 'birthday') {
-					this.userData.birthday = this.userData.birthday.slice(0, 10);
+			.subscribe(
+				(response) => {
+					this.userData[element.name] = element.value;
+					this.userData.lastUpdated = response.modifiedDate;
+					this.userData.lastUpdated = this.userData.lastUpdated.slice(0, 10);
+					if (element.name === 'birthday') {
+						this.userData.birthday = this.userData.birthday.slice(0, 10);
+					}
+					this.updateSuccess = response.message;
+					this.getUserLevel();
+				},
+				(HttpError) => {
+					this.updateError = HttpError.error.message;
 				}
-				console.log(response.message);
-				this.getUserLevel();
-			});
+			);
 	}
 
 	onSearchAddress(address: HTMLFormElement, postcode: HTMLFormElement) {
@@ -81,38 +90,57 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 			postcodeValue: postcode.value
 		};
 
-		this.http
-			.post<{ message: string; users: any }>('http://localhost:3000/users/address', searchData)
-			.subscribe((response) => {
-				response.users.forEach((user: any) => {
+		this.http.post<{ message: string; matches: any }>('http://localhost:3000/users/address', searchData).subscribe(
+			(response) => {
+				this.searchedAddress = [];
+				response.matches.forEach((user: any) => {
 					let matchedUsers: any = {
 						forename: user.forename,
 						surname: user.surname,
 						email: user.email
 					};
 
-					if (user.house) {
-						matchedUsers.house = user.house;
+					if (user.houseID) {
+						matchedUsers.house = user.houseID.name;
 						matchedUsers.houseID = user.houseID;
 					}
 
 					this.searchedAddress.push(matchedUsers);
 				});
-			});
+				this.messageSuccess = response.message;
+			},
+			(HttpError) => {
+				this.messageError = HttpError.error.message;
+			}
+		);
 	}
 
 	onCreateHouse(housename: HTMLFormElement) {
 		this.http
-			.post('http://localhost:3000/users/house/create/' + this.userID, { housename: housename.value })
-			.subscribe((response) => {
-				console.log(response);
-			});
+			.post<{ message: string }>('http://localhost:3000/users/house/create/' + this.userID, {
+				housename: housename.value
+			})
+			.subscribe(
+				(response) => {
+					this.messageSuccess = response.message;
+				},
+				(HttpError) => {
+					this.messageError = HttpError.error.message;
+				}
+			);
 	}
 
 	onJoinHouse(houseID: string) {
-		this.http.get('http://localhost:3000/users/house/join/' + this.userID + '/' + houseID).subscribe((response) => {
-			console.log(response);
-		});
+		this.http
+			.get<{ message: string }>('http://localhost:3000/users/house/join/' + this.userID + '/' + houseID)
+			.subscribe(
+				(response) => {
+					this.messageSuccess = response.message;
+				},
+				(HttpError) => {
+					this.messageError = HttpError.error.message;
+				}
+			);
 	}
 
 	ngOnDestroy() {

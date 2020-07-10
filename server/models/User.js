@@ -21,7 +21,8 @@ const userSchema = mongoose.Schema({
 	country: { type: String, default: '' },
 	postcode: { type: String, default: '' },
 	movedIn: { type: Date, default: Date.now },
-	lastUpdated: { type: Date, default: Date.now }
+	lastUpdated: { type: Date, default: Date.now },
+	houseID: { type: mongoose.Schema.Types.ObjectId, ref: 'House', default: null }
 });
 
 // **********************************

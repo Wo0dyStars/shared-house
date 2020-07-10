@@ -160,7 +160,7 @@ app.post('/users/edit/:id', (req, res, next) => {
 			}
 
 			return res.status(200).json({
-				message: 'You have successfully updated the value.',
+				message: `You have successfully updated the "${req.body.element}" field to "${req.body.value}".`,
 				modifiedDate: updateData.lastUpdated
 			});
 		})
@@ -242,7 +242,8 @@ app.get('/users/:id', (req, res, next) => {
 				address: user.address,
 				town: user.town,
 				country: user.country,
-				postcode: user.postcode
+				postcode: user.postcode,
+				houseID: user.houseID
 			});
 		})
 		.catch((error) => {
@@ -256,51 +257,48 @@ app.post('/users/address', async (req, res, next) => {
 	const postcode = req.body.postcodeValue.trim().replace(/\s/g, '').toLowerCase();
 	const houseNumber = req.body.addressValue.replace(/\D/g, '');
 
-	await User.find({})
-		.then(async (users) => {
-			if (!users) {
-				return res.status(400).json({
-					message: 'The system was unable to find any user with your address.'
-				});
-			}
-
-			let matchedUsers = [];
-			users.forEach(async (user) => {
+	const userMatches = await User.find({})
+		.populate('houseID')
+		.then((users) => {
+			let matched = [];
+			users.forEach((user) => {
 				if (
 					user.postcode.trim().replace(/\s/g, '').toLowerCase() === postcode &&
 					user.address.replace(/\D/g, '') === houseNumber
 				) {
-					await House.find({ userIDs: user._id }).then((house) => {
-						let match = {
-							forename: user.forename,
-							surname: user.surname,
-							email: user.email
-						};
-						if (house.length) {
-							match.house = house[0].name;
-							match.houseID = house[0]._id;
-						}
-						matchedUsers.push(match);
-					});
-
-					if (matchedUsers.length) {
-						return res.status(200).json({
-							message: 'You have successfully matched another user.',
-							users: matchedUsers
-						});
-					} else {
-						return res.status(400).json({
-							message: 'The system was unable to find any user with your address.'
-						});
-					}
+					matched.push(user);
 				}
 			});
+			return matched;
 		})
 		.catch((error) => {
 			return res.status(500).json({
 				message: error.message
 			});
 		});
+
+	matches = [];
+	userMatches.forEach((user) => {
+		let match = {
+			forename: user.forename,
+			surname: user.surname,
+			email: user.email,
+			houseID: user.houseID
+		};
+
+		matches.push(match);
+	});
+
+	if (matches.length) {
+		return res.status(200).json({
+			message: 'You have successfully obtained the list of users.',
+			matches: matches
+		});
+	} else {
+		return res.status(400).json({
+			message: 'The system was unable to find any house with the provided details.'
+		});
+	}
 });
 
 app.post('/users/house/create/:id', (req, res, next) => {
@@ -319,9 +317,17 @@ app.post('/users/house/create/:id', (req, res, next) => {
 				house
 					.save()
 					.then((result) => {
-						return res.status(200).json({
-							message: `You have successfully created your house with name ${result.name}.`
-						});
+						User.findByIdAndUpdate(req.params.id, { houseID: house._id })
+							.then(() => {
+								return res.status(200).json({
+									message: `You have successfully created your house with name ${result.name}.`
+								});
+							})
+							.catch((error) => {
+								return res.status(500).json({
+									message: error.message
+								});
+							});
 					})
 					.catch((error) => {
 						return res.status(500).json({
@@ -363,8 +369,27 @@ app.get('/users/house/join/:userID/:houseID', (req, res, next) => {
 						house
 							.save()
 							.then(() => {
-								return res.status(200).json({
-									message: `You have successfully joined ${house.name}`
+								// FIND A USER ADDRESS DETAILS
+
+								User.findById(house.userIDs[0]).then((userDetails) => {
+									user.address = userDetails.address;
+									user.town = userDetails.town;
+									user.country = userDetails.country;
+									user.postcode = userDetails.postcode;
+									user.houseID = userDetails.houseID;
+
+									user
+										.save()
+										.then(() => {
+											return res.status(200).json({
+												message: `You have successfully joined ${house.name}`
+											});
+										})
+										.catch((error) => {
+											return res.status(400).json({
+												message: error.message
+											});
+										});
 								});
 							})
 							.catch((error) => {

@@ -8,6 +8,10 @@
         <div *ngIf="userData?.isVerified" class="badge badge-success"> Your account has been verified.</div>
         <div *ngIf="!userData?.isVerified" class="badge badge-danger"> Your email must be verified before proceeding.</div>
         
+
+        <div class="alert alert-success" *ngIf="updateSuccess">{{ updateSuccess }}</div>
+        <div class="alert alert-danger" *ngIf="updateError">{{ updateError }}</div>
+
         <form #form="ngForm" class="well form-horizontal"> 
             <hr>
             
@@ -275,18 +279,31 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-primary" (click)="onSearchAddress(address, postcode)">Find my mates</button>
-            <input type="text" placeholder="Type your team name" name="housename" #housename>
-            <button type="button" class="btn btn-success" (click)="onCreateHouse(housename)">Create my house</button>
-            <div *ngIf="searchedAddress.length">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                      <h5 class="card-title">{{ searchedAddress[0]?.forename }} {{ searchedAddress[0]?.surname }}</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">{{ searchedAddress[0]?.email }}</h6>
-                      <p class="card-text">This person lives at the same address that you provided. 
-                          <span *ngIf="searchedAddress[0]?.house !== 'No house'">The team name is <strong>{{ searchedAddress[0]?.house }}</strong></span>
-                      </p>
-                      <a class="card-link" (click)="onJoinHouse(searchedAddress[0]?.houseID)">JOIN</a>
+            <div class="alert alert-success" *ngIf="messageSuccess">{{ messageSuccess }}</div>
+            <div class="alert alert-danger" *ngIf="messageError">{{ messageError }}</div>
+            <div class="container container__cards">
+                <div class="row">
+                    <button type="button" class="btn btn-primary" (click)="onSearchAddress(address, postcode)">Find my mates</button>
+                    <span class="vertical-line"></span>
+                    <input type="text" placeholder="Type your team name" name="housename" #housename>
+                    <button type="button" class="btn btn-success createHouse" (click)="onCreateHouse(housename)">Create my house</button>
+                </div>
+                
+                <div *ngIf="searchedAddress.length">
+                    <div class="card" style="width: 18rem;" *ngFor="let address of searchedAddress">
+                        <div class="card-body">
+                          <h5 class="card-title">{{ address.forename }} {{ address.surname }}</h5>
+                          <h6 class="card-subtitle mb-2 text-muted">{{ address.email }}</h6>
+                          <p class="card-text">This person lives at the same address that you provided. 
+                              <span *ngIf="address.house !== 'No house'">The house name is <strong>{{ address.house }}</strong></span>
+                          </p>
+                          <button 
+                            type="button" 
+                            class="btn btn-outline-primary" 
+                            (click)="onJoinHouse(address.houseID._id)" 
+                            *ngIf="!userData?.houseID">Join
+                        </button>
+                        </div>
                     </div>
                 </div>
             </div>
