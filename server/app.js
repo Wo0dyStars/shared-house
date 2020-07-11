@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
 const emailSending = require('./middleware/email-verification');
+const middleware = require('./middleware/authentication');
 
 const app = express();
 
@@ -145,6 +146,10 @@ app.get('/users', (req, res, next) => {
 			emails: userEmails
 		});
 	});
+});
+
+app.post('/users/show', middleware.isLoggedIn, (req, res, next) => {
+	console.log(req.userID);
 });
 
 app.post('/users/edit/:id', (req, res, next) => {

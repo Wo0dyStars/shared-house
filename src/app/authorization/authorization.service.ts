@@ -24,6 +24,10 @@ export class AuthorizationService {
 		return this.isVerified;
 	}
 
+	getUserID() {
+		return this.userID;
+	}
+
 	getDatabaseEmails() {
 		return this.http.get<{ emails: string[] }>('http://localhost:3000/users');
 	}
