@@ -39,6 +39,8 @@
         </div>
 </div>
 
+<hr>
+
 <div class="container" *ngFor="let new of news">
     <div class="row">
         
@@ -51,28 +53,37 @@
             <span class="news__wrapper--date">{{ new.date.slice(0,10) }}</span>
             <hr>
 
-            <h4>Comments</h4>
+            <h4>Comments ({{ new.comments.length }})</h4>
 
             <div class="col comments__wrapper">
-                <div class="comments__wrapper--comment">
-                    <div class="comments__wrapper--comment-name">
-                        <img src="http://localhost:3000/images/avatar1.webp" alt="Avatar" class="comments__wrapper--comment-image">
-                        Peter
-                        <span class="comments__wrapper--comment-date">2020-07-11</span>
+                <form  (ngSubmit)="onSubmitComment(commentForm, new._id)" #commentForm="ngForm">
+                    <div class="form-group">
+                        <div class="row col">
+                            <textarea 
+                                class="form-control" 
+                                rows="3" 
+                                required
+                                ngModel
+                                name="message"
+                                placeholder="Type your message ..."
+                                minlength="5"></textarea>
+                            <button type="submit" class="btn btn-success send" [disabled]="!commentForm.valid">Send</button>
+                        </div>
                     </div>
-                    <div class="comments__wrapper--comment-message">Measeasfmsd;fmslvslfvdflmdflsmdv;lsdm;sd;fgmsd;sd Measeasfmsd;fmslvslfvdf</div>
-                </div>
+                </form>
 
-                <div class="comments__wrapper--comment">
+                <div class="comments__wrapper--comment" *ngFor="let comment of new.comments">
                     <div class="comments__wrapper--comment-name">
-                        <img src="http://localhost:3000/images/avatar1.webp" alt="Avatar" class="comments__wrapper--comment-image">
-                        Peter
-                        <span class="comments__wrapper--comment-date">2020-07-11</span>
+                        <img [src]="comment.userID.avatar" alt="Avatar" class="comments__wrapper--comment-image">
+                        {{ comment.userID.forename }} {{ comment.userID.surname }}
+                        <span class="comments__wrapper--comment-date">{{ comment.date.slice(0, 10) }}</span>
                     </div>
-                    <div class="comments__wrapper--comment-message">Measeasfmsd;fmslvslfvdflmdflsmdv;lsdm;sd;fgmsd;sd Measeasfmsd;fmslvslfvdf</div>
+                    <div class="comments__wrapper--comment-message">{{ comment.message }}</div>
                 </div>
             </div>
         </div>
 
     </div>
+    
 </div>
+

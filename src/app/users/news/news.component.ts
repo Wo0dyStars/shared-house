@@ -34,4 +34,12 @@ export class NewsComponent implements OnInit {
 
 		form.reset();
 	}
+
+	onSubmitComment(form: NgForm, newsID: string) {
+		this.http
+			.post('http://localhost:3000/users/news/comment/new', { message: form.value.message, newsID: newsID })
+			.subscribe((response) => {
+				this.getNews();
+			});
+	}
 }

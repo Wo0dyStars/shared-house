@@ -828,6 +828,7 @@ app.get('/users/news/show', middleware.isLoggedIn, middleware.hasHouse, async (r
 	News.find({ userID: userIDs })
 		.sort({ date: -1 })
 		.populate('userID')
+		.populate('comments.userID')
 		.then((news) => {
 			if (!news) {
 				return res.status(400).json({
@@ -838,6 +839,26 @@ app.get('/users/news/show', middleware.isLoggedIn, middleware.hasHouse, async (r
 			return res.status(200).json({
 				news: news
 			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: error.message
+			});
+		});
+});
+
+app.post('/users/news/comment/new', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
+	const comment = {
+		userID: req.userID,
+		message: req.body.message
+	};
+	News.updateOne({ _id: req.body.newsID }, { $push: { comments: comment } }, { new: true, useFindAndModify: false })
+		.then((updatedNews) => {
+			if (updatedNews.nModified > 0) {
+				return res.status(200).json({
+					message: 'You have successfully added a new comment to this news.'
+				});
+			}
 		})
 		.catch((error) => {
 			return res.status(500).json({
