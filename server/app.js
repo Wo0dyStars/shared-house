@@ -148,8 +148,27 @@ app.get('/users', (req, res, next) => {
 	});
 });
 
-app.post('/users/show', middleware.isLoggedIn, (req, res, next) => {
-	console.log(req.userID);
+app.post('/users/show', middleware.isLoggedIn, middleware.hasHouse, (req, res, next) => {
+	House.findById(req.userHouse)
+		.populate('userIDs')
+		.then((house) => {
+			if (!house) {
+				return res.status(400).json({
+					message: 'An error occurred while fetching your house data.'
+				});
+			}
+
+			res.status(200).json({
+				message: 'You have successfully fetched all users for your house.',
+				housename: house.name,
+				users: house.userIDs
+			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: error.message
+			});
+		});
 });
 
 app.post('/users/edit/:id', (req, res, next) => {

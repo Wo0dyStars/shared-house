@@ -10,4 +10,10 @@ export interface User {
 	avatar: string;
 	movedIn: Date;
 	lastUpdated: Date;
+	birthday: Date;
+	address: string;
+	town: string;
+	country: string;
+	postcode: string;
+	houseID: string;
 }
