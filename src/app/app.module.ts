@@ -13,6 +13,7 @@ import { AuthorizationInterceptor } from './authorization/authorization.intercep
 import { EmailValidationDirective } from './authorization/email-validation.directive';
 import { UsersComponent } from './users/users.component';
 import { UserProfileComponent } from './users/user-profile/user-profile.component';
+import { ShoppingListComponent } from './users/shopping-list/shopping-list.component';
 
 @NgModule({
 	declarations: [
@@ -23,7 +24,8 @@ import { UserProfileComponent } from './users/user-profile/user-profile.componen
 		PasswordMatchDirective,
 		EmailValidationDirective,
 		UsersComponent,
-		UserProfileComponent
+		UserProfileComponent,
+		ShoppingListComponent
 	],
 	imports: [ BrowserModule, FormsModule, AppRoutingModule, HttpClientModule ],
 	providers: [

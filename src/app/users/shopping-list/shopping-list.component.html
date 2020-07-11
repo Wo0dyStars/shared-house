@@ -1,0 +1,59 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+    
+            <form (ngSubmit)="onSubmit(form)" #form="ngForm">
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="item">Item</label>
+                        <input 
+                            type="text"
+                            id="item"
+                            class="form-control"
+                            ngModel
+                            required
+                            name="item"
+                            maxlength="40">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input 
+                            type="number"
+                            id="amount"
+                            class="form-control"
+                            name="amount"
+                            ngModel
+                            required
+                            min="0"
+                            [pattern]="'^[1-9]+[0-9]*$'">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button class="btn btn-success" type="submit" [disabled]="!form.valid">Add</button>
+                    </div>
+                </div>
+    
+            </form>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3>Shopping list</h3>
+                    
+                    <ul class="list-group" *ngFor="let item of shoppingList">
+                        <ul class="list-group list-group-horizontal">
+                            <li class="list-group-item">{{ item.name }}</li>
+                            <button class="btn btn-success action">Buy</button>
+                            <button class="btn btn-danger action">Remove</button>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+</div>
