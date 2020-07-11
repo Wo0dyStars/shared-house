@@ -9,14 +9,10 @@
                 <div class="row">
                     <li class="list-group-item col-4">Task name</li>
                     <li class="list-group-item col-2">Task level</li>
-                    <li class="list-group-item col-2">Task available</li>
-                    <li class="list-group-item col-2">Task available from</li>
                 </div>
                 <div class="row" *ngFor="let task of availableTasks">
                     <li class="list-group-item col-4" *ngIf="task.available">{{ task.task.name }}</li>
                     <li class="list-group-item col-2" *ngIf="task.available">{{ task.task.level }}</li>
-                    <li class="list-group-item col-2" *ngIf="task.available">{{ task.available }}</li>
-                    <li class="list-group-item col-2" *ngIf="task.available">{{ task.availableFrom }}</li>
                     <button type="button" class="btn btn-success action" (click)="onAccept(task._id)" *ngIf="task.available">Accept</button>
                 </div>
             </ul>

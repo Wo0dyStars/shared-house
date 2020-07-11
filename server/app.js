@@ -22,6 +22,7 @@ const Purchase = require('./models/Purchase');
 const Task = require('./models/Task');
 const AvailableTask = require('./models/AvailableTask');
 const AssignedTask = require('./models/AssignedTask');
+const News = require('./models/News');
 
 // ******************************************
 // CONNECTING TO MONGO DB DATABASE
@@ -41,8 +42,8 @@ mongoose
 	.then(() => {
 		console.log('You are now connected to the Mongo DB database.');
 	})
-	.catch(() => {
-		console.log('Your attempt to connect to MongoDB database has been failed.');
+	.catch((error) => {
+		console.log('Your attempt to connect to MongoDB database has been failed.', error);
 	});
 
 app.use(bodyParser.json());
@@ -792,6 +793,54 @@ app.post('/users/assignedtask/complete', middleware.isLoggedIn, middleware.hasHo
 		})
 		.catch((error) => {
 			return res.status(400).json({
+				message: error.message
+			});
+		});
+});
+
+app.post('/users/news/new', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
+	const news = new News({
+		title: req.body.title,
+		message: req.body.message,
+		userID: req.userID,
+		comments: []
+	});
+
+	news
+		.save()
+		.then(() => {
+			return res.status(200).json({
+				message: `You have successfully added a news item.`
+			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: error.message
+			});
+		});
+});
+
+app.get('/users/news/show', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
+	const userIDs = await House.findById(req.userHouse).then((house) => {
+		return house.userIDs;
+	});
+
+	News.find({ userID: userIDs })
+		.sort({ date: -1 })
+		.populate('userID')
+		.then((news) => {
+			if (!news) {
+				return res.status(400).json({
+					message: 'There is no news item added yet.'
+				});
+			}
+
+			return res.status(200).json({
+				news: news
+			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
 				message: error.message
 			});
 		});
