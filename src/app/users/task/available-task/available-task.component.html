@@ -17,6 +17,27 @@
                     <li class="list-group-item col-2">{{ task.task.level }}</li>
                     <li class="list-group-item col-2">{{ task.available }}</li>
                     <li class="list-group-item col-2">{{ task.availableFrom }}</li>
+                    <button type="button" class="btn btn-success action" (click)="onAccept(task._id)">Accept</button>
+                </div>
+            </ul>
+    
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+    
+            <ul class="list-group">
+                <div class="row">
+                    <li class="list-group-item col-4">House member</li>
+                    <li class="list-group-item col-3">Task name</li>
+                    <li class="list-group-item col-3">Completed</li>
+                </div>
+                <div class="row" *ngFor="let task of assignedTasks">
+                    <li class="list-group-item col-4">{{ task.userID.forename }} {{ task.userID.surname }}</li>
+                    <li class="list-group-item col-3">{{ task.availableTaskID.task.name }}</li>
+                    <li class="list-group-item col-3">{{ task.completed }}</li>
+                    <button type="button" class="btn btn-success action" (click)="onAccept(task._id)">Complete</button>
                 </div>
             </ul>
     

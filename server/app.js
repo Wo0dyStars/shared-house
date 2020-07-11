@@ -21,6 +21,7 @@ const ShoppingList = require('./models/ShoppingList');
 const Purchase = require('./models/Purchase');
 const Task = require('./models/Task');
 const AvailableTask = require('./models/AvailableTask');
+const AssignedTask = require('./models/AssignedTask');
 
 // ******************************************
 // CONNECTING TO MONGO DB DATABASE
@@ -710,6 +711,60 @@ app.get('/users/availabletask/update', middleware.isLoggedIn, middleware.hasHous
 	return res.status(200).json({
 		message: 'You have successfully updated the required fields.'
 	});
+});
+
+app.get('/users/assignedtask/new/:id', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
+	const assignedTask = new AssignedTask({
+		userID: req.userID,
+		date: new Date().toISOString().slice(0, 10),
+		availableTaskID: req.params.id
+	});
+
+	assignedTask
+		.save()
+		.then(() => {
+			AvailableTask.updateOne({ _id: req.params.id }, { available: false }).catch((error) => {
+				return res.status(500).json({
+					message: error.message
+				});
+			});
+
+			return res.status(200).json({
+				message: `You have been successfully assigned to the task.`
+			});
+		})
+		.catch((error) => {
+			return res.status(400).json({
+				message: error.message
+			});
+		});
+});
+
+app.get('/users/assignedtask/show', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
+	AssignedTask.find({ userID: req.userID })
+		.populate({
+			path: 'availableTaskID',
+			populate: {
+				path: 'task'
+			}
+		})
+		.populate('userID')
+		.then((tasks) => {
+			if (!tasks) {
+				return res.status(400).json({
+					message: 'There are no assigned tasks for selected user.'
+				});
+			}
+
+			return res.status(200).json({
+				tasks: tasks
+			});
+		})
+		.catch((error) => {
+			return res.status(400).json({
+				message: error.message
+			});
+		});
 });
 
 // ******************************************
