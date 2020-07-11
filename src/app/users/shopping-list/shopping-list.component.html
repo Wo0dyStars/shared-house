@@ -44,12 +44,13 @@
                 <div class="col-xs-12">
                     <h3>Shopping list</h3>
                     
-                    <ul class="list-group" *ngFor="let item of shoppingList">
-                        <ul class="list-group list-group-horizontal">
-                            <li class="list-group-item">{{ item.name }}</li>
-                            <button class="btn btn-success action">Buy</button>
-                            <button class="btn btn-danger action">Remove</button>
-                        </ul>
+                    <ul class="list-group" >
+                        <div class="row" *ngFor="let item of shoppingList; let i = index">
+                            <li class="list-group-item col-6">{{ item.name }}</li>
+                            <li class="list-group-item col-2">{{ item.amount }}</li>
+                            <button type="button" class="btn btn-success action" (click)="onBuy(i)">Buy</button>
+                            <button type="button" class="btn btn-danger action" (click)="onRemove(i)">X</button>
+                        </div>
                     </ul>
                 </div>
             </div>

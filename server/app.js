@@ -18,6 +18,7 @@ const User = require('./models/User');
 const Token = require('./models/Token');
 const House = require('./models/House');
 const ShoppingList = require('./models/ShoppingList');
+const Purchase = require('./models/Purchase');
 
 // ******************************************
 // CONNECTING TO MONGO DB DATABASE
@@ -496,6 +497,68 @@ app.post('/users/shopping-list/add', middleware.isLoggedIn, middleware.hasHouse,
 					.then(() => {
 						return res.status(200).json({
 							message: `You have successfully updated your shopping list.`
+						});
+					})
+					.catch((error) => {
+						return res.status(400).json({
+							message: error.message
+						});
+					});
+			}
+		})
+		.catch((error) => {
+			return res.status(400).json({
+				message: error.message
+			});
+		});
+});
+
+app.post('/users/shopping-list/remove', middleware.isLoggedIn, middleware.hasHouse, (req, res, next) => {
+	ShoppingList.updateOne({ houseID: req.userHouse }, { $pull: { items: req.body.item } })
+		.then(() => {
+			return res.status(200).json({
+				message: `You have successfully removed item from your shopping list.`
+			});
+		})
+		.catch((error) => {
+			return res.status(400).json({
+				message: error.message
+			});
+		});
+});
+
+app.post('/users/purchase/new', middleware.isLoggedIn, middleware.hasHouse, (req, res, next) => {
+	Purchase.findOne({ userID: req.userID })
+		.then((purchase) => {
+			if (!purchase) {
+				const newPurchase = new Purchase({
+					userID: req.userID,
+					items: [ req.body.item ]
+				});
+
+				newPurchase
+					.save()
+					.then(() => {
+						return res.status(200).json({
+							message: `You have successfully purchased your first item.`
+						});
+					})
+					.catch((error) => {
+						return res.status(400).json({
+							message: error.message
+						});
+					});
+			} else {
+				Purchase.updateOne(
+					{
+						userID: req.userID
+					},
+					{ $push: { items: req.body.item } },
+					{ new: true, useFindAndModify: false }
+				)
+					.then(() => {
+						return res.status(200).json({
+							message: `You have successfully updated your purchases with this new item.`
 						});
 					})
 					.catch((error) => {

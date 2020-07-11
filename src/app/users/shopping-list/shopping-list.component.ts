@@ -30,4 +30,22 @@ export class ShoppingListComponent implements OnInit {
 			this.getShoppingList();
 		});
 	}
+
+	onRemove(index: number) {
+		this.http
+			.post('http://localhost:3000/users/shopping-list/remove', { item: this.shoppingList[index] })
+			.subscribe((response) => {
+				this.getShoppingList();
+			});
+	}
+
+	onBuy(index: number) {
+		this.http
+			.post('http://localhost:3000/users/purchase/new', { item: this.shoppingList[index] })
+			.subscribe((response) => {
+				console.log(response);
+				this.onRemove(index);
+				this.getShoppingList();
+			});
+	}
 }
