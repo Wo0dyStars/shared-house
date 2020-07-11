@@ -14,6 +14,7 @@ import { EmailValidationDirective } from './authorization/email-validation.direc
 import { UsersComponent } from './users/users.component';
 import { UserProfileComponent } from './users/user-profile/user-profile.component';
 import { ShoppingListComponent } from './users/shopping-list/shopping-list.component';
+import { TaskComponent } from './users/task/task.component';
 
 @NgModule({
 	declarations: [
@@ -25,7 +26,8 @@ import { ShoppingListComponent } from './users/shopping-list/shopping-list.compo
 		EmailValidationDirective,
 		UsersComponent,
 		UserProfileComponent,
-		ShoppingListComponent
+		ShoppingListComponent,
+		TaskComponent
 	],
 	imports: [ BrowserModule, FormsModule, AppRoutingModule, HttpClientModule ],
 	providers: [

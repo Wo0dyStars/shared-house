@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 	isAuthenticated: boolean = false;
+	userID: string = null;
 	private authorizationListener: Subscription;
 
 	constructor(private authorizationService: AuthorizationService) {}
@@ -18,6 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 		this.authorizationListener = this.authorizationService.getAuthorizationStatus().subscribe((isAuthenticated) => {
 			this.isAuthenticated = isAuthenticated;
 		});
+		this.userID = this.authorizationService.getUserID();
 	}
 
 	onLogout() {

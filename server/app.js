@@ -19,6 +19,7 @@ const Token = require('./models/Token');
 const House = require('./models/House');
 const ShoppingList = require('./models/ShoppingList');
 const Purchase = require('./models/Purchase');
+const Task = require('./models/Task');
 
 // ******************************************
 // CONNECTING TO MONGO DB DATABASE
@@ -243,7 +244,7 @@ app.get('/confirmation/:token', (req, res, next) => {
 	});
 });
 
-app.get('/users/:id', (req, res, next) => {
+app.get('/users/:id', middleware.isLoggedIn, (req, res, next) => {
 	User.findById(req.params.id)
 		.then((user) => {
 			if (!user) {
@@ -599,6 +600,46 @@ app.get('/users/purchase/show', middleware.isLoggedIn, middleware.hasHouse, (req
 		})
 		.catch((error) => {
 			return res.status(400).json({
+				message: error.message
+			});
+		});
+});
+
+app.post('/users/task/new', middleware.isLoggedIn, middleware.hasHouse, (req, res, next) => {
+	const task = req.body.taskData;
+	task.houseID = req.userHouse;
+
+	newTask = new Task(task);
+	newTask
+		.save()
+		.then(() => {
+			return res.status(200).json({
+				message: `You have successfully created a new task`
+			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: error.message
+			});
+		});
+});
+
+app.get('/users/task/show', middleware.isLoggedIn, middleware.hasHouse, (req, res, next) => {
+	Task.find({ houseID: req.userHouse })
+		.then((tasks) => {
+			if (!tasks) {
+				return res.status(400).json({
+					message: 'There are no tasks for selected house.'
+				});
+			}
+
+			return res.status(200).json({
+				message: 'You have successfully fetched the tasks for your house.',
+				tasks: tasks
+			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
 				message: error.message
 			});
 		});
