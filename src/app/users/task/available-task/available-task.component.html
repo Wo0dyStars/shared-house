@@ -13,11 +13,11 @@
                     <li class="list-group-item col-2">Task available from</li>
                 </div>
                 <div class="row" *ngFor="let task of availableTasks">
-                    <li class="list-group-item col-4">{{ task.task.name }}</li>
-                    <li class="list-group-item col-2">{{ task.task.level }}</li>
-                    <li class="list-group-item col-2">{{ task.available }}</li>
-                    <li class="list-group-item col-2">{{ task.availableFrom }}</li>
-                    <button type="button" class="btn btn-success action" (click)="onAccept(task._id)">Accept</button>
+                    <li class="list-group-item col-4" *ngIf="task.available">{{ task.task.name }}</li>
+                    <li class="list-group-item col-2" *ngIf="task.available">{{ task.task.level }}</li>
+                    <li class="list-group-item col-2" *ngIf="task.available">{{ task.available }}</li>
+                    <li class="list-group-item col-2" *ngIf="task.available">{{ task.availableFrom }}</li>
+                    <button type="button" class="btn btn-success action" (click)="onAccept(task._id)" *ngIf="task.available">Accept</button>
                 </div>
             </ul>
     
@@ -31,13 +31,20 @@
                 <div class="row">
                     <li class="list-group-item col-4">House member</li>
                     <li class="list-group-item col-3">Task name</li>
-                    <li class="list-group-item col-3">Completed</li>
                 </div>
                 <div class="row" *ngFor="let task of assignedTasks">
-                    <li class="list-group-item col-4">{{ task.userID.forename }} {{ task.userID.surname }}</li>
-                    <li class="list-group-item col-3">{{ task.availableTaskID.task.name }}</li>
-                    <li class="list-group-item col-3">{{ task.completed }}</li>
-                    <button type="button" class="btn btn-success action" (click)="onAccept(task._id)">Complete</button>
+                    <li class="list-group-item col-4 " >{{ task.userID.forename }} {{ task.userID.surname }}</li>
+                    <li class="list-group-item col-3 " >
+                        {{ task.availableTaskID.task.name }}
+                        <span class="badge badge-pill badge-success" *ngIf="task.completed">Completed</span>
+                        <span class="badge badge-pill badge-danger" *ngIf="!task.completed">Awaiting</span>
+                    </li>
+                    <button 
+                        type="button" 
+                        class="btn btn-success action" 
+                        (click)="onComplete(task._id, task.availableTaskID._id)" 
+                        *ngIf="!task.completed && task.userID._id === userID" >Complete
+                    </button>
                 </div>
             </ul>
     

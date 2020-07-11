@@ -699,7 +699,7 @@ app.get('/users/availabletask/update', middleware.isLoggedIn, middleware.hasHous
 		if (currentDate.getTime() === now.getTime()) {
 			AvailableTask.updateOne(
 				{ _id: task._id },
-				{ availableFrom: nextDate.toISOString().slice(0, 10), available: true }
+				{ availableFrom: nextDate.toISOString().slice(0, 10) }
 			).catch((error) => {
 				return res.status(500).json({
 					message: error.message
@@ -741,7 +741,11 @@ app.get('/users/assignedtask/new/:id', middleware.isLoggedIn, middleware.hasHous
 });
 
 app.get('/users/assignedtask/show', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
-	AssignedTask.find({ userID: req.userID })
+	const userIDs = await House.findById(req.userHouse).then((house) => {
+		return house.userIDs;
+	});
+
+	AssignedTask.find({ userID: userIDs })
 		.populate({
 			path: 'availableTaskID',
 			populate: {
@@ -759,6 +763,32 @@ app.get('/users/assignedtask/show', middleware.isLoggedIn, middleware.hasHouse, 
 			return res.status(200).json({
 				tasks: tasks
 			});
+		})
+		.catch((error) => {
+			return res.status(400).json({
+				message: error.message
+			});
+		});
+});
+
+app.post('/users/assignedtask/complete', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
+	AssignedTask.updateOne({ userID: req.userID, _id: req.body.assignedTaskID }, { completed: true })
+		.then((updatedTask) => {
+			if (updatedTask.nModified > 0) {
+				AvailableTask.updateOne({ _id: req.body.availableTaskID }, { available: true })
+					.then((updatedTask) => {
+						if (updatedTask.nModified > 0) {
+							return res.status(200).json({
+								message: 'You have successfully completed this task.'
+							});
+						}
+					})
+					.catch((error) => {
+						return res.status(400).json({
+							message: error.message
+						});
+					});
+			}
 		})
 		.catch((error) => {
 			return res.status(400).json({
