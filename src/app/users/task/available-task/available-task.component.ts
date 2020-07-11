@@ -14,6 +14,7 @@ export class AvailableTaskComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.getAvailableTasks();
+		this.updateAvailableTasks();
 	}
 
 	getAvailableTasks() {
@@ -22,5 +23,11 @@ export class AvailableTaskComponent implements OnInit {
 			.subscribe((response) => {
 				this.availableTasks = response.tasks;
 			});
+	}
+
+	updateAvailableTasks() {
+		this.http.get('http://localhost:3000/users/availabletask/update').subscribe((response) => {
+			this.getAvailableTasks();
+		});
 	}
 }

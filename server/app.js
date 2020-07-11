@@ -681,7 +681,36 @@ app.get('/users/availabletask/show', middleware.isLoggedIn, middleware.hasHouse,
 		});
 });
 
-app.get('/users/availabletask/update', middleware.isLoggedIn, middleware.hasHouse, (req, res, next) => {});
+app.get('/users/availabletask/update', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
+	const currentTasks = await AvailableTask.find({}).populate({
+		path: 'task',
+		match: { houseID: req.userHouse }
+	});
+
+	const now = new Date(new Date().toISOString().slice(0, 10));
+
+	currentTasks.forEach((task) => {
+		const nextDate = new Date(new Date().toISOString().slice(0, 10));
+		nextDate.setDate(now.getDate() + task.task.frequency);
+
+		const currentDate = new Date(task.availableFrom);
+
+		if (currentDate.getTime() === now.getTime()) {
+			AvailableTask.updateOne(
+				{ _id: task._id },
+				{ availableFrom: nextDate.toISOString().slice(0, 10), available: true }
+			).catch((error) => {
+				return res.status(500).json({
+					message: error.message
+				});
+			});
+		}
+	});
+
+	return res.status(200).json({
+		message: 'You have successfully updated the required fields.'
+	});
+});
 
 // ******************************************
 // EXPORT APP TO THE SERVER FILE
