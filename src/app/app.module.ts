@@ -15,6 +15,7 @@ import { UsersComponent } from './users/users.component';
 import { UserProfileComponent } from './users/user-profile/user-profile.component';
 import { ShoppingListComponent } from './users/shopping-list/shopping-list.component';
 import { TaskComponent } from './users/task/task.component';
+import { AvailableTaskComponent } from './users/task/available-task/available-task.component';
 
 @NgModule({
 	declarations: [
@@ -27,7 +28,8 @@ import { TaskComponent } from './users/task/task.component';
 		UsersComponent,
 		UserProfileComponent,
 		ShoppingListComponent,
-		TaskComponent
+		TaskComponent,
+		AvailableTaskComponent
 	],
 	imports: [ BrowserModule, FormsModule, AppRoutingModule, HttpClientModule ],
 	providers: [

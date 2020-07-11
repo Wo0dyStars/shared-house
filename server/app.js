@@ -20,6 +20,7 @@ const House = require('./models/House');
 const ShoppingList = require('./models/ShoppingList');
 const Purchase = require('./models/Purchase');
 const Task = require('./models/Task');
+const AvailableTask = require('./models/AvailableTask');
 
 // ******************************************
 // CONNECTING TO MONGO DB DATABASE
@@ -609,13 +610,29 @@ app.post('/users/task/new', middleware.isLoggedIn, middleware.hasHouse, (req, re
 	const task = req.body.taskData;
 	task.houseID = req.userHouse;
 
+	const now = new Date().toISOString().slice(0, 10);
+
 	newTask = new Task(task);
 	newTask
 		.save()
-		.then(() => {
-			return res.status(200).json({
-				message: `You have successfully created a new task`
+		.then((task) => {
+			const availableTask = new AvailableTask({
+				task: task._id,
+				availableFrom: now
 			});
+
+			availableTask
+				.save()
+				.then(() => {
+					return res.status(200).json({
+						message: `You have successfully created a new task`
+					});
+				})
+				.catch((error) => {
+					return res.status(400).json({
+						message: error.message
+					});
+				});
 		})
 		.catch((error) => {
 			return res.status(500).json({
@@ -644,6 +661,27 @@ app.get('/users/task/show', middleware.isLoggedIn, middleware.hasHouse, (req, re
 			});
 		});
 });
+
+app.get('/users/availabletask/show', middleware.isLoggedIn, middleware.hasHouse, (req, res, next) => {
+	AvailableTask.find({})
+		.populate({
+			path: 'task',
+			match: { houseID: req.userHouse }
+		})
+		.then((tasks) => {
+			return res.status(200).json({
+				message: 'You have successfully fetched available tasks.',
+				tasks: tasks
+			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: error.message
+			});
+		});
+});
+
+app.get('/users/availabletask/update', middleware.isLoggedIn, middleware.hasHouse, (req, res, next) => {});
 
 // ******************************************
 // EXPORT APP TO THE SERVER FILE
