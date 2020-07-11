@@ -5,7 +5,7 @@
 
             <form  (ngSubmit)="onSubmit(form)" #form="ngForm">
 
-                <div class="form-group">
+                <div class="form-group col">
                     <label for="title">Title</label>
                     <input 
                         type="text"
@@ -14,10 +14,11 @@
                         ngModel
                         required
                         name="title"
+                        placeholder="News title"
                         maxlength="40">
                 </div>
             
-                <div class="form-group">
+                <div class="form-group col">
                     <label for="message">Message</label>
                     <textarea 
                         class="form-control" 
@@ -26,10 +27,11 @@
                         required
                         ngModel
                         name="message"
+                        placeholder="Your message ..."
                         minlength="20"></textarea>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group col">
                     <div class="col-xs-12">
                         <button class="btn btn-success" type="submit" [disabled]="!form.valid">Add</button>
                     </div>
@@ -60,7 +62,7 @@
                     <div class="form-group">
                         <div class="row col">
                             <textarea 
-                                class="form-control" 
+                                class="form-control textarea" 
                                 rows="3" 
                                 required
                                 ngModel
@@ -78,7 +80,9 @@
                         {{ comment.userID.forename }} {{ comment.userID.surname }}
                         <span class="comments__wrapper--comment-date">{{ comment.date.slice(0, 10) }}</span>
                     </div>
-                    <div class="comments__wrapper--comment-message">{{ comment.message }}</div>
+                    <div class="comments__wrapper--comment-message">{{ comment.message }}
+                        <button class="btn btn-danger remove_comment" (click)="onRemoveComment(comment._id)" *ngIf="comment.userID._id === userID">X</button>
+                    </div>
                 </div>
             </div>
         </div>

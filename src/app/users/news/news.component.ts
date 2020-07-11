@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { AuthorizationService } from 'src/app/authorization/authorization.service';
 
 @Component({
 	selector: 'app-news',
@@ -9,11 +10,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class NewsComponent implements OnInit {
 	news: any = [];
+	userID: string = null;
 
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient, private authorizationService: AuthorizationService) {}
 
 	ngOnInit(): void {
 		this.getNews();
+		this.userID = this.authorizationService.getUserID();
 	}
 
 	getNews() {
@@ -38,6 +41,14 @@ export class NewsComponent implements OnInit {
 	onSubmitComment(form: NgForm, newsID: string) {
 		this.http
 			.post('http://localhost:3000/users/news/comment/new', { message: form.value.message, newsID: newsID })
+			.subscribe((response) => {
+				this.getNews();
+			});
+	}
+
+	onRemoveComment(commentID: string) {
+		this.http
+			.post('http://localhost:3000/users/news/comment/delete', { commentID: commentID })
 			.subscribe((response) => {
 				this.getNews();
 			});

@@ -867,6 +867,22 @@ app.post('/users/news/comment/new', middleware.isLoggedIn, middleware.hasHouse, 
 		});
 });
 
+app.post('/users/news/comment/delete', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
+	News.updateOne({ 'comments._id': req.body.commentID }, { $pull: { comments: { _id: req.body.commentID } } })
+		.then((updatedNews) => {
+			if (updatedNews.nModified > 0) {
+				return res.status(200).json({
+					message: 'You have successfully deleted this comment.'
+				});
+			}
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: error.message
+			});
+		});
+});
+
 // ******************************************
 // EXPORT APP TO THE SERVER FILE
 // ******************************************
