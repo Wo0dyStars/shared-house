@@ -12,3 +12,7 @@ h3 {
 	width: 100vw;
 	margin: 1rem;
 }
+
+.list-group-item + .list-group-item {
+	border-top-width: 1px;
+}

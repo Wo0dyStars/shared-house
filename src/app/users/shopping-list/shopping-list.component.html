@@ -45,11 +45,38 @@
                     <h3>Shopping list</h3>
                     
                     <ul class="list-group" >
+                        <div class="row">
+                            <li class="list-group-item col-6">Item name</li>
+                            <li class="list-group-item col-2">Item amount</li>
+                        </div>
                         <div class="row" *ngFor="let item of shoppingList; let i = index">
                             <li class="list-group-item col-6">{{ item.name }}</li>
                             <li class="list-group-item col-2">{{ item.amount }}</li>
                             <button type="button" class="btn btn-success action" (click)="onBuy(i)">Buy</button>
                             <button type="button" class="btn btn-danger action" (click)="onRemove(i)">X</button>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3>Shopping list</h3>
+                    
+                    <ul class="list-group" >
+                        <div class="row">
+                            <li class="list-group-item col-3">House member</li>
+                            <li class="list-group-item col-4">Item name</li>
+                            <li class="list-group-item col-2">Item amount</li>
+                            <li class="list-group-item col-2">Purchase date</li>
+                        </div>
+                        <div *ngFor="let purchase of purchases;">
+                            <div class="row" *ngFor="let item of purchase.items">
+                                <li class="list-group-item col-3">{{ purchase.userID.forename }} {{ purchase.userID.surname }}</li>
+                                <li class="list-group-item col-4">{{ item.name }}</li>
+                                <li class="list-group-item col-2">{{ item.amount }}</li>
+                                <li class="list-group-item col-2">{{ item.date.slice(0,10) }}</li>
+                            </div>
                         </div>
                     </ul>
                 </div>

@@ -575,6 +575,35 @@ app.post('/users/purchase/new', middleware.isLoggedIn, middleware.hasHouse, (req
 		});
 });
 
+app.get('/users/purchase/show', middleware.isLoggedIn, middleware.hasHouse, (req, res, next) => {
+	House.findById(req.userHouse)
+		.then((house) => {
+			if (!house) {
+				return res.status(400).json({
+					message: 'There is no house for the selected users.'
+				});
+			}
+
+			Purchase.find({ userID: house.userIDs })
+				.populate('userID')
+				.then((purchases) => {
+					return res.status(200).json({
+						purchases: purchases
+					});
+				})
+				.catch((error) => {
+					return res.status(400).json({
+						message: error.message
+					});
+				});
+		})
+		.catch((error) => {
+			return res.status(400).json({
+				message: error.message
+			});
+		});
+});
+
 // ******************************************
 // EXPORT APP TO THE SERVER FILE
 // ******************************************
