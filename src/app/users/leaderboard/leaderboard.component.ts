@@ -7,6 +7,9 @@ import { HttpClient } from '@angular/common/http';
 	styleUrls: [ './leaderboard.component.scss' ]
 })
 export class LeaderboardComponent implements OnInit {
+	leaderboard: any = [];
+	userBoard: any = [];
+
 	constructor(private http: HttpClient) {}
 
 	ngOnInit(): void {
@@ -14,8 +17,21 @@ export class LeaderboardComponent implements OnInit {
 	}
 
 	getScores() {
-		this.http.get('http://localhost:3000/users/leaderboard/show').subscribe((response) => {
-			console.log(response);
+		this.http.get<{ leaderBoard: any }>('http://localhost:3000/users/leaderboard/show').subscribe((response) => {
+			this.leaderboard = response.leaderBoard;
+
+			response.leaderBoard.forEach((leaderboard) => {
+				const userBoard = {
+					name: leaderboard.userID.forename + ' ' + leaderboard.userID.surname,
+					avatar: leaderboard.avatar,
+					taskScore: leaderboard.scores[0].score,
+					newsScore: leaderboard.scores[1].score,
+					purchaseScore: leaderboard.scores[2].score,
+					commentScore: leaderboard.scores[3].score
+				};
+
+				this.userBoard.push(userBoard);
+			});
 		});
 	}
 }

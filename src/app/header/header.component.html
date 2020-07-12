@@ -1,4 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" routerLink="/" routerLinkActive="active" >Shared house</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -24,14 +26,17 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/users/leaderboard" routerLinkActive="active">Leader board</a>
       </li>
-      <li class="nav-item" *ngIf="isAuthenticated">
-        <a class="nav-link" (click)="onLogout()">Logout</a>
-      </li>
       <li class="nav-item" >
         <a class="nav-link" routerLink="/users/shopping-list" routerLinkActive="active">Shopping list</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/users/availabletask" routerLinkActive="active">Reserve tasks</a>
+      </li>
+      <li class="nav-item nav-loggedIn" *ngIf="isAuthenticated">
+          {{ userScore?.name }}
+          <img class="avatar" [src]="userScore?.avatar" alt="Avatar">
+          <button class="btn btn-sm btn-outline-secondary" type="button" (click)="onLogout()">Logout</button>
+          Score {{ userScore?.score }}
       </li>
     </ul>
   </div>

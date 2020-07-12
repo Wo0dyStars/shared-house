@@ -884,11 +884,58 @@ app.post('/users/news/comment/delete', middleware.isLoggedIn, middleware.hasHous
 		});
 });
 
+app.get('/users/leaderboard/show/current', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
+	LeaderBoard.findOne({ userID: req.userID }).populate('userID').then((scores) => {
+		if (!scores) {
+			return res.status(400).json({
+				message: 'User has been not found.'
+			});
+		}
+
+		let total = 0;
+		scores.scores.forEach((score) => {
+			total += score.score;
+		});
+
+		return res.status(200).json({
+			name: scores.userID.forename + ' ' + scores.userID.surname,
+			avatar: scores.userID.avatar,
+			score: total
+		});
+	});
+});
+
 app.get('/users/leaderboard/show', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
 	const userIDs = await House.findById(req.userHouse).then((house) => {
 		return house.userIDs;
 	});
 
+	LeaderBoard.find({ userID: userIDs })
+		.populate('userID')
+		.then((leaderBoard) => {
+			if (!leaderBoard) {
+				return res.status(400).json({
+					message: 'There are no leaderboard scores calculated yet for your house.'
+				});
+			}
+
+			return res.status(200).json({
+				leaderBoard: leaderBoard
+			});
+		})
+		.catch((error) => {
+			return res.status(500).json({
+				message: error.message
+			});
+		});
+});
+
+app.get('/users/leaderboard/calculate', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
+	const userIDs = await House.findById(req.userHouse).then((house) => {
+		return house.userIDs;
+	});
+
+	let update = false;
 	userIDs.forEach(async (userID) => {
 		const taskScore = await AssignedTask.find({ userID: userID }).then((tasks) => {
 			if (!tasks) return 0;
@@ -955,13 +1002,7 @@ app.get('/users/leaderboard/show', middleware.isLoggedIn, middleware.hasHouse, a
 		LeaderBoard.findOne({ userID: userID })
 			.then((user) => {
 				if (!user) {
-					leaderBoard.save().then((success) => {
-						if (success) {
-							return res.status(200).json({
-								message: 'You have successfully created your leaderboard record.'
-							});
-						}
-					});
+					leaderBoard.save();
 				} else {
 					LeaderBoard.updateOne(
 						{ userID: userID },
@@ -971,16 +1012,8 @@ app.get('/users/leaderboard/show', middleware.isLoggedIn, middleware.hasHouse, a
 							'scores.2.score': purchaseScore,
 							'scores.3.score': commentScore
 						}
-					).then((updatedScores) => {
-						if (updatedScores.nModified > 0) {
-							return res.status(200).json({
-								message: 'You have successfully updated your leaderboard record.'
-							});
-						} else {
-							return res.status(400).json({
-								message: 'You have not updated your leaderboard record.'
-							});
-						}
+					).then((updateBoard) => {
+						if (updateBoard.nModified > 0) update = true;
 					});
 				}
 			})
@@ -990,6 +1023,16 @@ app.get('/users/leaderboard/show', middleware.isLoggedIn, middleware.hasHouse, a
 				});
 			});
 	});
+
+	if (update) {
+		return res.status(200).json({
+			message: 'You have successfully updated your leaderboard scores.'
+		});
+	} else {
+		return res.status(200).json({
+			message: 'You have either created or not modified your leaderboard scores.'
+		});
+	}
 });
 
 // ******************************************
