@@ -17,6 +17,7 @@ import { ShoppingListComponent } from './users/shopping-list/shopping-list.compo
 import { TaskComponent } from './users/task/task.component';
 import { AvailableTaskComponent } from './users/task/available-task/available-task.component';
 import { NewsComponent } from './users/news/news.component';
+import { LeaderboardComponent } from './users/leaderboard/leaderboard.component';
 
 @NgModule({
 	declarations: [
@@ -31,7 +32,8 @@ import { NewsComponent } from './users/news/news.component';
 		ShoppingListComponent,
 		TaskComponent,
 		AvailableTaskComponent,
-		NewsComponent
+		NewsComponent,
+		LeaderboardComponent
 	],
 	imports: [ BrowserModule, FormsModule, AppRoutingModule, HttpClientModule ],
 	providers: [

@@ -7,6 +7,7 @@ import { ShoppingListComponent } from './users/shopping-list/shopping-list.compo
 import { TaskComponent } from './users/task/task.component';
 import { AvailableTaskComponent } from './users/task/available-task/available-task.component';
 import { NewsComponent } from './users/news/news.component';
+import { LeaderboardComponent } from './users/leaderboard/leaderboard.component';
 
 const routes: Routes = [
 	{ path: 'authorization', component: AuthorizationComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
 	{ path: 'users/task', component: TaskComponent },
 	{ path: 'users/news', component: NewsComponent },
 	{ path: 'users/availabletask', component: AvailableTaskComponent },
+	{ path: 'users/leaderboard', component: LeaderboardComponent },
 	{ path: 'users/:id', component: UserProfileComponent }
 ];
 

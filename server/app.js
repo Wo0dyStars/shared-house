@@ -23,6 +23,7 @@ const Task = require('./models/Task');
 const AvailableTask = require('./models/AvailableTask');
 const AssignedTask = require('./models/AssignedTask');
 const News = require('./models/News');
+const LeaderBoard = require('./models/Leaderboard');
 
 // ******************************************
 // CONNECTING TO MONGO DB DATABASE
@@ -881,6 +882,114 @@ app.post('/users/news/comment/delete', middleware.isLoggedIn, middleware.hasHous
 				message: error.message
 			});
 		});
+});
+
+app.get('/users/leaderboard/show', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
+	const userIDs = await House.findById(req.userHouse).then((house) => {
+		return house.userIDs;
+	});
+
+	userIDs.forEach(async (userID) => {
+		const taskScore = await AssignedTask.find({ userID: userID }).then((tasks) => {
+			if (!tasks) return 0;
+
+			let taskScore = 0;
+			tasks.forEach((task) => {
+				if (task.completed) {
+					taskScore += 2;
+				}
+			});
+
+			return taskScore;
+		});
+
+		const newsScore = await News.find({ userID: userID }).then((news) => {
+			return news.length * 2;
+		});
+
+		const commentScore = await News.find({ 'comments.userID': userID }, 'comments').then((news) => {
+			if (!news) return 0;
+
+			let commentScore = 0;
+			news.forEach((comments) => {
+				comments.comments.forEach((comment) => {
+					if (comment.userID.equals(userID)) {
+						commentScore++;
+					}
+				});
+			});
+
+			return commentScore;
+		});
+
+		const purchaseScore = await Purchase.find({ userID: userID }).then((purchases) => {
+			if (!purchases) return 0;
+
+			if (purchases[0]) {
+				return purchases[0].items.length;
+			} else return 0;
+		});
+
+		const leaderBoard = new LeaderBoard({
+			userID: userID,
+			scores: [
+				{
+					activity: 'tasks',
+					score: taskScore
+				},
+				{
+					activity: 'news',
+					score: newsScore
+				},
+				{
+					activity: 'purchases',
+					score: purchaseScore
+				},
+				{
+					activity: 'comments',
+					score: commentScore
+				}
+			]
+		});
+
+		LeaderBoard.findOne({ userID: userID })
+			.then((user) => {
+				if (!user) {
+					leaderBoard.save().then((success) => {
+						if (success) {
+							return res.status(200).json({
+								message: 'You have successfully created your leaderboard record.'
+							});
+						}
+					});
+				} else {
+					LeaderBoard.updateOne(
+						{ userID: userID },
+						{
+							'scores.0.score': taskScore,
+							'scores.1.score': newsScore,
+							'scores.2.score': purchaseScore,
+							'scores.3.score': commentScore
+						}
+					).then((updatedScores) => {
+						if (updatedScores.nModified > 0) {
+							return res.status(200).json({
+								message: 'You have successfully updated your leaderboard record.'
+							});
+						} else {
+							return res.status(400).json({
+								message: 'You have not updated your leaderboard record.'
+							});
+						}
+					});
+				}
+			})
+			.catch((error) => {
+				return res.status(500).json({
+					message: error.message
+				});
+			});
+	});
 });
 
 // ******************************************

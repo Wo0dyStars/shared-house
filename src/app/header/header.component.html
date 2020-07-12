@@ -1,14 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" routerLink="/" routerLinkActive="active" >Navbar</a>
+  <a class="navbar-brand" routerLink="/" routerLinkActive="active" >Shared house</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home </a>
-      </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
       </li>
@@ -16,38 +13,25 @@
         <a class="nav-link" routerLink="/authorization" routerLinkActive="active">Register</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/users/{{ userID }}" routerLinkActive="active">User profile</a>
+        <a class="nav-link" routerLink="/users/{{ userID }}" routerLinkActive="active">My profile</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/users/news" routerLinkActive="active">News</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Tasks</a>
+        <a class="nav-link" routerLink="/users/task" routerLinkActive="active">Tasks</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Leader board</a>
-      </li>
-      <li class="nav-item">
-        User is authenticated {{ this.isAuthenticated }}
+        <a class="nav-link" routerLink="/users/leaderboard" routerLinkActive="active">Leader board</a>
       </li>
       <li class="nav-item" *ngIf="isAuthenticated">
         <a class="nav-link" (click)="onLogout()">Logout</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Activities
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" routerLink="/users/availabletask" routerLinkActive="active">Reserve tasks</a>
-          <a class="dropdown-item" href="#">Reserve slots</a>
-          <a class="dropdown-item" routerLink="/users/shopping-list" routerLinkActive="active">Shopping list</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Chat</a>
-          <a class="dropdown-item" href="#">Products</a>
-        </div>
+      <li class="nav-item" >
+        <a class="nav-link" routerLink="/users/shopping-list" routerLinkActive="active">Shopping list</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Others</a>
+        <a class="nav-link" routerLink="/users/availabletask" routerLinkActive="active">Reserve tasks</a>
       </li>
     </ul>
   </div>
