@@ -13,7 +13,8 @@ export class AppComponent implements OnInit, OnDestroy {
 	@Output() userScore: any = null;
 	isAuthenticated: boolean = false;
 	private authorizationListener: Subscription;
-	private userScoreListener: Subscription;
+
+	userID: string = null;
 	isLoading = false;
 
 	constructor(private authorizationService: AuthorizationService, private http: HttpClient, private router: Router) {}
@@ -26,14 +27,10 @@ export class AppComponent implements OnInit, OnDestroy {
 			this.isAuthenticated = isAuthenticated;
 		});
 
-		this.userScoreListener = this.authorizationService.getUserScore().subscribe((userScore) => {
-			this.userScore = userScore;
-			this.isLoading = false;
-		});
+		this.isLoading = false;
 	}
 
 	ngOnDestroy() {
 		this.authorizationListener.unsubscribe();
-		this.userScoreListener.unsubscribe();
 	}
 }

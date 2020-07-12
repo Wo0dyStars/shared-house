@@ -20,7 +20,9 @@ export class AuthorizationComponent implements OnInit {
 	ngOnInit(): void {
 		this.verificationListener = this.authorizationService.getIsVerified().subscribe((isVerified) => {
 			this.isVerified = isVerified;
+			console.log(this.isVerified);
 		});
+		console.log(this.isVerified);
 
 		if (this.router.url !== '/authorization') {
 			this.authorizationService.confirmEmail(this.router.url);

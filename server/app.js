@@ -60,7 +60,9 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res, next) => {
-	res.send('here');
+	return res.status(200).json({
+		message: 'This is home page'
+	});
 });
 
 app.post('/register', (req, res, next) => {
@@ -249,6 +251,12 @@ app.get('/confirmation/:token', (req, res, next) => {
 });
 
 app.get('/users/:id', middleware.isLoggedIn, (req, res, next) => {
+	if (!req.params.id) {
+		return res.status(400).json({
+			message: 'The system was unable to find the user with this user ID.'
+		});
+	}
+
 	User.findById(req.params.id)
 		.then((user) => {
 			if (!user) {

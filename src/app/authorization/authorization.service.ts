@@ -89,7 +89,6 @@ export class AuthorizationService {
 						this.userID = response.userID;
 						this.authorizationStatus.next(true);
 						this.isAuthenticated = true;
-						this.calculateScores();
 						const currentTime = new Date().getTime();
 						const expiresInDate = new Date(currentTime + expiresIn * 1000);
 						this.saveAuthorizedData(this.token, expiresInDate, this.userID);
@@ -128,7 +127,7 @@ export class AuthorizationService {
 		this.authorizationStatus.next(false);
 		clearTimeout(this.tokenTimer);
 		this.clearAuthorizedData();
-		this.router.navigate([ '/' ]);
+		this.router.navigate([ '/authorization' ]);
 		window.location.reload();
 	}
 
