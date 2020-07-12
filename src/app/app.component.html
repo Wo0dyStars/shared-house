@@ -1,7 +1,7 @@
 
-
-<app-header [userScore]="userScore" *ngIf="isAuthenticated"></app-header>
+<app-loading-spinner *ngIf="this.isLoading && isAuthenticated"></app-loading-spinner>
+<app-header [userScore]="userScore" *ngIf="isAuthenticated && !this.isLoading"></app-header>
 <app-authorization *ngIf="!isAuthenticated"></app-authorization>
-<main>
+<main *ngIf="isAuthenticated && !this.isLoading">
     <router-outlet></router-outlet>
 </main>

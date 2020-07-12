@@ -11,6 +11,7 @@ import { AuthorizationService } from 'src/app/authorization/authorization.servic
 export class NewsComponent implements OnInit {
 	news: any = [];
 	userID: string = null;
+	isLoading = false;
 
 	constructor(private http: HttpClient, private authorizationService: AuthorizationService) {}
 
@@ -20,8 +21,10 @@ export class NewsComponent implements OnInit {
 	}
 
 	getNews() {
+		this.isLoading = true;
 		this.http.get<{ news: any }>('http://localhost:3000/users/news/show').subscribe((response) => {
 			this.news = response.news;
+			this.isLoading = false;
 		});
 	}
 

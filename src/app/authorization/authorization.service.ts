@@ -129,6 +129,7 @@ export class AuthorizationService {
 		clearTimeout(this.tokenTimer);
 		this.clearAuthorizedData();
 		this.router.navigate([ '/' ]);
+		window.location.reload();
 	}
 
 	private setAuthorizationTimer(duration: number) {

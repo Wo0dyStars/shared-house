@@ -12,10 +12,12 @@ export class AvailableTaskComponent implements OnInit {
 	availableTasks: AvailableTask[] = [];
 	assignedTasks: any = [];
 	userID: string = null;
+	isLoading = false;
 
 	constructor(private http: HttpClient, private authorizationService: AuthorizationService) {}
 
 	ngOnInit(): void {
+		this.isLoading = true;
 		this.getAvailableTasks();
 		this.updateAvailableTasks();
 		this.getAssignedTasks();
@@ -35,6 +37,7 @@ export class AvailableTaskComponent implements OnInit {
 			.get<{ tasks: AvailableTask[] }>('http://localhost:3000/users/assignedtask/show')
 			.subscribe((response) => {
 				this.assignedTasks = response.tasks;
+				this.isLoading = false;
 			});
 	}
 

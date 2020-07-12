@@ -9,10 +9,12 @@ import { HttpClient } from '@angular/common/http';
 export class LeaderboardComponent implements OnInit {
 	leaderboard: any = [];
 	userBoard: any = [];
+	isLoading = false;
 
 	constructor(private http: HttpClient) {}
 
 	ngOnInit(): void {
+		this.isLoading = true;
 		this.getScores();
 	}
 
@@ -32,6 +34,8 @@ export class LeaderboardComponent implements OnInit {
 
 				this.userBoard.push(userBoard);
 			});
+
+			this.isLoading = false;
 		});
 	}
 }

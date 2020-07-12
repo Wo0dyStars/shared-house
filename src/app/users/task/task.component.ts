@@ -10,6 +10,7 @@ import { Task } from './task.model';
 })
 export class TaskComponent implements OnInit {
 	tasks: Task[] = [];
+	isLoading = false;
 
 	constructor(private http: HttpClient) {}
 
@@ -18,8 +19,10 @@ export class TaskComponent implements OnInit {
 	}
 
 	getTasks() {
+		this.isLoading = true;
 		this.http.get<{ tasks: Task[] }>('http://localhost:3000/users/task/show').subscribe((response) => {
 			this.tasks = response.tasks;
+			this.isLoading = false;
 		});
 	}
 

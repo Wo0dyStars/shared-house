@@ -13,10 +13,12 @@ import { AuthorizationService } from 'src/app/authorization/authorization.servic
 export class ShoppingListComponent implements OnInit {
 	shoppingList: { name: string; amount: string }[];
 	purchases: Purchase[] = [];
+	isLoading = false;
 
 	constructor(private http: HttpClient, private authorizationService: AuthorizationService) {}
 
 	ngOnInit(): void {
+		this.isLoading = true;
 		this.getShoppingList();
 		this.getPurchases();
 	}
@@ -30,8 +32,10 @@ export class ShoppingListComponent implements OnInit {
 	}
 
 	getPurchases() {
+		this.isLoading = true;
 		this.http.get<{ purchases: Purchase[] }>('http://localhost:3000/users/purchase/show').subscribe((response) => {
 			this.purchases = response.purchases;
+			this.isLoading = false;
 		});
 	}
 

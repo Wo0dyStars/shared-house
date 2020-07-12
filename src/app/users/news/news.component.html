@@ -43,8 +43,9 @@
 
 <hr>
 
-<div class="container" *ngFor="let new of news">
-    <div class="row">
+<app-loading-spinner *ngIf="this.isLoading"></app-loading-spinner>
+<div class="container" *ngIf="!this.isLoading">
+    <div class="row" *ngFor="let new of news">
         
         <div class="col news__wrapper">
             <div class="news__wrapper--title">{{ new.title }}</div>

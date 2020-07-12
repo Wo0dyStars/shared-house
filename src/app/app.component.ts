@@ -2,6 +2,7 @@ import { Component, OnInit, Output, OnDestroy } from '@angular/core';
 import { AuthorizationService } from './authorization/authorization.service';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-root',
@@ -13,9 +14,12 @@ export class AppComponent implements OnInit, OnDestroy {
 	isAuthenticated: boolean = false;
 	private authorizationListener: Subscription;
 	private userScoreListener: Subscription;
-	constructor(private authorizationService: AuthorizationService, private http: HttpClient) {}
+	isLoading = false;
+
+	constructor(private authorizationService: AuthorizationService, private http: HttpClient, private router: Router) {}
 
 	ngOnInit() {
+		this.isLoading = true;
 		this.authorizationService.automateAuthorization();
 		this.isAuthenticated = this.authorizationService.getIsAuthenticated();
 		this.authorizationListener = this.authorizationService.getAuthorizationStatus().subscribe((isAuthenticated) => {
@@ -24,6 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 		this.userScoreListener = this.authorizationService.getUserScore().subscribe((userScore) => {
 			this.userScore = userScore;
+			this.isLoading = false;
 		});
 	}
 

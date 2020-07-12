@@ -1,6 +1,6 @@
 
-
-<div class="container">
+<app-loading-spinner *ngIf="this.isLoading"></app-loading-spinner>
+<div class="container" *ngIf="!this.isLoading">
     <div class="row">
         <div class="col-xs-12">
     

@@ -1,6 +1,6 @@
 
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<app-loading-spinner *ngIf="this.isLoading"></app-loading-spinner>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="!this.isLoading">
   <a class="navbar-brand" routerLink="/" routerLinkActive="active" >Shared house</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>

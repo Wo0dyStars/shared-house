@@ -18,6 +18,7 @@ import { TaskComponent } from './users/task/task.component';
 import { AvailableTaskComponent } from './users/task/available-task/available-task.component';
 import { NewsComponent } from './users/news/news.component';
 import { LeaderboardComponent } from './users/leaderboard/leaderboard.component';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 
 @NgModule({
 	declarations: [
@@ -33,7 +34,8 @@ import { LeaderboardComponent } from './users/leaderboard/leaderboard.component'
 		TaskComponent,
 		AvailableTaskComponent,
 		NewsComponent,
-		LeaderboardComponent
+		LeaderboardComponent,
+		LoadingSpinnerComponent
 	],
 	imports: [ BrowserModule, FormsModule, AppRoutingModule, HttpClientModule ],
 	providers: [

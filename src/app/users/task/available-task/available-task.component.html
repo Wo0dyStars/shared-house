@@ -1,5 +1,6 @@
 
-<div class="container">
+<app-loading-spinner *ngIf="this.isLoading"></app-loading-spinner>
+<div class="container" *ngIf="!this.isLoading">
     <h3>Available tasks</h3>
 
     <div class="row">

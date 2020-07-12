@@ -11,17 +11,20 @@ import { HttpClient } from '@angular/common/http';
 export class HeaderComponent implements OnInit, OnDestroy {
 	isAuthenticated: boolean = false;
 	userID: string = null;
+	isLoading = false;
 	@Input() userScore: any;
 	private authorizationListener: Subscription;
 
 	constructor(private authorizationService: AuthorizationService, private http: HttpClient) {}
 
 	ngOnInit(): void {
+		this.isLoading = true;
 		this.isAuthenticated = this.authorizationService.getIsAuthenticated();
 		this.authorizationListener = this.authorizationService.getAuthorizationStatus().subscribe((isAuthenticated) => {
 			this.isAuthenticated = isAuthenticated;
 		});
 		this.userID = this.authorizationService.getUserID();
+		this.isLoading = false;
 	}
 
 	onLogout() {
