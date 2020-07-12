@@ -11,8 +11,8 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/authorization" routerLinkActive="active">Register</a>
+      <li class="nav-item" *ngIf="!isAuthenticated">
+        <a class="nav-link" routerLink="/authorization" routerLinkActive="active">Sign in</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/users/{{ userID }}" routerLinkActive="active">My profile</a>

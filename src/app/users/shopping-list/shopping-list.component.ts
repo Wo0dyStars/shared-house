@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ShoppingList } from './shopping-list.model';
 import { Purchase } from './purchase.model';
+import { AuthorizationService } from 'src/app/authorization/authorization.service';
 
 @Component({
 	selector: 'app-shopping-list',
@@ -13,7 +14,7 @@ export class ShoppingListComponent implements OnInit {
 	shoppingList: { name: string; amount: string }[];
 	purchases: Purchase[] = [];
 
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient, private authorizationService: AuthorizationService) {}
 
 	ngOnInit(): void {
 		this.getShoppingList();
@@ -31,7 +32,6 @@ export class ShoppingListComponent implements OnInit {
 	getPurchases() {
 		this.http.get<{ purchases: Purchase[] }>('http://localhost:3000/users/purchase/show').subscribe((response) => {
 			this.purchases = response.purchases;
-			console.log(this.purchases);
 		});
 	}
 
@@ -56,6 +56,7 @@ export class ShoppingListComponent implements OnInit {
 				this.onRemove(index);
 				this.getShoppingList();
 				this.getPurchases();
+				this.authorizationService.calculateScores();
 			});
 	}
 }

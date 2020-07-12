@@ -1,6 +1,7 @@
 
 
-<app-header [userScore]="userScore"></app-header>
+<app-header [userScore]="userScore" *ngIf="isAuthenticated"></app-header>
+<app-authorization *ngIf="!isAuthenticated"></app-authorization>
 <main>
     <router-outlet></router-outlet>
 </main>

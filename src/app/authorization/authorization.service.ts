@@ -13,6 +13,7 @@ export class AuthorizationService {
 	private tokenTimer: NodeJS.Timer;
 	private authorizationStatus = new Subject<boolean>();
 	private isVerified = new Subject<boolean>();
+	private userScore = new Subject<any>();
 
 	constructor(private http: HttpClient, private router: Router) {}
 
@@ -38,6 +39,23 @@ export class AuthorizationService {
 
 	getAuthorizationStatus() {
 		return this.authorizationStatus.asObservable();
+	}
+
+	calculateScores() {
+		this.http.get('http://localhost:3000/users/leaderboard/calculate').subscribe((response) => {
+			this.getScores();
+		});
+	}
+
+	getScores() {
+		this.http.get('http://localhost:3000/users/leaderboard/show/current').subscribe((response) => {
+			this.userScore.next(response);
+		});
+	}
+
+	getUserScore() {
+		this.calculateScores();
+		return this.userScore.asObservable();
 	}
 
 	getUsers(userID: string): Observable<User> {
@@ -71,6 +89,7 @@ export class AuthorizationService {
 						this.userID = response.userID;
 						this.authorizationStatus.next(true);
 						this.isAuthenticated = true;
+						this.calculateScores();
 						const currentTime = new Date().getTime();
 						const expiresInDate = new Date(currentTime + expiresIn * 1000);
 						this.saveAuthorizedData(this.token, expiresInDate, this.userID);
