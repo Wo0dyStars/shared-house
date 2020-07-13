@@ -14,11 +14,10 @@ import { EmailValidationDirective } from './authorization/email-validation.direc
 import { UsersComponent } from './users/users.component';
 import { UserProfileComponent } from './users/user-profile/user-profile.component';
 import { ShoppingListComponent } from './users/shopping-list/shopping-list.component';
-import { TaskComponent } from './users/task/task.component';
-import { AvailableTaskComponent } from './users/task/available-task/available-task.component';
 import { NewsComponent } from './users/news/news.component';
 import { LeaderboardComponent } from './users/leaderboard/leaderboard.component';
-import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { TasksModule } from './users/tasks.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
 	declarations: [
@@ -31,13 +30,10 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 		UsersComponent,
 		UserProfileComponent,
 		ShoppingListComponent,
-		TaskComponent,
-		AvailableTaskComponent,
 		NewsComponent,
-		LeaderboardComponent,
-		LoadingSpinnerComponent
+		LeaderboardComponent
 	],
-	imports: [ BrowserModule, FormsModule, AppRoutingModule, HttpClientModule ],
+	imports: [ BrowserModule, FormsModule, AppRoutingModule, HttpClientModule, TasksModule, SharedModule ],
 	providers: [
 		{
 			provide: HTTP_INTERCEPTORS,
