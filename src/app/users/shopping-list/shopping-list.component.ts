@@ -14,10 +14,12 @@ export class ShoppingListComponent implements OnInit {
 	shoppingList: { name: string; amount: string }[];
 	purchases: Purchase[] = [];
 	isLoading = false;
+	message: string = '';
 
 	constructor(private http: HttpClient, private authorizationService: AuthorizationService) {}
 
 	ngOnInit(): void {
+		this.message = '';
 		this.isLoading = true;
 		this.getShoppingList();
 		this.getPurchases();
@@ -40,23 +42,30 @@ export class ShoppingListComponent implements OnInit {
 	}
 
 	onSubmit(form: NgForm) {
-		this.http.post('http://localhost:3000/users/shopping-list/add', form.value).subscribe((response) => {
-			this.getShoppingList();
-		});
+		this.http
+			.post<{ message: string }>('http://localhost:3000/users/shopping-list/add', form.value)
+			.subscribe((response) => {
+				this.message = response.message;
+				this.getShoppingList();
+			});
 	}
 
 	onRemove(index: number) {
 		this.http
-			.post('http://localhost:3000/users/shopping-list/remove', { item: this.shoppingList[index] })
+			.post<{ message: string }>('http://localhost:3000/users/shopping-list/remove', {
+				item: this.shoppingList[index]
+			})
 			.subscribe((response) => {
+				this.message = response.message;
 				this.getShoppingList();
 			});
 	}
 
 	onBuy(index: number) {
 		this.http
-			.post('http://localhost:3000/users/purchase/new', { item: this.shoppingList[index] })
+			.post<{ message: string }>('http://localhost:3000/users/purchase/new', { item: this.shoppingList[index] })
 			.subscribe((response) => {
+				this.message = response.message;
 				this.onRemove(index);
 				this.getShoppingList();
 				this.getPurchases();

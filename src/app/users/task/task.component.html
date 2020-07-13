@@ -57,9 +57,11 @@
             </form>
 
             
+            
             <div class="row">
                 <div class="col-xs-12">
-
+                    <hr>
+                    <div class="alert alert-success" *ngIf="message"> {{ message }} </div>
                     <ul class="list-group">
                         <div class="row">
                             <li class="list-group-item col-6">Task name</li>

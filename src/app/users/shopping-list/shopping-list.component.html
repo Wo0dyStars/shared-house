@@ -1,5 +1,7 @@
 
 <app-loading-spinner *ngIf="this.isLoading"></app-loading-spinner>
+<hr>
+<div class="alert alert-success" *ngIf="message">{{ message }}</div>
 <div class="container" *ngIf="!this.isLoading">
     <div class="row">
         <div class="col-xs-12">

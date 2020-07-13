@@ -21,10 +21,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 	updateError: string = null;
 	subscription: Subscription;
 	userID = this.router.url.slice(7);
+	isLoading = false;
 
 	constructor(private authorizationService: AuthorizationService, private router: Router, private http: HttpClient) {}
 
 	ngOnInit() {
+		this.isLoading = true;
 		this.subscription = this.getUserData().subscribe((res) => {
 			this.userData = res;
 			this.userData.movedIn = this.userData.movedIn.slice(0, 10);
@@ -35,6 +37,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 			this.userAvatars.push('http://localhost:3000/images/avatar3.webp');
 			this.userAvatars.push('http://localhost:3000/images/avatar4.png');
 			this.getUserLevel();
+			this.isLoading = false;
 		});
 	}
 
@@ -74,60 +77,76 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 						this.userData.birthday = this.userData.birthday.slice(0, 10);
 					}
 					this.updateSuccess = response.message;
+					this.updateError = null;
 					this.getUserLevel();
 				},
 				(HttpError) => {
 					this.updateError = HttpError.error.message;
+					this.updateSuccess = null;
 				}
 			);
 	}
 
 	onSearchAddress(address: HTMLFormElement, postcode: HTMLFormElement) {
-		let searchData = {
-			addressName: address.name,
-			addressValue: address.value,
-			postcodeName: postcode.name,
-			postcodeValue: postcode.value
-		};
+		if (postcode.value === '' || address.value === '') {
+			this.messageError = 'You must provide your address and postcode for searching a house.';
+		} else {
+			let searchData = {
+				addressName: address.name,
+				addressValue: address.value,
+				postcodeName: postcode.name,
+				postcodeValue: postcode.value
+			};
 
-		this.http.post<{ message: string; matches: any }>('http://localhost:3000/users/address', searchData).subscribe(
-			(response) => {
-				this.searchedAddress = [];
-				response.matches.forEach((user: any) => {
-					let matchedUsers: any = {
-						forename: user.forename,
-						surname: user.surname,
-						email: user.email
-					};
+			this.http
+				.post<{ message: string; matches: any }>('http://localhost:3000/users/address', searchData)
+				.subscribe(
+					(response) => {
+						this.searchedAddress = [];
+						response.matches.forEach((user: any) => {
+							let matchedUsers: any = {
+								forename: user.forename,
+								surname: user.surname,
+								email: user.email
+							};
 
-					if (user.houseID) {
-						matchedUsers.house = user.houseID.name;
-						matchedUsers.houseID = user.houseID;
+							if (user.houseID) {
+								matchedUsers.house = user.houseID.name;
+								matchedUsers.houseID = user.houseID;
+							}
+
+							this.searchedAddress.push(matchedUsers);
+						});
+						this.messageSuccess = response.message;
+						this.messageError = null;
+					},
+					(HttpError) => {
+						this.messageError = HttpError.error.message;
+						this.messageSuccess = null;
 					}
-
-					this.searchedAddress.push(matchedUsers);
-				});
-				this.messageSuccess = response.message;
-			},
-			(HttpError) => {
-				this.messageError = HttpError.error.message;
-			}
-		);
+				);
+		}
 	}
 
-	onCreateHouse(housename: HTMLFormElement) {
-		this.http
-			.post<{ message: string }>('http://localhost:3000/users/house/create/' + this.userID, {
-				housename: housename.value
-			})
-			.subscribe(
-				(response) => {
-					this.messageSuccess = response.message;
-				},
-				(HttpError) => {
-					this.messageError = HttpError.error.message;
-				}
-			);
+	onCreateHouse(housename: HTMLFormElement, postcode: HTMLFormElement, address: HTMLFormElement) {
+		if (postcode.value === '' || address.value === '') {
+			this.messageError = 'You must provide your address and postcode for creating a house.';
+		} else {
+			this.http
+				.post<{ message: string }>('http://localhost:3000/users/house/create/' + this.userID, {
+					housename: housename.value
+				})
+				.subscribe(
+					(response) => {
+						this.messageSuccess = response.message;
+						this.messageError = null;
+					},
+					(HttpError) => {
+						this.messageError = HttpError.error.message;
+						this.messageSuccess = null;
+					}
+				);
+		}
 	}
 
 	onJoinHouse(houseID: string) {
@@ -136,9 +155,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 			.subscribe(
 				(response) => {
 					this.messageSuccess = response.message;
+					this.messageError = null;
 				},
 				(HttpError) => {
 					this.messageError = HttpError.error.message;
+					this.messageSuccess = null;
 				}
 			);
 	}

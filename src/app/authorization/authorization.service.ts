@@ -14,6 +14,7 @@ export class AuthorizationService {
 	private authorizationStatus = new Subject<boolean>();
 	private userScore = new Subject<any>();
 	private isVerified = new Subject<boolean>();
+	private message = new Subject<string>();
 
 	constructor(private http: HttpClient, private router: Router) {}
 
@@ -35,6 +36,10 @@ export class AuthorizationService {
 
 	getIsAuthenticated() {
 		return this.isAuthenticated;
+	}
+
+	getMessage() {
+		return this.message.asObservable();
 	}
 
 	getAuthorizationStatus() {
@@ -67,6 +72,7 @@ export class AuthorizationService {
 		return this.http.post<{ message: string; userID: string }>('http://localhost:3000/register', Data).subscribe(
 			(response) => {
 				console.log(response.message);
+				this.message.next(response.message);
 				this.router.navigate([ '/users/' + response.userID ]);
 			},
 			(error) => {

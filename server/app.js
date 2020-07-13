@@ -700,24 +700,27 @@ app.get('/users/availabletask/update', middleware.isLoggedIn, middleware.hasHous
 	});
 
 	const now = new Date(new Date().toISOString().slice(0, 10));
+	if (currentTasks.length) {
+		currentTasks.forEach((task) => {
+			if (task.task) {
+				const nextDate = new Date(new Date().toISOString().slice(0, 10));
+				nextDate.setDate(now.getDate() + task.task.frequency);
 
-	currentTasks.forEach((task) => {
-		const nextDate = new Date(new Date().toISOString().slice(0, 10));
-		nextDate.setDate(now.getDate() + task.task.frequency);
+				const currentDate = new Date(task.availableFrom);
 
-		const currentDate = new Date(task.availableFrom);
-
-		if (currentDate.getTime() === now.getTime()) {
-			AvailableTask.updateOne(
-				{ _id: task._id },
-				{ availableFrom: nextDate.toISOString().slice(0, 10) }
-			).catch((error) => {
-				return res.status(500).json({
-					message: error.message
-				});
-			});
-		}
-	});
+				if (currentDate.getTime() === now.getTime()) {
+					AvailableTask.updateOne(
+						{ _id: task._id },
+						{ availableFrom: nextDate.toISOString().slice(0, 10) }
+					).catch((error) => {
+						return res.status(500).json({
+							message: error.message
+						});
+					});
+				}
+			}
+		});
+	}
 
 	return res.status(200).json({
 		message: 'You have successfully updated the required fields.'
@@ -896,8 +899,12 @@ app.post('/users/news/comment/delete', middleware.isLoggedIn, middleware.hasHous
 app.get('/users/leaderboard/show/current', middleware.isLoggedIn, middleware.hasHouse, async (req, res, next) => {
 	LeaderBoard.findOne({ userID: req.userID }).populate('userID').then((scores) => {
 		if (!scores) {
-			return res.status(400).json({
-				message: 'User has been not found.'
+			User.findById(req.userID).then((user) => {
+				return res.status(200).json({
+					name: user.forename + ' ' + user.surname,
+					avatar: user.avatar,
+					score: 0
+				});
 			});
 		}
 

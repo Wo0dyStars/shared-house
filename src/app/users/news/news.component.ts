@@ -12,10 +12,12 @@ export class NewsComponent implements OnInit {
 	news: any = [];
 	userID: string = null;
 	isLoading = false;
+	message: string = '';
 
 	constructor(private http: HttpClient, private authorizationService: AuthorizationService) {}
 
 	ngOnInit(): void {
+		this.message = '';
 		this.getNews();
 		this.userID = this.authorizationService.getUserID();
 	}
@@ -34,7 +36,8 @@ export class NewsComponent implements OnInit {
 			message: form.value.message
 		};
 
-		this.http.post<{ news: any }>('http://localhost:3000/users/news/new', newsData).subscribe((response) => {
+		this.http.post<{ message: string }>('http://localhost:3000/users/news/new', newsData).subscribe((response) => {
+			this.message = response.message;
 			this.getNews();
 		});
 

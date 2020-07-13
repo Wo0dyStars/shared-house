@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthorizationService } from './authorization.service';
-import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -9,17 +8,23 @@ import { Subscription } from 'rxjs';
 	templateUrl: './authorization.component.html',
 	styleUrls: [ './authorization.component.scss' ]
 })
-export class AuthorizationComponent implements OnInit {
+export class AuthorizationComponent implements OnInit, OnDestroy {
 	display: boolean = false;
 	isLoginMode: boolean = true;
 	isVerified: boolean = false;
 	verificationListener: Subscription;
+	message: string = '';
+	messageListener: Subscription;
 
-	constructor(public authorizationService: AuthorizationService, private router: Router) {}
+	constructor(public authorizationService: AuthorizationService) {}
 
 	ngOnInit(): void {
 		this.verificationListener = this.authorizationService.getIsVerified().subscribe((isVerified) => {
 			this.isVerified = isVerified;
+		});
+
+		this.messageListener = this.authorizationService.getMessage().subscribe((message) => {
+			this.message = message;
 		});
 
 		if (window.location.href.slice(22, 34) === 'confirmation') {
@@ -50,5 +55,10 @@ export class AuthorizationComponent implements OnInit {
 
 	onSwitchMode() {
 		this.isLoginMode = !this.isLoginMode;
+	}
+
+	ngOnDestroy() {
+		this.verificationListener.unsubscribe();
+		this.messageListener.unsubscribe();
 	}
 }

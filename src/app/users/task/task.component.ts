@@ -11,6 +11,7 @@ import { Task } from './task.model';
 export class TaskComponent implements OnInit {
 	tasks: Task[] = [];
 	isLoading = false;
+	message: string = '';
 
 	constructor(private http: HttpClient) {}
 
@@ -19,6 +20,7 @@ export class TaskComponent implements OnInit {
 	}
 
 	getTasks() {
+		this.message = '';
 		this.isLoading = true;
 		this.http.get<{ tasks: Task[] }>('http://localhost:3000/users/task/show').subscribe((response) => {
 			this.tasks = response.tasks;
@@ -27,9 +29,12 @@ export class TaskComponent implements OnInit {
 	}
 
 	onSubmit(form: NgForm) {
-		this.http.post('http://localhost:3000/users/task/new', { taskData: form.value }).subscribe((response) => {
-			this.getTasks();
-		});
+		this.http
+			.post<{ message: string }>('http://localhost:3000/users/task/new', { taskData: form.value })
+			.subscribe((response) => {
+				this.getTasks();
+				this.message = response.message;
+			});
 
 		form.reset();
 	}

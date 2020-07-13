@@ -1,5 +1,4 @@
 .container {
-	background-color: rgba(0, 0, 0, .025);
 	margin: 1.5rem auto;
 }
 
@@ -9,6 +8,9 @@ form {
 }
 
 .news {
+	margin-bottom: 2rem;
+	background-color: rgba(0, 0, 0, .025);
+
 	&__wrapper {
 		&--title {
 			background-color: rgba(0, 0, 0, .1);
