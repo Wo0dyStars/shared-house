@@ -90,7 +90,8 @@ app.post('/register', (req, res, next) => {
 				});
 
 				return res.status(201).json({
-					message: `You have successfully created your account, ${result.email}`
+					message: `You have successfully created your account, ${result.email}`,
+					userID: result._id
 				});
 			})
 			.catch((error) => {

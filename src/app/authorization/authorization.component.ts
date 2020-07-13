@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthorizationService } from './authorization.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -20,12 +20,10 @@ export class AuthorizationComponent implements OnInit {
 	ngOnInit(): void {
 		this.verificationListener = this.authorizationService.getIsVerified().subscribe((isVerified) => {
 			this.isVerified = isVerified;
-			console.log(this.isVerified);
 		});
-		console.log(this.isVerified);
 
-		if (this.router.url !== '/authorization') {
-			this.authorizationService.confirmEmail(this.router.url);
+		if (window.location.href.slice(22, 34) === 'confirmation') {
+			this.authorizationService.confirmEmail(window.location.href.slice(21));
 		}
 	}
 

@@ -12,8 +12,8 @@ export class AuthorizationService {
 	private isAuthenticated = false;
 	private tokenTimer: NodeJS.Timer;
 	private authorizationStatus = new Subject<boolean>();
-	private isVerified = new Subject<boolean>();
 	private userScore = new Subject<any>();
+	private isVerified = new Subject<boolean>();
 
 	constructor(private http: HttpClient, private router: Router) {}
 
@@ -21,12 +21,12 @@ export class AuthorizationService {
 		return this.token;
 	}
 
-	getIsVerified() {
-		return this.isVerified;
-	}
-
 	getUserID() {
 		return this.userID;
+	}
+
+	getIsVerified() {
+		return this.isVerified.asObservable();
 	}
 
 	getDatabaseEmails() {
@@ -64,10 +64,10 @@ export class AuthorizationService {
 
 	createUser(email: string, password: string) {
 		const Data: AuthorizationData = { email: email, password: password };
-		return this.http.post<{ message: string }>('http://localhost:3000/register', Data).subscribe(
+		return this.http.post<{ message: string; userID: string }>('http://localhost:3000/register', Data).subscribe(
 			(response) => {
 				console.log(response.message);
-				this.router.navigate([ '/' ]);
+				this.router.navigate([ '/users/' + response.userID ]);
 			},
 			(error) => {
 				console.log('An error occurred ', error);
@@ -166,13 +166,14 @@ export class AuthorizationService {
 	}
 
 	confirmEmail(url: string) {
-		this.http.get<{ message: string }>('http://localhost:3000' + url).subscribe((response) => {
-			this.isVerified.next(true);
-			console.log(response.message);
-		}),
-			(HttpError: any) => {
-				console.log(HttpError.error.message);
+		this.http.get<{ message: string }>('http://localhost:3000' + url).subscribe(
+			(response) => {
+				this.isVerified.next(true);
+			},
+			(error) => {
 				this.isVerified.next(false);
-			};
+				console.log(error);
+			}
+		);
 	}
 }

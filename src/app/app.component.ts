@@ -26,7 +26,6 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.authorizationListener = this.authorizationService.getAuthorizationStatus().subscribe((isAuthenticated) => {
 			this.isAuthenticated = isAuthenticated;
 		});
-
 		this.isLoading = false;
 	}
 
