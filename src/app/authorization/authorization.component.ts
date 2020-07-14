@@ -14,7 +14,9 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
 	isVerified: boolean = false;
 	verificationListener: Subscription;
 	message: string = '';
+	errorMessage: string = '';
 	messageListener: Subscription;
+	errorMessageListener: Subscription;
 
 	constructor(public authorizationService: AuthorizationService) {}
 
@@ -25,6 +27,10 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
 
 		this.messageListener = this.authorizationService.getMessage().subscribe((message) => {
 			this.message = message;
+		});
+
+		this.errorMessageListener = this.authorizationService.getErrorMessage().subscribe((message) => {
+			this.errorMessage = message;
 		});
 
 		if (window.location.href.slice(22, 34) === 'confirmation') {
@@ -60,5 +66,6 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
 	ngOnDestroy() {
 		this.verificationListener.unsubscribe();
 		this.messageListener.unsubscribe();
+		this.errorMessageListener.unsubscribe();
 	}
 }

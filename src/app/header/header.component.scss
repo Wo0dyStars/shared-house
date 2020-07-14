@@ -2,6 +2,14 @@
 	width: 5rem;
 }
 
+.navbar {
+	padding: 0;
+}
+
+.navbar-brand {
+	margin-left: 1rem;
+}
+
 .navbar-nav {
 	display: flex;
 	align-items: center;
@@ -13,5 +21,27 @@
 	margin-left: 1rem;
 	background-color: white;
 	padding: 1rem;
-	border-radius: 1rem;
+	border-bottom: 1px dashed rgba(0, 0, 0, .3);
+
+	.score-label {
+		text-transform: uppercase;
+		font-weight: 500;
+		margin-right: .3rem;
+	}
+
+	.score-value {
+		font-weight: 900;
+		font-size: 1.1rem;
+		color: green;
+	}
+}
+
+.logout {
+	position: absolute;
+	right: 1rem;
+	top: 1rem;
+
+	&__housed {
+		margin: 1rem;
+	}
 }

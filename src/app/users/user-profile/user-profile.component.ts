@@ -138,8 +138,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 				})
 				.subscribe(
 					(response) => {
+						this.onSave(postcode);
+						this.onSave(address);
 						this.messageSuccess = response.message;
 						this.messageError = null;
+						setTimeout(() => {
+							window.location.reload();
+						}, 2500);
 					},
 					(HttpError) => {
 						this.messageError = HttpError.error.message;

@@ -14,3 +14,14 @@
 .action {
 	margin: .1rem;
 }
+
+.titles {
+	li {
+		background-color: #343a40;
+		color: white;
+
+		&:not(:last-child) {
+			border-right: 1px solid white;
+		}
+	}
+}

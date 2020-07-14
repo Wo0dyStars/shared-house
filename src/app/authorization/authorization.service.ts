@@ -15,6 +15,7 @@ export class AuthorizationService {
 	private userScore = new Subject<any>();
 	private isVerified = new Subject<boolean>();
 	private message = new Subject<string>();
+	private errorMessage = new Subject<string>();
 
 	constructor(private http: HttpClient, private router: Router) {}
 
@@ -40,6 +41,10 @@ export class AuthorizationService {
 
 	getMessage() {
 		return this.message.asObservable();
+	}
+
+	getErrorMessage() {
+		return this.errorMessage.asObservable();
 	}
 
 	getAuthorizationStatus() {
@@ -71,12 +76,11 @@ export class AuthorizationService {
 		const Data: AuthorizationData = { email: email, password: password };
 		return this.http.post<{ message: string; userID: string }>('http://localhost:3000/register', Data).subscribe(
 			(response) => {
-				console.log(response.message);
 				this.message.next(response.message);
 				this.router.navigate([ '/users/' + response.userID ]);
 			},
-			(error) => {
-				console.log('An error occurred ', error);
+			(HttpError) => {
+				this.errorMessage.next(HttpError.error.message);
 				this.authorizationStatus.next(false);
 			}
 		);
@@ -102,7 +106,7 @@ export class AuthorizationService {
 					}
 				},
 				(HttpError) => {
-					console.log('An error occurred ', HttpError.error.message);
+					this.errorMessage.next(HttpError.error.message);
 					this.authorizationStatus.next(false);
 				}
 			);
@@ -133,6 +137,7 @@ export class AuthorizationService {
 		this.authorizationStatus.next(false);
 		clearTimeout(this.tokenTimer);
 		this.clearAuthorizedData();
+		console.log(this.message);
 		this.router.navigate([ '/authorization' ]);
 		window.location.reload();
 	}

@@ -7,7 +7,7 @@ const LeaderBoard = require('../models/Leaderboard');
 
 exports.getLeaderBoardForUser = async (req, res, next) => {
 	LeaderBoard.findOne({ userID: req.userID }).populate('userID').then((scores) => {
-		if (!scores) {
+		if (!scores.scores || !scores.scores.length) {
 			User.findById(req.userID).then((user) => {
 				return res.status(200).json({
 					name: user.forename + ' ' + user.surname,
@@ -15,18 +15,18 @@ exports.getLeaderBoardForUser = async (req, res, next) => {
 					score: 0
 				});
 			});
+		} else {
+			let total = 0;
+			scores.scores.forEach((score) => {
+				total += score.score;
+			});
+
+			return res.status(200).json({
+				name: scores.userID.forename + ' ' + scores.userID.surname,
+				avatar: scores.userID.avatar,
+				score: total
+			});
 		}
-
-		let total = 0;
-		scores.scores.forEach((score) => {
-			total += score.score;
-		});
-
-		return res.status(200).json({
-			name: scores.userID.forename + ' ' + scores.userID.surname,
-			avatar: scores.userID.avatar,
-			score: total
-		});
 	});
 };
 

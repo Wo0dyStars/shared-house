@@ -59,19 +59,19 @@
             
             
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col">
                     <hr>
                     <div class="alert alert-success" *ngIf="message"> {{ message }} </div>
                     <ul class="list-group">
-                        <div class="row">
-                            <li class="list-group-item col-6">Task name</li>
+                        <div class="row titles">
+                            <li class="list-group-item col-5">Task name</li>
                             <li class="list-group-item col-3">Task level</li>
-                            <li class="list-group-item col-2">Task frequency</li>
+                            <li class="list-group-item col-3">Task frequency</li>
                         </div>
                         <div class="row" *ngFor="let task of tasks">
-                            <li class="list-group-item col-6">{{ task.name }}</li>
+                            <li class="list-group-item col-5">{{ task.name }}</li>
                             <li class="list-group-item col-3">{{ task.level }}</li>
-                            <li class="list-group-item col-2">{{ task.frequency }}</li>
+                            <li class="list-group-item col-3">{{ task.frequency }}</li>
                         </div>
                     </ul>
 

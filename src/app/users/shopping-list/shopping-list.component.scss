@@ -16,3 +16,14 @@ h3 {
 .list-group-item + .list-group-item {
 	border-top-width: 1px;
 }
+
+.titles {
+	li {
+		background-color: #343a40;
+		color: white;
+
+		&:not(:last-child) {
+			border-right: 1px solid white;
+		}
+	}
+}

@@ -1,13 +1,13 @@
 
 <app-loading-spinner *ngIf="this.isLoading"></app-loading-spinner>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="!this.isLoading">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="!this.isLoading && this.hasHouse">
   <a class="navbar-brand" routerLink="/users/{{ userID }}" routerLinkActive="active" >Shared house</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav ">
       <li class="nav-item" *ngIf="this.hasHouse">
         <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
       </li>
@@ -35,10 +35,13 @@
       <li class="nav-item nav-loggedIn" *ngIf="isAuthenticated && this.hasHouse">
           {{ userScore?.name }}
           <img class="avatar" [src]="userScore?.avatar" alt="Avatar">
-          Score {{ userScore?.score }}
+          <span class="score-label">Score</span>  
+          <span class="score-value">{{ userScore?.score }}</span> 
       </li>
-      <button class="btn btn-sm btn-outline-secondary" type="button" (click)="onLogout()">Logout</button>
+      <button class="btn btn-sm btn-outline-secondary logout__housed" type="button" (click)="onLogout()" *ngIf="isAuthenticated && this.hasHouse">Logout</button>
 
     </ul>
   </div>
 </nav>
+
+<button class="btn btn-sm btn-outline-secondary logout" type="button" (click)="onLogout()" *ngIf="isAuthenticated && !this.hasHouse">Logout</button>

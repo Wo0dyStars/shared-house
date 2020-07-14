@@ -4,8 +4,11 @@
         
         
 <div class="container" *ngIf="!this.isLoading">
-        <h1>Complete your profile</h1>
-        <div *ngIf="userData?.isVerified" class="badge badge-success"> Your account has been verified.</div>
+        <div class="container__top-section" *ngIf="!userData.houseID">
+            <h1>Complete your profile</h1>
+            <p>Please provide your address data and <span>Create / Join</span> a house before continue.</p>
+        </div>
+        
         <div *ngIf="!userData?.isVerified" class="badge badge-danger"> Your email must be verified before proceeding.</div>
         
 
@@ -18,11 +21,12 @@
             <div class="progress" style="height: 30px;">
                 <div 
                     class="progress-bar" 
+                    [class]="userLevel > 50 ? userLevel > 70 ? 'bg-success' : 'bg-warning' : 'bg-dark'"
                     role="progressbar" 
                     [style.width.%]="userLevel" 
                     [attr.aria-valuenow]="userLevel" 
                     aria-valuemin="0" 
-                    aria-valuemax="100"> {{ userLevel }}% 
+                    aria-valuemax="100"> {{ userLevel }}% COMPLETED
                 </div>
             </div>
             <hr>
