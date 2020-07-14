@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizationInterceptor } from './authorization/authorization.interceptor';
@@ -14,9 +13,10 @@ import { AuthorizationModule } from './authorization/authorization.module';
 import { NewsModule } from './users/news/news.module';
 import { LeaderboardModule } from './users/leaderboard/leaderboard.module';
 import { UsersModule } from './users/users.module';
+import { HeaderModule } from './header/header.module';
 
 @NgModule({
-	declarations: [ AppComponent, HeaderComponent ],
+	declarations: [ AppComponent ],
 	imports: [
 		BrowserModule,
 		FormsModule,
@@ -28,7 +28,8 @@ import { UsersModule } from './users/users.module';
 		AuthorizationModule,
 		NewsModule,
 		LeaderboardModule,
-		UsersModule
+		UsersModule,
+		HeaderModule
 	],
 	providers: [
 		{
