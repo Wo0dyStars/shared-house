@@ -1,6 +1,8 @@
 
 
-<div class="container col-xl-5 col-lg-6 col-md-8">
+<div class="container col-xl-5 col-lg-6 col-md-8 bg-dark">
+  <h2>Welcome to Shared house</h2>
+  <h6>You must register or log in to make use of all features.</h6>
     <div class="row">
         <div class="col-xs-12 col-md-12 col-sm-12">
             <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)" [appPasswordMatch]="['password', 'confirmPassword']">
