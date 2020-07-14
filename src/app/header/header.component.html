@@ -33,7 +33,7 @@
         <a class="nav-link" routerLink="/users/availabletask" routerLinkActive="active" *ngIf="this.hasHouse">Reserve tasks</a>
       </li>
       <li class="nav-item nav-loggedIn" *ngIf="isAuthenticated && this.hasHouse">
-          {{ userScore?.name }}
+          <span class="score-name">{{ userScore?.name }}</span>
           <img class="avatar" [src]="userScore?.avatar" alt="Avatar">
           <span class="score-label">Score</span>  
           <span class="score-value">{{ userScore?.score }}</span> 

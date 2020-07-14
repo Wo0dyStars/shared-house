@@ -22,6 +22,7 @@
 	background-color: white;
 	padding: 1rem;
 	border-bottom: 1px dashed rgba(0, 0, 0, .3);
+	user-select: none;
 
 	.score-label {
 		text-transform: uppercase;
@@ -33,6 +34,13 @@
 		font-weight: 900;
 		font-size: 1.1rem;
 		color: green;
+	}
+
+	.score-name {
+		text-transform: uppercase;
+		letter-spacing: -.03rem;
+		font-weight: 700;
+		color: rgba(0, 0, 0, .6);
 	}
 }
 
