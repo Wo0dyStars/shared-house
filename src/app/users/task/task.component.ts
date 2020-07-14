@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Task } from './task.model';
+import { environment } from 'src/environments/environment';
+
+const URL = environment.URL + '/users/';
 
 @Component({
 	selector: 'app-task',
@@ -22,19 +25,17 @@ export class TaskComponent implements OnInit {
 	getTasks() {
 		this.message = '';
 		this.isLoading = true;
-		this.http.get<{ tasks: Task[] }>('http://localhost:3000/users/task/show').subscribe((response) => {
+		this.http.get<{ tasks: Task[] }>(URL + 'task/show').subscribe((response) => {
 			this.tasks = response.tasks;
 			this.isLoading = false;
 		});
 	}
 
 	onSubmit(form: NgForm) {
-		this.http
-			.post<{ message: string }>('http://localhost:3000/users/task/new', { taskData: form.value })
-			.subscribe((response) => {
-				this.getTasks();
-				this.message = response.message;
-			});
+		this.http.post<{ message: string }>(URL + 'task/new', { taskData: form.value }).subscribe((response) => {
+			this.getTasks();
+			this.message = response.message;
+		});
 
 		form.reset();
 	}

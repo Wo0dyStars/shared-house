@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { ShoppingList } from './shopping-list.model';
 import { Purchase } from './purchase.model';
 import { AuthorizationService } from 'src/app/authorization/authorization.service';
+import { environment } from 'src/environments/environment';
+
+const URL = environment.URL + '/users/';
 
 @Component({
 	selector: 'app-shopping-list',
@@ -26,33 +29,29 @@ export class ShoppingListComponent implements OnInit {
 	}
 
 	getShoppingList() {
-		this.http
-			.get<{ shoppingList: ShoppingList }>('http://localhost:3000/users/shopping-list/show')
-			.subscribe((response) => {
-				this.shoppingList = response.shoppingList.items;
-			});
+		this.http.get<{ shoppingList: ShoppingList }>(URL + 'shopping-list/show').subscribe((response) => {
+			this.shoppingList = response.shoppingList.items;
+		});
 	}
 
 	getPurchases() {
 		this.isLoading = true;
-		this.http.get<{ purchases: Purchase[] }>('http://localhost:3000/users/purchase/show').subscribe((response) => {
+		this.http.get<{ purchases: Purchase[] }>(URL + 'purchase/show').subscribe((response) => {
 			this.purchases = response.purchases;
 			this.isLoading = false;
 		});
 	}
 
 	onSubmit(form: NgForm) {
-		this.http
-			.post<{ message: string }>('http://localhost:3000/users/shopping-list/add', form.value)
-			.subscribe((response) => {
-				this.message = response.message;
-				this.getShoppingList();
-			});
+		this.http.post<{ message: string }>(URL + 'shopping-list/add', form.value).subscribe((response) => {
+			this.message = response.message;
+			this.getShoppingList();
+		});
 	}
 
 	onRemove(index: number) {
 		this.http
-			.post<{ message: string }>('http://localhost:3000/users/shopping-list/remove', {
+			.post<{ message: string }>(URL + 'shopping-list/remove', {
 				item: this.shoppingList[index]
 			})
 			.subscribe((response) => {
@@ -63,7 +62,7 @@ export class ShoppingListComponent implements OnInit {
 
 	onBuy(index: number) {
 		this.http
-			.post<{ message: string }>('http://localhost:3000/users/purchase/new', { item: this.shoppingList[index] })
+			.post<{ message: string }>(URL + 'purchase/new', { item: this.shoppingList[index] })
 			.subscribe((response) => {
 				this.message = response.message;
 				this.onRemove(index);

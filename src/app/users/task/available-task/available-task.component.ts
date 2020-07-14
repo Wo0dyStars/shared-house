@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AvailableTask } from './available-task.model';
 import { AuthorizationService } from 'src/app/authorization/authorization.service';
+import { environment } from 'src/environments/environment';
+
+const URL = environment.URL + '/users/';
 
 @Component({
 	selector: 'app-available-task',
@@ -27,41 +30,35 @@ export class AvailableTaskComponent implements OnInit {
 	}
 
 	getAvailableTasks() {
-		this.http
-			.get<{ tasks: AvailableTask[] }>('http://localhost:3000/users/availabletask/show')
-			.subscribe((response) => {
-				this.availableTasks = response.tasks;
-			});
+		this.http.get<{ tasks: AvailableTask[] }>(URL + 'availabletask/show').subscribe((response) => {
+			this.availableTasks = response.tasks;
+		});
 	}
 
 	getAssignedTasks() {
-		this.http
-			.get<{ tasks: AvailableTask[] }>('http://localhost:3000/users/assignedtask/show')
-			.subscribe((response) => {
-				this.assignedTasks = response.tasks;
-				this.isLoading = false;
-			});
+		this.http.get<{ tasks: AvailableTask[] }>(URL + 'assignedtask/show').subscribe((response) => {
+			this.assignedTasks = response.tasks;
+			this.isLoading = false;
+		});
 	}
 
 	updateAvailableTasks() {
-		this.http.get('http://localhost:3000/users/availabletask/update').subscribe((response) => {
+		this.http.get(URL + 'availabletask/update').subscribe((response) => {
 			this.getAvailableTasks();
 		});
 	}
 
 	onAccept(availableTaskID: string) {
-		this.http
-			.get<{ message: string }>('http://localhost:3000/users/assignedtask/new/' + availableTaskID)
-			.subscribe((response) => {
-				this.message = response.message;
-				this.getAvailableTasks();
-				this.getAssignedTasks();
-			});
+		this.http.get<{ message: string }>(URL + 'assignedtask/new/' + availableTaskID).subscribe((response) => {
+			this.message = response.message;
+			this.getAvailableTasks();
+			this.getAssignedTasks();
+		});
 	}
 
 	onComplete(assignedTaskID: string, availableTaskID: string) {
 		this.http
-			.post('http://localhost:3000/users/assignedtask/complete', {
+			.post(URL + 'assignedtask/complete', {
 				assignedTaskID: assignedTaskID,
 				availableTaskID: availableTaskID
 			})

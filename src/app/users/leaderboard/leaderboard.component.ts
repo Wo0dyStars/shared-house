@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
+const URL = environment.URL + '/users/';
 
 @Component({
 	selector: 'app-leaderboard',
@@ -19,7 +22,7 @@ export class LeaderboardComponent implements OnInit {
 	}
 
 	getScores() {
-		this.http.get<{ leaderBoard: any }>('http://localhost:3000/users/leaderboard/show').subscribe((response) => {
+		this.http.get<{ leaderBoard: any }>(URL + 'leaderboard/show').subscribe((response) => {
 			this.leaderboard = response.leaderBoard;
 
 			response.leaderBoard.forEach((leaderboard) => {

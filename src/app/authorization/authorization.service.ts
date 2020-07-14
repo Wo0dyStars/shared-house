@@ -4,6 +4,9 @@ import { AuthorizationData } from './authorization.model';
 import { Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
 import { User } from '../users/user.model';
+import { environment } from 'src/environments/environment';
+
+const URL = environment.URL;
 
 @Injectable({ providedIn: 'root' })
 export class AuthorizationService {
@@ -32,7 +35,7 @@ export class AuthorizationService {
 	}
 
 	getDatabaseEmails() {
-		return this.http.get<{ emails: string[] }>('http://localhost:3000/users');
+		return this.http.get<{ emails: string[] }>(URL + '/users');
 	}
 
 	getIsAuthenticated() {
@@ -52,13 +55,13 @@ export class AuthorizationService {
 	}
 
 	calculateScores() {
-		this.http.get('http://localhost:3000/users/leaderboard/calculate').subscribe((response) => {
+		this.http.get(URL + '/users/leaderboard/calculate').subscribe((response) => {
 			this.getScores();
 		});
 	}
 
 	getScores() {
-		this.http.get('http://localhost:3000/users/leaderboard/show/current').subscribe((response) => {
+		this.http.get(URL + '/users/leaderboard/show/current').subscribe((response) => {
 			this.userScore.next(response);
 		});
 	}
@@ -69,12 +72,12 @@ export class AuthorizationService {
 	}
 
 	getUsers(userID: string): Observable<User> {
-		return this.http.get<User>('http://localhost:3000/users/' + userID);
+		return this.http.get<User>(URL + '/users/' + userID);
 	}
 
 	createUser(email: string, password: string) {
 		const Data: AuthorizationData = { email: email, password: password };
-		return this.http.post<{ message: string; userID: string }>('http://localhost:3000/register', Data).subscribe(
+		return this.http.post<{ message: string; userID: string }>(URL + '/register', Data).subscribe(
 			(response) => {
 				this.message.next(response.message);
 				this.router.navigate([ '/users/' + response.userID ]);
@@ -88,28 +91,26 @@ export class AuthorizationService {
 
 	login(email: string, password: string) {
 		const Data: AuthorizationData = { email: email, password: password };
-		this.http
-			.post<{ token: string; expiresIn: number; userID: string }>('http://localhost:3000/login', Data)
-			.subscribe(
-				(response) => {
-					this.token = response.token;
-					if (response.token) {
-						const expiresIn = response.expiresIn;
-						this.setAuthorizationTimer(expiresIn);
-						this.userID = response.userID;
-						this.authorizationStatus.next(true);
-						this.isAuthenticated = true;
-						const currentTime = new Date().getTime();
-						const expiresInDate = new Date(currentTime + expiresIn * 1000);
-						this.saveAuthorizedData(this.token, expiresInDate, this.userID);
-						this.router.navigate([ '/users/' + this.userID ]);
-					}
-				},
-				(HttpError) => {
-					this.errorMessage.next(HttpError.error.message);
-					this.authorizationStatus.next(false);
+		this.http.post<{ token: string; expiresIn: number; userID: string }>(URL + '/login', Data).subscribe(
+			(response) => {
+				this.token = response.token;
+				if (response.token) {
+					const expiresIn = response.expiresIn;
+					this.setAuthorizationTimer(expiresIn);
+					this.userID = response.userID;
+					this.authorizationStatus.next(true);
+					this.isAuthenticated = true;
+					const currentTime = new Date().getTime();
+					const expiresInDate = new Date(currentTime + expiresIn * 1000);
+					this.saveAuthorizedData(this.token, expiresInDate, this.userID);
+					this.router.navigate([ '/users/' + this.userID ]);
 				}
-			);
+			},
+			(HttpError) => {
+				this.errorMessage.next(HttpError.error.message);
+				this.authorizationStatus.next(false);
+			}
+		);
 	}
 
 	automateAuthorization() {
@@ -177,7 +178,7 @@ export class AuthorizationService {
 	}
 
 	confirmEmail(url: string) {
-		this.http.get<{ message: string }>('http://localhost:3000' + url).subscribe(
+		this.http.get<{ message: string }>(URL + url).subscribe(
 			(response) => {
 				this.isVerified.next(true);
 			},

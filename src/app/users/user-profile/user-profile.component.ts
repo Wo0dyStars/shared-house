@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { AuthorizationService } from 'src/app/authorization/authorization.service';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { element } from 'protractor';
+import { environment } from 'src/environments/environment';
+
+const URL = environment.URL;
 
 @Component({
 	selector: 'app-user-profile',
@@ -32,10 +34,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 			this.userData.movedIn = this.userData.movedIn.slice(0, 10);
 			this.userData.lastUpdated = this.userData.lastUpdated.slice(0, 10);
 			this.userData.birthday = this.userData.birthday.slice(0, 10);
-			this.userAvatars.push('http://localhost:3000/images/avatar1.webp');
-			this.userAvatars.push('http://localhost:3000/images/avatar2.png');
-			this.userAvatars.push('http://localhost:3000/images/avatar3.webp');
-			this.userAvatars.push('http://localhost:3000/images/avatar4.png');
+			this.userAvatars.push(URL + '/images/avatar1.webp');
+			this.userAvatars.push(URL + '/images/avatar2.png');
+			this.userAvatars.push(URL + '/images/avatar3.webp');
+			this.userAvatars.push(URL + '/images/avatar4.png');
 			this.getUserLevel();
 			this.isLoading = false;
 		});
@@ -66,25 +68,23 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 		if (element.name === 'movedIn' || element.name === 'lastUpdated' || element.name === 'birthday') {
 			saveData.value = new Date(element.value);
 		}
-		this.http
-			.post<{ message: string; modifiedDate: Date }>('http://localhost:3000/users/edit/' + this.userID, saveData)
-			.subscribe(
-				(response) => {
-					this.userData[element.name] = element.value;
-					this.userData.lastUpdated = response.modifiedDate;
-					this.userData.lastUpdated = this.userData.lastUpdated.slice(0, 10);
-					if (element.name === 'birthday') {
-						this.userData.birthday = this.userData.birthday.slice(0, 10);
-					}
-					this.updateSuccess = response.message;
-					this.updateError = null;
-					this.getUserLevel();
-				},
-				(HttpError) => {
-					this.updateError = HttpError.error.message;
-					this.updateSuccess = null;
+		this.http.post<{ message: string; modifiedDate: Date }>(URL + '/users/edit/' + this.userID, saveData).subscribe(
+			(response) => {
+				this.userData[element.name] = element.value;
+				this.userData.lastUpdated = response.modifiedDate;
+				this.userData.lastUpdated = this.userData.lastUpdated.slice(0, 10);
+				if (element.name === 'birthday') {
+					this.userData.birthday = this.userData.birthday.slice(0, 10);
 				}
-			);
+				this.updateSuccess = response.message;
+				this.updateError = null;
+				this.getUserLevel();
+			},
+			(HttpError) => {
+				this.updateError = HttpError.error.message;
+				this.updateSuccess = null;
+			}
+		);
 	}
 
 	onSearchAddress(address: HTMLFormElement, postcode: HTMLFormElement) {
@@ -98,33 +98,31 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 				postcodeValue: postcode.value
 			};
 
-			this.http
-				.post<{ message: string; matches: any }>('http://localhost:3000/users/address', searchData)
-				.subscribe(
-					(response) => {
-						this.searchedAddress = [];
-						response.matches.forEach((user: any) => {
-							let matchedUsers: any = {
-								forename: user.forename,
-								surname: user.surname,
-								email: user.email
-							};
+			this.http.post<{ message: string; matches: any }>(URL + '/users/address', searchData).subscribe(
+				(response) => {
+					this.searchedAddress = [];
+					response.matches.forEach((user: any) => {
+						let matchedUsers: any = {
+							forename: user.forename,
+							surname: user.surname,
+							email: user.email
+						};
 
-							if (user.houseID) {
-								matchedUsers.house = user.houseID.name;
-								matchedUsers.houseID = user.houseID;
-							}
+						if (user.houseID) {
+							matchedUsers.house = user.houseID.name;
+							matchedUsers.houseID = user.houseID;
+						}
 
-							this.searchedAddress.push(matchedUsers);
-						});
-						this.messageSuccess = response.message;
-						this.messageError = null;
-					},
-					(HttpError) => {
-						this.messageError = HttpError.error.message;
-						this.messageSuccess = null;
-					}
-				);
+						this.searchedAddress.push(matchedUsers);
+					});
+					this.messageSuccess = response.message;
+					this.messageError = null;
+				},
+				(HttpError) => {
+					this.messageError = HttpError.error.message;
+					this.messageSuccess = null;
+				}
+			);
 		}
 	}
 
@@ -133,7 +131,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 			this.messageError = 'You must provide your address and postcode for creating a house.';
 		} else {
 			this.http
-				.post<{ message: string }>('http://localhost:3000/users/house/create/' + this.userID, {
+				.post<{ message: string }>(URL + '/users/house/create/' + this.userID, {
 					housename: housename.value
 				})
 				.subscribe(
@@ -155,18 +153,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 	}
 
 	onJoinHouse(houseID: string) {
-		this.http
-			.get<{ message: string }>('http://localhost:3000/users/house/join/' + this.userID + '/' + houseID)
-			.subscribe(
-				(response) => {
-					this.messageSuccess = response.message;
-					this.messageError = null;
-				},
-				(HttpError) => {
-					this.messageError = HttpError.error.message;
-					this.messageSuccess = null;
-				}
-			);
+		this.http.get<{ message: string }>(URL + '/users/house/join/' + this.userID + '/' + houseID).subscribe(
+			(response) => {
+				this.messageSuccess = response.message;
+				this.messageError = null;
+			},
+			(HttpError) => {
+				this.messageError = HttpError.error.message;
+				this.messageSuccess = null;
+			}
+		);
 	}
 
 	ngOnDestroy() {

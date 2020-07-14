@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthorizationService } from 'src/app/authorization/authorization.service';
+import { environment } from 'src/environments/environment';
+
+const URL = environment.URL + '/users/';
 
 @Component({
 	selector: 'app-news',
@@ -24,7 +27,7 @@ export class NewsComponent implements OnInit {
 
 	getNews() {
 		this.isLoading = true;
-		this.http.get<{ news: any }>('http://localhost:3000/users/news/show').subscribe((response) => {
+		this.http.get<{ news: any }>(URL + 'news/show').subscribe((response) => {
 			this.news = response.news;
 			this.isLoading = false;
 		});
@@ -36,7 +39,7 @@ export class NewsComponent implements OnInit {
 			message: form.value.message
 		};
 
-		this.http.post<{ message: string }>('http://localhost:3000/users/news/new', newsData).subscribe((response) => {
+		this.http.post<{ message: string }>(URL + 'news/new', newsData).subscribe((response) => {
 			this.message = response.message;
 			this.getNews();
 		});
@@ -46,17 +49,15 @@ export class NewsComponent implements OnInit {
 
 	onSubmitComment(form: NgForm, newsID: string) {
 		this.http
-			.post('http://localhost:3000/users/news/comment/new', { message: form.value.message, newsID: newsID })
+			.post(URL + 'news/comment/new', { message: form.value.message, newsID: newsID })
 			.subscribe((response) => {
 				this.getNews();
 			});
 	}
 
 	onRemoveComment(commentID: string) {
-		this.http
-			.post('http://localhost:3000/users/news/comment/delete', { commentID: commentID })
-			.subscribe((response) => {
-				this.getNews();
-			});
+		this.http.post(URL + 'news/comment/delete', { commentID: commentID }).subscribe((response) => {
+			this.getNews();
+		});
 	}
 }
