@@ -5,35 +5,31 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthorizationComponent } from './authorization/authorization.component';
-import { PasswordValidationDirective } from './authorization/password-validation.directive';
-import { PasswordMatchDirective } from './authorization/password-match.directive';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizationInterceptor } from './authorization/authorization.interceptor';
-import { EmailValidationDirective } from './authorization/email-validation.directive';
-import { UsersComponent } from './users/users.component';
-import { UserProfileComponent } from './users/user-profile/user-profile.component';
-import { ShoppingListComponent } from './users/shopping-list/shopping-list.component';
-import { NewsComponent } from './users/news/news.component';
-import { LeaderboardComponent } from './users/leaderboard/leaderboard.component';
-import { TasksModule } from './users/tasks.module';
+import { TasksModule } from './users/task/tasks.module';
 import { SharedModule } from './shared/shared.module';
+import { ShoppingListModule } from './users/shopping-list/shopping-list.module';
+import { AuthorizationModule } from './authorization/authorization.module';
+import { NewsModule } from './users/news/news.module';
+import { LeaderboardModule } from './users/leaderboard/leaderboard.module';
+import { UsersModule } from './users/users.module';
 
 @NgModule({
-	declarations: [
-		AppComponent,
-		HeaderComponent,
-		AuthorizationComponent,
-		PasswordValidationDirective,
-		PasswordMatchDirective,
-		EmailValidationDirective,
-		UsersComponent,
-		UserProfileComponent,
-		ShoppingListComponent,
-		NewsComponent,
-		LeaderboardComponent
+	declarations: [ AppComponent, HeaderComponent ],
+	imports: [
+		BrowserModule,
+		FormsModule,
+		AppRoutingModule,
+		HttpClientModule,
+		TasksModule,
+		SharedModule,
+		ShoppingListModule,
+		AuthorizationModule,
+		NewsModule,
+		LeaderboardModule,
+		UsersModule
 	],
-	imports: [ BrowserModule, FormsModule, AppRoutingModule, HttpClientModule, TasksModule, SharedModule ],
 	providers: [
 		{
 			provide: HTTP_INTERCEPTORS,

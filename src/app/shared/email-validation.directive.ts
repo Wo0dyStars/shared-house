@@ -1,6 +1,6 @@
 import { Validator, NG_ASYNC_VALIDATORS, AbstractControl } from '@angular/forms';
 import { Directive, forwardRef } from '@angular/core';
-import { ValidationService } from './validation.service';
+import { ValidationService } from '../authorization/validation.service';
 import { Observable } from 'rxjs';
 
 @Directive({

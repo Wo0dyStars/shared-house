@@ -1,6 +1,6 @@
 import { Validator, NG_VALIDATORS, FormGroup, ValidationErrors } from '@angular/forms';
 import { Directive, Input } from '@angular/core';
-import { ValidationService } from './validation.service';
+import { ValidationService } from '../authorization/validation.service';
 
 @Directive({
 	selector: '[appPasswordMatch]',
