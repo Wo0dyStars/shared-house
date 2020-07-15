@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
-exports.sendEmail = (receiver, token) => {
+exports.sendEmail = (receiver, token, angularURL) => {
 	const oauth2Client = new OAuth2(
 		process.env.GOOGLE_CLIENT_ID,
 		process.env.GOOGLE_CLIENT_SECRET,
@@ -40,7 +40,7 @@ exports.sendEmail = (receiver, token) => {
 				<strong>Thank you for your registration in my Shared house application!</strong><br><br>
 
 				I am really excited to see you on board, so please go ahead and verify your email address by clicking the following link<br><br>
-				<a href='http://localhost:4200/confirmation/${token}' style='color: blue; text-decoration: none; font-size: 1.2rem;'>Verification link</a><br><br>
+				<a href='${angularURL}/confirmation/${token}' style='color: blue; text-decoration: none; font-size: 1.2rem;'>Verification link</a><br><br>
 
 				Thank you again and see you later. :)
 			</body>

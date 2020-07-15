@@ -7,6 +7,7 @@ import { User } from '../users/user.model';
 import { environment } from 'src/environments/environment';
 
 const URL = environment.URL;
+const ANGULAR = environment.ANGULAR;
 
 @Injectable({ providedIn: 'root' })
 export class AuthorizationService {
@@ -76,17 +77,23 @@ export class AuthorizationService {
 	}
 
 	createUser(email: string, password: string) {
-		const Data: AuthorizationData = { email: email, password: password };
-		return this.http.post<{ message: string; userID: string }>(URL + '/register', Data).subscribe(
-			(response) => {
-				this.message.next(response.message);
-				this.router.navigate([ '/users/' + response.userID ]);
-			},
-			(HttpError) => {
-				this.errorMessage.next(HttpError.error.message);
-				this.authorizationStatus.next(false);
-			}
-		);
+		return this.http
+			.post<{ message: string; userID: string }>(URL + '/register', {
+				email: email,
+				password: password,
+				URL: URL,
+				ANGULAR: ANGULAR
+			})
+			.subscribe(
+				(response) => {
+					this.message.next(response.message);
+					this.router.navigate([ '/users/' + response.userID ]);
+				},
+				(HttpError) => {
+					this.errorMessage.next(HttpError.error.message);
+					this.authorizationStatus.next(false);
+				}
+			);
 	}
 
 	login(email: string, password: string) {

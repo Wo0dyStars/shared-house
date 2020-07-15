@@ -11,7 +11,7 @@ exports.createUser = (req, res, next) => {
 		const user = new User({
 			email: req.body.email,
 			password: hashedPassword,
-			avatar: 'http://localhost:3000/images/avatar1.webp'
+			avatar: req.body.URL + '/images/avatar1.webp'
 		});
 
 		user
@@ -26,7 +26,7 @@ exports.createUser = (req, res, next) => {
 					if (error) {
 						return res.status(500).json({ message: error.message });
 					} else {
-						emailSending.sendEmail(result.email, token.token);
+						emailSending.sendEmail(result.email, token.token, req.body.ANGULAR);
 					}
 				});
 
