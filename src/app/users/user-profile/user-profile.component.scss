@@ -31,6 +31,7 @@
 h2 {
 	text-align: center;
 	margin: 2.5rem;
+	color: rgba(0, 0, 0, .7);
 }
 
 input[type=radio] {
@@ -40,8 +41,17 @@ input[type=radio] {
 	height: 0;
 
 	&:checked + .avatar-image {
-		outline: 3px solid rgb(3, 89, 117);
-		background-color: lightblue;
+		background-color: white;
+		border: 1px solid rgba(0, 0, 0, .1);
+	}
+}
+
+.input-group-text {
+	background-color: #53585e;
+	color: white;
+
+	svg {
+		fill: white;
 	}
 }
 
@@ -55,6 +65,12 @@ input[type=radio] {
 	cursor: pointer;
 	width: 10rem;
 	padding: 1rem;
+	transition: border 0, background-color .3s;
+
+	&:hover {
+		background-color: white;
+		border: 1px solid rgba(0, 0, 0, .1);
+	}
 }
 
 .card {

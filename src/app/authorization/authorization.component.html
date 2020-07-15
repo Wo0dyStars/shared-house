@@ -1,164 +1,211 @@
 
-
-<div class="container col-xl-5 col-lg-6 col-md-8 bg-dark">
-  <h2>Welcome to Shared house</h2>
-  <p>You must register or log in to make use of all features.</p>
-    <div class="row">
-        <div class="col-xs-12 col-md-12 col-sm-12">
-            <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)" [appPasswordMatch]="['password', 'confirmPassword']">
-                
-                <div class="form-group">
-                  <div class="alert alert-success" *ngIf="this.isVerified">You have now verified your email address. Please log in!</div>
-                  <div class="alert alert-success" *ngIf="this.message">{{ this.message }}</div>
-                  <div class="alert alert-danger" *ngIf="this.errorMessage">{{ this.errorMessage }}</div>
+<div class="container__wrapper">
+  <div class="container col-xl-5 col-lg-6 col-md-8 bg-dark">
+    <h2>Welcome to Shared house</h2>
+    <p>You must register or log in to make use of all features.</p>
+      <div class="row">
+          <span class="house-logo">
+            <svg viewBox="0 0 16 16" class="bi bi-house-fill" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M8 3.293l6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+              <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+            </svg>
+          </span>
+          <div class="col-xs-12 col-md-12 col-sm-12">
+              <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)" [appPasswordMatch]="['password', 'confirmPassword']">
                   
-                  <div class="input-group mb-2">
-                      <div class="input-group-prepend">
-                          <div class="input-group-text">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
-                            </svg>
-                          </div>
-                      </div>
-                      <input 
-                        type="email" 
-                        id="email" 
-                        class="form-control"
-                        ngModel
-                        #email="ngModel"
-                        name="email"
-                        placeholder="Email address"
-                        required
-                        email
-                        appEmailValidation>
-                      <label for="email" class="email-label">Email address</label>
-                  </div>
-                  
-                  <span class="alert alert-danger" *ngIf="email.errors?.required && email.touched">Email address must be provided.</span>
-                  <span class="alert alert-danger" *ngIf="!email.errors?.required && email.invalid && email.touched && !email.errors?.emailNotAvailable">Email address is incorrect.</span>
-                  <span class="alert alert-danger" *ngIf="!this.isLoginMode && email.errors?.emailNotAvailable && email.touched">This email already exists in the database.</span>
-                  <span class="alert alert-success" *ngIf="email.valid">Email address is correct.</span>
-                  
-                </div>
-    
-                <div class="form-group">
-                  
-                  <div class="input-group mb-2">
-                      <div class="input-group-prepend">
-                          <div class="input-group-text">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-lock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"/>
-                                <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"/>
+                  <div class="form-group">
+                    <div class="alert alert-success" *ngIf="this.isVerified">You have now verified your email address. Please log in!</div>
+                    <div class="alert alert-success" *ngIf="this.message">{{ this.message }}</div>
+                    <div class="alert alert-danger" *ngIf="this.errorMessage">{{ this.errorMessage }}</div>
+                    
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
                               </svg>
-                          </div>
-                      </div>
-                      <input 
-                        [type]="display ? 'text' : 'password'" 
-                        id="password"
-                        class="form-control"
-                        ngModel
-                        name="password"
-                        #password="ngModel"
-                        maxlength="20"
-                        required
-                        placeholder="Password"
-                        appPasswordValidation>
-                      <label for="password" class="password-label">Password</label>
-                      <div class="input-group-append">
-                        <span class="input-group-text">{{password.value ? password.value.length : 0}} / 20</span>
-                      </div>
-                  </div>
-
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="switch" (click)="ToggleDisplayPassword()">
-                    <label class="custom-control-label" for="switch" >Show password</label>
-                  </div>
-
-                  <span class="alert alert-danger" *ngIf="password.touched && password.errors?.required">Password must be provided.</span>
-                  
-                  <div *ngIf="!this.isLoginMode">
-                    <div class="progress" style="height: 15px;"  *ngIf="password.errors?.strength || password.valid">
-                      <div 
-                          class="progress-bar progress-bar-striped" 
-                          [class]="password.errors?.strength === null ? 'bg-success' : password.errors?.strength.currentColor"
-                          role="progressbar" 
-                          [style.width.%]="password.errors?.strength === null ? 100 : password.errors?.strength.currentValue" 
-                          aria-valuenow="password.errors?.strength === null ? 100 : password.errors?.strength.currentValue" 
-                          aria-valuemin="0" 
-                          aria-valuemax="100"> {{ password.errors?.strength === null ? 100 : password.errors?.strength.currentValue }}% </div>
+                            </div>
+                        </div>
+                        <input 
+                          type="email" 
+                          id="email" 
+                          class="form-control"
+                          ngModel
+                          #email="ngModel"
+                          name="email"
+                          placeholder="Email address"
+                          required
+                          email
+                          appEmailValidation>
+                        <label for="email" class="email-label">Email address</label>
                     </div>
                     
-                    <span class="password-errors" *ngIf="password.errors?.strength || password.valid">
-                        <div class="password-errors__password-error">Password must contain at least one lowercase character
-                            <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.lowercase || password.errors?.strength === null">&#10003;</span>
-                            <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.lowercase && password.errors?.strength !== null">!</span>
-                        </div>
-                        <div class="password-errors__password-error">Password must contain at least one uppercase character
-                            <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.uppercase || password.errors?.strength === null">&#10003;</span>
-                            <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.uppercase && password.errors?.strength !== null">!</span>
-                        </div>
-                        <div class="password-errors__password-error">Password must contain at least one digit character
-                            <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.digit || password.errors?.strength === null">&#10003;</span>
-                            <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.digit && password.errors?.strength !== null">!</span>
-                        </div>
-                        <div class="password-errors__password-error">Password must contain at least one special character
-                            <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.special || password.errors?.strength === null">&#10003;</span>
-                            <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.special && password.errors?.strength !== null">!</span>
-                        </div>
-                        <div class="password-errors__password-error">Password must contain at least eight characters
-                            <span class="alert alert-success alert-success__right" *ngIf="password.errors?.strength.minlength || password.errors?.strength === null">&#10003;</span>
-                            <span class="alert alert-danger alert-danger__wrong" *ngIf="!password.errors?.strength.minlength && password.errors?.strength !== null">!</span>
-                        </div>
-                    </span>
+                    <span class="alert alert-danger" *ngIf="email.errors?.required && email.touched">Email address must be provided.</span>
+                    <span class="alert alert-danger" *ngIf="!email.errors?.required && email.invalid && email.touched && !email.errors?.emailNotAvailable">Email address is incorrect.</span>
+                    <span class="alert alert-danger" *ngIf="!this.isLoginMode && email.errors?.emailNotAvailable && email.touched">This email already exists in the database.</span>
+                    <span class="alert alert-success" *ngIf="email.valid">Email address is correct.</span>
+                    
+                  </div>
       
-                    <span class="alert alert-success" *ngIf="password.valid && !this.isLoginMode">
-                      You entered a strong password.
-                    </span>
-                  </div>
-                  
-                </div>
-
-                <div class="form-group" *ngIf="!this.isLoginMode">
-                  
-                  <div class="input-group mb-2">
-                      <div class="input-group-prepend">
-                          <div class="input-group-text">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-lock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"/>
-                                <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"/>
+                  <div class="form-group">
+                    
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-lock-fill" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"/>
+                                  <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"/>
                               </svg>
+                            </div>
+                        </div>
+                        <input 
+                          [type]="display ? 'text' : 'password'" 
+                          id="password"
+                          class="form-control"
+                          ngModel
+                          name="password"
+                          #password="ngModel"
+                          maxlength="20"
+                          required
+                          placeholder="Password"
+                          appPasswordValidation>
+                        <label for="password" class="password-label">Password</label>
+                        <div class="input-group-append">
+                          <span class="input-group-text">{{password.value ? password.value.length : 0}} / 20</span>
+                        </div>
+                    </div>
+
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="switch" (click)="ToggleDisplayPassword()">
+                      <label class="custom-control-label" for="switch" >Show password</label>
+                    </div>
+
+                    <span class="alert alert-danger" *ngIf="password.touched && password.errors?.required">Password must be provided.</span>
+                    
+                    <div *ngIf="!this.isLoginMode">
+                      <div class="progress" style="height: 15px;"  *ngIf="password.errors?.strength || password.valid">
+                        <div 
+                            class="progress-bar progress-bar-striped" 
+                            [class]="password.errors?.strength === null ? 'bg-success' : password.errors?.strength.currentColor"
+                            role="progressbar" 
+                            [style.width.%]="password.errors?.strength === null ? 100 : password.errors?.strength.currentValue" 
+                            aria-valuenow="password.errors?.strength === null ? 100 : password.errors?.strength.currentValue" 
+                            aria-valuemin="0" 
+                            aria-valuemax="100"> {{ password.errors?.strength === null ? 100 : password.errors?.strength.currentValue }}% </div>
+                      </div>
+                      
+                      <span class="password-errors" *ngIf="password.errors?.strength || password.valid">
+                          <div class="password-errors__password-error">Password must contain at least one lowercase character
+                              <span class="checked" *ngIf="password.errors?.strength.lowercase || password.errors?.strength === null">
+                                <svg viewBox="0 0 16 16" class="bi bi-check-circle-fill" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                              </span>
+                              <span class="unchecked" *ngIf="!password.errors?.strength.lowercase && password.errors?.strength !== null">
+                                <svg viewBox="0 0 16 16" class="bi bi-exclamation-triangle-fill"xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 5zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                </svg>
+                              </span>
                           </div>
-                      </div>
-                      <input 
-                        [type]="display ? 'text' : 'password'"
-                        id="confirmPassword"
-                        class="form-control"
-                        ngModel
-                        name="confirmPassword"
-                        #confirmPassword="ngModel"
-                        maxlength="20"
-                        required
-                        placeholder="Confirm Password">
-                      <label for="confirmPassword" class="password-label">Confirm Password</label>
-                      <div class="input-group-append">
-                        <span class="input-group-text">{{confirmPassword.value ? confirmPassword.value.length : 0}} / 20</span>
-                      </div>
+                          <div class="password-errors__password-error">Password must contain at least one uppercase character
+                              <span class="checked" *ngIf="password.errors?.strength.uppercase || password.errors?.strength === null">
+                                <svg viewBox="0 0 16 16" class="bi bi-check-circle-fill" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                              </span>
+                              <span class="unchecked" *ngIf="!password.errors?.strength.uppercase && password.errors?.strength !== null">
+                                <svg viewBox="0 0 16 16" class="bi bi-exclamation-triangle-fill"xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 5zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                </svg>
+                              </span>
+                          </div>
+                          <div class="password-errors__password-error">Password must contain at least one digit character
+                              <span class="checked" *ngIf="password.errors?.strength.digit || password.errors?.strength === null">
+                                <svg viewBox="0 0 16 16" class="bi bi-check-circle-fill" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                              </span>
+                              <span class="unchecked" *ngIf="!password.errors?.strength.digit && password.errors?.strength !== null">
+                                <svg viewBox="0 0 16 16" class="bi bi-exclamation-triangle-fill"xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 5zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                </svg>
+                              </span>
+                          </div>
+                          <div class="password-errors__password-error">Password must contain at least one special character
+                              <span class="checked" *ngIf="password.errors?.strength.special || password.errors?.strength === null">
+                                <svg viewBox="0 0 16 16" class="bi bi-check-circle-fill" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                              </span>
+                              <span class="unchecked" *ngIf="!password.errors?.strength.special && password.errors?.strength !== null">
+                                <svg viewBox="0 0 16 16" class="bi bi-exclamation-triangle-fill"xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 5zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                </svg>
+                              </span>
+                          </div>
+                          <div class="password-errors__password-error">Password must contain at least eight characters
+                              <span class="checked" *ngIf="password.errors?.strength.minlength || password.errors?.strength === null">
+                                <svg viewBox="0 0 16 16" class="bi bi-check-circle-fill" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                              </span>
+                              <span class="unchecked" *ngIf="!password.errors?.strength.minlength && password.errors?.strength !== null">
+                                <svg viewBox="0 0 16 16" class="bi bi-exclamation-triangle-fill"xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 5zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                </svg>
+                              </span>
+                          </div>
+                      </span>
+        
+                      <span class="alert alert-success" *ngIf="password.valid && !this.isLoginMode">
+                        You entered a strong password.
+                      </span>
+                    </div>
+                    
                   </div>
 
-                  <span class="alert alert-danger" *ngIf="confirmPassword.touched && confirmPassword.errors?.required">Confirm Password must be provided.</span>
-                  <span class="alert alert-danger" *ngIf="confirmPassword.touched && confirmPassword.errors?.passwordMismatch">Passwords must match.</span>
+                  <div class="form-group" *ngIf="!this.isLoginMode">
+                    
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-lock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"/>
+                                  <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <input 
+                          [type]="display ? 'text' : 'password'"
+                          id="confirmPassword"
+                          class="form-control"
+                          ngModel
+                          name="confirmPassword"
+                          #confirmPassword="ngModel"
+                          maxlength="20"
+                          required
+                          placeholder="Confirm Password">
+                        <label for="confirmPassword" class="password-label">Confirm Password</label>
+                        <div class="input-group-append">
+                          <span class="input-group-text">{{confirmPassword.value ? confirmPassword.value.length : 0}} / 20</span>
+                        </div>
+                    </div>
 
-                </div>
-    
-                <div>
-                  <button type="submit" class="btn btn-primary" [class]="isLoginMode ? 'login' : 'register'" [disabled]="form.invalid">{{ isLoginMode ? "Login" : "Register" }}</button>
-                  <button class="btn btn-primary" [class]="isLoginMode ? 'register' : 'login'" (click)="onSwitchMode()" type="button">
-                    Switch to {{ isLoginMode ? "Register" : "Login" }}
-                  </button>
-                </div>
-                
-            </form>
-        </div>
-    </div>
+                    <span class="alert alert-danger" *ngIf="confirmPassword.touched && confirmPassword.errors?.required">Confirm Password must be provided.</span>
+                    <span class="alert alert-danger" *ngIf="confirmPassword.touched && confirmPassword.errors?.passwordMismatch">Passwords must match.</span>
+
+                  </div>
+      
+                  <div>
+                    <button type="submit" class="btn btn-primary" [class]="isLoginMode ? 'login' : 'register'" [disabled]="form.invalid">{{ isLoginMode ? "Login" : "Register" }}</button>
+                    <button class="btn btn-primary" [class]="isLoginMode ? 'register' : 'login'" (click)="onSwitchMode()" type="button">
+                      Switch to {{ isLoginMode ? "Register" : "Login" }}
+                    </button>
+                  </div>
+                  
+              </form>
+          </div>
+      </div>
+  </div>
+
 </div>
-

@@ -28,6 +28,15 @@ input[type=password] {
 	}
 }
 
+.input-group-text {
+	background-color: #53585e;
+	color: white;
+
+	svg {
+		fill: white;
+	}
+}
+
 .form-group {
 	.email-label,
 	.password-label {
@@ -44,16 +53,29 @@ input[type=password] {
 
 .container {
 	position: absolute;
-	top: 50%;
+	top: 40%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	box-shadow: 1px 1px 4px #343a40;
+	box-shadow: .3rem .3rem 1rem #343a40;
+	border: 3px solid rgba(255, 255, 255, .3);
+
+	&__wrapper {
+		width: 100vw;
+		height: 100vh;
+		background: linear-gradient(to top, #16222a, #3a6073);
+	}
 
 	.row {
+		margin-top: 3rem;
+		margin-bottom: 1rem;
+		margin-left: .3rem;
+		margin-right: .3rem;
+		border-radius: .3rem;
 		padding: 1rem;
-		padding-top: 2rem;
+		padding-top: 5rem;
 		background-color: #fff;
 		border: 1px solid #343a40;
+		position: relative;
 	}
 }
 
@@ -73,21 +95,21 @@ p {
 .alert {
 	padding: .2rem;
 	font-size: .9rem;
+}
 
-	&-danger {
-		&__wrong {
-			padding: 0 .4rem;
-		}
+.checked {
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+		fill: green;
+	}
+}
 
-		&__right {
-			padding: .2rem 0;
-		}
-
-		&__avatar {
-			width: 50%;
-			margin: 0 auto;
-			text-align: center;
-		}
+.unchecked {
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+		fill: red;
 	}
 }
 
@@ -117,4 +139,23 @@ button[type=button] {
 
 .login {
 	background-color: #343a40;
+}
+
+.house-logo {
+	position: absolute;
+	top: -3rem;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #343a40;
+	border-radius: 50%;
+	padding: .9rem;
+
+	svg {
+		width: 4rem;
+		height: 4rem;
+		fill: white;
+		border: 1px solid white;
+		padding: 0.6rem;
+		border-radius: 50%;
+	}
 }

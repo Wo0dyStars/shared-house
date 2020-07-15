@@ -19,10 +19,10 @@
 
 .nav-loggedIn {
 	margin-left: 1rem;
-	background-color: white;
 	padding: 1rem;
-	border-bottom: 1px dashed rgba(0, 0, 0, .3);
 	user-select: none;
+	background-color: rgba(0, 0, 0, .1);
+	color: white;
 
 	.score-label {
 		text-transform: uppercase;
@@ -37,10 +37,9 @@
 	}
 
 	.score-name {
-		text-transform: uppercase;
-		letter-spacing: -.03rem;
-		font-weight: 700;
-		color: rgba(0, 0, 0, .6);
+		letter-spacing: -.04rem;
+		font-weight: 200;
+		color: rgba(255, 255, 255, .6);
 	}
 }
 
