@@ -33,8 +33,9 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
 			this.errorMessage = message;
 		});
 
-		if (window.location.href.slice(22, 34) === 'confirmation') {
-			this.authorizationService.confirmEmail(window.location.href.slice(21));
+		const currentURL = window.location.href;
+		if (currentURL.indexOf('confirmation') !== -1) {
+			this.authorizationService.confirmEmail(currentURL.slice(currentURL.indexOf('confirmation') - 1));
 		}
 	}
 

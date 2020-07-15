@@ -68,7 +68,7 @@ exports.loginUser = (req, res, next) => {
 					message: 'Authentication has been failed at password comparison.'
 				});
 			} else {
-				const token = jwt.sign({ email: fetchedUser.email, userId: fetchedUser._id }, 'secret', {
+				const token = jwt.sign({ email: fetchedUser.email, userId: fetchedUser._id }, process.env.JWT_TOKEN, {
 					expiresIn: '1h'
 				});
 

@@ -7,6 +7,7 @@ import { User } from '../users/user.model';
 import { environment } from 'src/environments/environment';
 
 const URL = environment.URL;
+const imageURL = environment.imageURL;
 const ANGULAR = environment.ANGULAR;
 
 @Injectable({ providedIn: 'root' })
@@ -81,7 +82,7 @@ export class AuthorizationService {
 			.post<{ message: string; userID: string }>(URL + '/register', {
 				email: email,
 				password: password,
-				URL: URL,
+				URL: imageURL,
 				ANGULAR: ANGULAR
 			})
 			.subscribe(

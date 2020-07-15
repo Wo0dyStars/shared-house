@@ -3,6 +3,7 @@
 		"MONGODB_PASSWORD": "sNMIN9KrpqB55ZkG",
 		"GOOGLE_CLIENT_ID": "1033671041857-3f6vnjiv56dhghi6n3scrtsffgo9r886.apps.googleusercontent.com",
 		"GOOGLE_CLIENT_SECRET": "aA5Vuk8n-Lk_1l7maVycXqxd",
-		"GOOGLE_REFRESH_TOKEN": "1//04FZjVVRqdT5uCgYIARAAGAQSNwF-L9IrnW3_QnyGPiBBKx5tpWvBsMEgpOdK17yr_T7t2diDU8RHDhdQxurTwicUJ4ySz6QlIcU"
+		"GOOGLE_REFRESH_TOKEN": "1//04FZjVVRqdT5uCgYIARAAGAQSNwF-L9IrnW3_QnyGPiBBKx5tpWvBsMEgpOdK17yr_T7t2diDU8RHDhdQxurTwicUJ4ySz6QlIcU",
+		"JWT_TOKEN": "This is an extra long string, which makes sure that everything is safe"
 	}
 }

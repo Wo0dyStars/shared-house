@@ -4,7 +4,8 @@
 
 export const environment = {
 	production: false,
-	URL: 'http://localhost:3000',
+	imageURL: 'http://localhost:3000',
+	URL: 'http://localhost:3000/api',
 	ANGULAR: 'http://localhost:4200'
 };
 

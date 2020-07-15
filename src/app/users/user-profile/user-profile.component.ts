@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 const URL = environment.URL;
+const imageURL = environment.imageURL;
 
 @Component({
 	selector: 'app-user-profile',
@@ -34,10 +35,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 			this.userData.movedIn = this.userData.movedIn.slice(0, 10);
 			this.userData.lastUpdated = this.userData.lastUpdated.slice(0, 10);
 			this.userData.birthday = this.userData.birthday.slice(0, 10);
-			this.userAvatars.push(URL + '/images/avatar1.webp');
-			this.userAvatars.push(URL + '/images/avatar2.png');
-			this.userAvatars.push(URL + '/images/avatar3.webp');
-			this.userAvatars.push(URL + '/images/avatar4.png');
+			this.userAvatars.push(imageURL + '/images/avatar1.webp');
+			this.userAvatars.push(imageURL + '/images/avatar2.png');
+			this.userAvatars.push(imageURL + '/images/avatar3.webp');
+			this.userAvatars.push(imageURL + '/images/avatar4.png');
 			this.getUserLevel();
 			this.isLoading = false;
 		});
