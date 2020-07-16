@@ -7,30 +7,30 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ">
-      <li class="nav-item" *ngIf="this.hasHouse">
-        <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" >
+        <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="/users" routerLinkActive="active">Users</a>
       </li>
       <li class="nav-item" *ngIf="!isAuthenticated">
-        <a class="nav-link" routerLink="/authorization" routerLinkActive="active">Sign in</a>
+        <a class="nav-link"  routerLink="/authorization" routerLinkActive="active">Sign in</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/users/{{ userID }}" routerLinkActive="active" *ngIf="this.hasHouse">My profile</a>
+        <a class="nav-link" data-toggle="collapse"  data-target=".navbar-collapse.show" routerLink="/users/{{ userID }}" routerLinkActive="active" >My profile</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/users/news" routerLinkActive="active" *ngIf="this.hasHouse">News</a>
+        <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="/users/news" routerLinkActive="active" >News</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/users/task" routerLinkActive="active" *ngIf="this.hasHouse">Tasks</a>
+        <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="/users/task" routerLinkActive="active" >Tasks</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/users/leaderboard" routerLinkActive="active" *ngIf="this.hasHouse">Leader board</a>
+        <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="/users/leaderboard" routerLinkActive="active" >Leader board</a>
       </li>
       <li class="nav-item" >
-        <a class="nav-link" routerLink="/users/shopping-list" routerLinkActive="active" *ngIf="this.hasHouse">Shopping list</a>
+        <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="/users/shopping-list" routerLinkActive="active" >Shopping list</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/users/availabletask" routerLinkActive="active" *ngIf="this.hasHouse">Reserve tasks</a>
+        <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="/users/availabletask" routerLinkActive="active" >Reserve tasks</a>
       </li>
       <li class="nav-item nav-loggedIn" *ngIf="isAuthenticated && this.hasHouse">
           <span class="score-name">{{ userScore?.name }}</span>

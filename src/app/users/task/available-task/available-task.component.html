@@ -4,42 +4,39 @@
     <h3>Available tasks</h3>
 
     <div class="row" *ngIf="availableTasks.length">
-        <div class="col-xs-12">
     
             <ul class="list-group">
                 <div class="row titles">
-                    <li class="list-group-item col-4">Task name</li>
-                    <li class="list-group-item col-2">Task level</li>
+                    <li class="list-group-item col-5">Task name</li>
+                    <li class="list-group-item col-4">Task level</li>
                 </div>
                 <div class="row" *ngIf="!availableTasks || !availableTasks.length">
-                    <li class="list-group-item col-6">Currently there is no available tasks in the house.</li>
+                    <li class="list-group-item col-9">Currently there is no available tasks in the house.</li>
                 </div>
                 <div class="row" *ngFor="let task of availableTasks">
-                    <li class="list-group-item col-4" *ngIf="task.available && task.task">{{ task.task.name}}</li>
-                    <li class="list-group-item col-2" *ngIf="task.available && task.task">{{ task.task.level }}</li>
+                    <li class="list-group-item col-5" *ngIf="task.available && task.task">{{ task.task.name}}</li>
+                    <li class="list-group-item col-4" *ngIf="task.available && task.task">{{ task.task.level }}</li>
                     <button type="button" class="btn btn-success action" (click)="onAccept(task._id)" *ngIf="task.available && task.task" >Accept</button>
                 </div>
             </ul>
     
-        </div>
     </div>
 
     <h3>Assigned tasks</h3>
 
     <div class="row">
-        <div class="col-xs-12">
             <div class="alert alert-success" *ngIf="message">{{ message }}</div>
             <ul class="list-group">
                 <div class="row titles">
                     <li class="list-group-item col-4">House member</li>
-                    <li class="list-group-item col-3">Task name</li>
+                    <li class="list-group-item col-5">Task name</li>
                 </div>
                 <div class="row" *ngIf="!assignedTasks || !assignedTasks.length">
-                    <li class="list-group-item col-7">Currently there is no assigned tasks to any member.</li>
+                    <li class="list-group-item col-9">Currently there is no assigned tasks to any member.</li>
                 </div>
                 <div class="row" *ngFor="let task of assignedTasks">
                     <li class="list-group-item col-4 " >{{ task.userID.forename }} {{ task.userID.surname }}</li>
-                    <li class="list-group-item col-3 " >
+                    <li class="list-group-item col-5 " >
                         {{ task.availableTaskID.task.name }}
                         <span class="badge badge-pill badge-success" *ngIf="task.completed">Completed</span>
                         <span class="badge badge-pill badge-danger" *ngIf="!task.completed">Awaiting</span>
@@ -53,6 +50,5 @@
                 </div>
             </ul>
     
-        </div>
     </div>
 </div>

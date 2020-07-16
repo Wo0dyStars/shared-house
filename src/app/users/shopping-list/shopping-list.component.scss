@@ -1,16 +1,36 @@
+@import "~bootstrap/scss/bootstrap-grid.scss";
+
 .container {
 	margin: 1.5rem;
+
+	@include media-breakpoint-down(xs) {
+		margin: 1.5rem .6rem;
+		font-size: .7rem;
+	}
 }
+
+form {
+	@include media-breakpoint-down(xs) {
+		margin: 1.5rem;
+	}
+}
+
 h3 {
-	margin: 2rem 0;
+	margin: 2rem .6rem;
 }
 .action {
 	margin: .1rem;
 }
 
+.alert {
+	@include media-breakpoint-down(xs) {
+		font-size: .7rem;
+	}
+}
+
 .list-group {
 	width: 100vw;
-	margin: 1rem;
+	margin: 1rem 1.5rem;
 }
 
 .list-group-item + .list-group-item {

@@ -1,8 +1,6 @@
 
 <app-loading-spinner *ngIf="this.isLoading"></app-loading-spinner>
 <div class="container" *ngIf="!this.isLoading">
-    <div class="row">
-        <div class="col-xs-12">
     
             <form (ngSubmit)="onSubmit(form)" #form="ngForm">
 
@@ -59,26 +57,23 @@
             
             
             <div class="row">
-                <div class="col">
                     <hr>
                     <div class="alert alert-success" *ngIf="message"> {{ message }} </div>
                     <ul class="list-group">
-                        <div class="row titles">
-                            <li class="list-group-item col-5">Task name</li>
-                            <li class="list-group-item col-3">Task level</li>
-                            <li class="list-group-item col-3">Task frequency</li>
+                        <div class="row titles ">
+                            <li class="list-group-item col-5">Task</li>
+                            <li class="list-group-item col-3">Level</li>
+                            <li class="list-group-item col-4">Frequency</li>
                         </div>
                         <div class="row" *ngFor="let task of tasks">
                             <li class="list-group-item col-5">{{ task.name }}</li>
                             <li class="list-group-item col-3">{{ task.level }}</li>
-                            <li class="list-group-item col-3">{{ task.frequency }}</li>
+                            <li class="list-group-item col-4">{{ task.frequency }}</li>
                         </div>
                     </ul>
 
-                </div>
             </div>
             
     
-        </div>
-    </div>
+    
 </div>

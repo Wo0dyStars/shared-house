@@ -44,12 +44,11 @@
             </form>
 
             <div class="row">
-                <div class="col-xs-12">
                     <h3>Shopping list</h3>
                     
                     <ul class="list-group" >
                         <div class="row titles">
-                            <li class="list-group-item col-6">Item name</li>
+                            <li class="list-group-item col-6 ">Item name</li>
                             <li class="list-group-item col-2">Item amount</li>
                         </div>
                         <div class="row" *ngIf="!shoppingList || !shoppingList.length">
@@ -62,19 +61,17 @@
                             <button type="button" class="btn btn-danger action" (click)="onRemove(i)">X</button>
                         </div>
                     </ul>
-                </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-12">
                     <h3>Purchases</h3>
                     
                     <ul class="list-group" >
                         <div class="row titles">
-                            <li class="list-group-item col-3">House member</li>
-                            <li class="list-group-item col-4">Item name</li>
-                            <li class="list-group-item col-2">Item amount</li>
-                            <li class="list-group-item col-2">Purchase date</li>
+                            <li class="list-group-item col-3">Member</li>
+                            <li class="list-group-item col-4">Item</li>
+                            <li class="list-group-item col-2">Amount</li>
+                            <li class="list-group-item col-2">Date</li>
                         </div>
                         <div class="row" *ngIf="!purchases.length">
                             <li class="list-group-item col-11">Currently there is no item in your purchases list.</li>
@@ -88,7 +85,6 @@
                             </div>
                         </div>
                     </ul>
-                </div>
             </div>
     
         </div>

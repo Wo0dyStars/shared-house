@@ -1,5 +1,17 @@
+@import "~bootstrap/scss/bootstrap-grid.scss";
+
 .container {
+	@include media-breakpoint-down(xs) {
+		font-size: .7rem;
+	}
+}
+
+form {
 	margin: 1.5rem;
+
+	@include media-breakpoint-down(xs) {
+		margin: .5rem;
+	}
 }
 
 .list-group-item + .list-group-item {
@@ -7,11 +19,27 @@
 }
 
 .list-group {
-	width: 100vw;
 	margin: 1rem;
+	width: 100%;
+
+	@include media-breakpoint-down(xs) {
+		margin: 0;
+		margin-top: 1rem;
+		margin-left: 2rem;
+	}
+
+	.row {
+		@include media-breakpoint-down(xs) {
+			width: 100%;
+		}
+	}
 }
 
 .titles {
+	@include media-breakpoint-down(xs) {
+		text-align: center;
+	}
+
 	li {
 		background-color: #343a40;
 		color: white;

@@ -35,9 +35,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 			this.userData.movedIn = this.userData.movedIn.slice(0, 10);
 			this.userData.lastUpdated = this.userData.lastUpdated.slice(0, 10);
 			this.userData.birthday = this.userData.birthday.slice(0, 10);
-			this.userAvatars.push(imageURL + '/images/avatar1.webp');
+			this.userAvatars.push(imageURL + '/images/avatar1.png');
 			this.userAvatars.push(imageURL + '/images/avatar2.png');
-			this.userAvatars.push(imageURL + '/images/avatar3.webp');
+			this.userAvatars.push(imageURL + '/images/avatar3.png');
 			this.userAvatars.push(imageURL + '/images/avatar4.png');
 			this.getUserLevel();
 			this.isLoading = false;

@@ -1,5 +1,11 @@
+@import "~bootstrap/scss/bootstrap-grid.scss";
+
 .container {
 	margin: 1.5rem auto;
+
+	@include media-breakpoint-down(xs) {
+		font-size: .7rem;
+	}
 }
 
 form {
