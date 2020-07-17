@@ -99,6 +99,14 @@ input[type=radio] {
 	}
 }
 
+@include media-breakpoint-down(xs) {
+	.house-name {
+		border: none;
+		padding: .3rem;
+		margin: 1rem 0;
+	}
+}
+
 .vertical-line {
 	border-left: 1px dashed rgba(0, 0, 0, .35);
 	margin: 0 2rem;

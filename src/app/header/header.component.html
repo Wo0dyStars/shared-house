@@ -32,16 +32,16 @@
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="/users/availabletask" routerLinkActive="active" >Reserve tasks</a>
       </li>
-      <li class="nav-item nav-loggedIn" *ngIf="isAuthenticated && this.hasHouse">
+      <li class="nav-item nav-loggedIn" *ngIf="isAuthenticated">
           <span class="score-name">{{ userScore?.name }}</span>
           <img class="avatar" [src]="userScore?.avatar" alt="Avatar">
           <span class="score-label">Score</span>  
           <span class="score-value">{{ userScore?.score }}</span> 
       </li>
-      <button class="btn btn-sm btn-outline-secondary logout__housed" type="button" (click)="onLogout()" *ngIf="isAuthenticated && this.hasHouse">Logout</button>
-
+      <button class="btn btn-sm btn-outline-secondary logout__housed" type="button" (click)="onLogout()" *ngIf="isAuthenticated">Logout</button>
+      <button class="btn btn-sm btn-outline-secondary logout" type="button" (click)="onLogout()" *ngIf="isAuthenticated && !this.hasHouse">Logout</button>
     </ul>
   </div>
 </nav>
 
-<button class="btn btn-sm btn-outline-secondary logout" type="button" (click)="onLogout()" *ngIf="isAuthenticated && !this.hasHouse">Logout</button>
+

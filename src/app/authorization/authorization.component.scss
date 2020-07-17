@@ -14,6 +14,7 @@ input[type=email],
 input[type=text],
 input[type=password] {
 	position: relative;
+
 	&:focus {
 		outline: none;
 		box-shadow: none;
@@ -39,6 +40,16 @@ input[type=password] {
 	}
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+	border: 1px solid green;
+	-webkit-text-fill-color: rgba(0, 0, 0, .7);
+	box-shadow: 0 0 0px 1000px #fff inset;
+	-webkit-box-shadow: 0 0 0px 1000px #fff inset;
+	transition: background-color 5000s ease-in-out 0s;
+}
+
 .form-group {
 	.email-label,
 	.password-label {
@@ -50,6 +61,10 @@ input[type=password] {
 		background-color: #fff;
 		padding: 0 .3rem;
 		transition: all .2s ease;
+
+		@include media-breakpoint-down(xs) {
+			left: 20%;
+		}
 	}
 }
 
@@ -64,10 +79,11 @@ input[type=password] {
 	@include media-breakpoint-down(xs) {
 		position: relative;
 		width: 100vw;
-		height: 100%;
 		transform: none;
 		top: 0;
 		left: 0;
+		border: none;
+		box-shadow: none;
 	}
 
 	&__wrapper {
